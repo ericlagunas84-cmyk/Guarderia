@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael Guardería y Estancia — Cuidado infantil en Ciudad Juárez</title>
+<meta name="description" content="Más de 20 años cuidando lo que más amas en Ciudad Juárez. Guardería y Estancia Infantil de 6:00 AM a 9:00 PM, con app de seguimiento diario en tiempo real."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Quicksand', 'sans-serif'],
+          sans: ['Nunito Sans', 'sans-serif'],
+        },
+        colors: {
+          brand: { 50:'#f2faf5',100:'#e1f4e8',200:'#c3e8d2',300:'#95d6b4',400:'#64be92',500:'#88d4ab',600:'#1b6b4a',700:'#155238',800:'#123f2b',900:'#0f3222' },
+          accent: { 50:'#fff2ee', 100:'#ffe1d6', 300:'#ffab8f', 400:'#ff8a63', 500:'#FF6F52', 600:'#e0563a', 700:'#b8432b' },
+          amber: { 50:'#fdf6e8', 100:'#fbecc9', 300:'#f2c968', 400:'#F2A93C', 500:'#dd8f21' },
+          surface: { DEFAULT:'#FDFBF7', alt:'#F2F7F4' },
+        },
+        borderRadius: { '3xl':'1.5rem', '4xl':'2rem' },
+      }
+    }
+  }
+</script>
+<style>
+  body{ background-color:#FDFBF7; }
+  h1,h2,h3,h4,.font-display{ font-family:'Quicksand',sans-serif; }
+  .wavy-bottom{ position:relative; padding-bottom:7rem; }
+  .wavy-bottom::after{
+    content:''; position:absolute; bottom:0; left:0; width:100%; height:100px;
+    background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23ffffff"/></svg>') no-repeat center bottom;
+    background-size: cover;
+  }
+  .wavy-top{ position:relative; }
+  .wavy-top::before{
+    content:''; position:absolute; top:-1px; left:0; width:100%; height:90px; transform:translateY(-99%);
+    background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%231b6b4a"/></svg>') no-repeat center bottom;
+    background-size: cover;
+  }
+  .scroll-mt{ scroll-margin-top: 100px; }
+</style>
+</head>
+<body class="font-sans antialiased text-gray-700">
+
+<!-- Top Bar -->
+<div class="bg-brand-700 text-white text-xs sm:text-sm py-2 px-4">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1">
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span> Ciudad Juárez, Chihuahua</p>
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-1 hover:text-brand-200 transition" href="mailto:contacto@gael.mx">
+<span class="material-symbols-outlined text-[16px]">mail</span> contacto@gael.mx
+</a>
+<a class="flex items-center gap-1 hover:text-brand-200 transition" href="tel:+16560000000">
+<span class="material-symbols-outlined text-[16px]">call</span> (656) 000-0000
+</a>
+</div>
+</div>
+</div>
+
+<!-- Header -->
+<header class="bg-white sticky top-0 z-50 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<a class="flex items-center gap-2" href="#inicio">
+<img alt="Gael Guardería y Estancia" class="h-11 w-auto" src="assets/logo-gael-icon.png"/>
+<span class="font-display font-bold text-xl text-brand-700 leading-none">Gael</span>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-gray-600 font-semibold hover:text-brand-600 transition text-sm" href="#nosotros">Nosotros</a>
+<a class="text-gray-600 font-semibold hover:text-brand-600 transition text-sm" href="#programas">Programas</a>
+<a class="text-gray-600 font-semibold hover:text-brand-600 transition text-sm" href="#seguridad">Seguridad</a>
+<a class="text-gray-600 font-semibold hover:text-brand-600 transition text-sm" href="#testimonios">Testimonios</a>
+<a class="text-gray-600 font-semibold hover:text-brand-600 transition text-sm" href="#contacto">Contacto</a>
+</nav>
+<div class="hidden md:flex items-center gap-3">
+<a href="inicio_de_sesi_n.html" class="flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-brand-700 transition shadow-md shadow-brand-200">
+<span class="material-symbols-outlined text-[18px]">login</span> Iniciar Sesión
+</a>
+</div>
+<button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-gray-700 p-2" aria-label="Abrir menú">
+<span class="material-symbols-outlined text-3xl" id="mobileMenuIcon">menu</span>
+</button>
+</div>
+</div>
+<!-- Mobile menu -->
+<div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-3">
+<a onclick="closeMobileMenu()" class="block text-gray-700 font-semibold py-1" href="#nosotros">Nosotros</a>
+<a onclick="closeMobileMenu()" class="block text-gray-700 font-semibold py-1" href="#programas">Programas</a>
+<a onclick="closeMobileMenu()" class="block text-gray-700 font-semibold py-1" href="#seguridad">Seguridad</a>
+<a onclick="closeMobileMenu()" class="block text-gray-700 font-semibold py-1" href="#testimonios">Testimonios</a>
+<a onclick="closeMobileMenu()" class="block text-gray-700 font-semibold py-1" href="#contacto">Contacto</a>
+<a href="inicio_de_sesi_n.html" class="flex items-center justify-center gap-2 bg-brand-600 text-white px-5 py-3 rounded-full font-bold text-sm mt-2">
+<span class="material-symbols-outlined text-[18px]">login</span> Iniciar Sesión
+</a>
+</div>
+</header>
+
+<main>
+<!-- Hero -->
+<section id="inicio" class="scroll-mt relative bg-brand-50 wavy-bottom pt-14 md:pt-20 overflow-hidden">
+<div class="absolute top-10 right-10 text-amber-300 opacity-60 hidden md:block">
+<span class="material-symbols-outlined text-6xl">star</span>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="text-center lg:text-left">
+<span class="inline-flex items-center gap-1 bg-white text-brand-700 text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-5">
+<span class="material-symbols-outlined text-[16px]">shield</span> +20 años en Ciudad Juárez
+</span>
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-gray-900 leading-tight mb-5">
+Más de 20 años cuidando <span class="text-brand-600">lo que más amas</span> en Ciudad Juárez
+</h1>
+<p class="text-lg text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">Tu tranquilidad no tiene horario. Estancia Infantil y Guardería para bebés y niños de hasta 10 años, con horario de 6:00 AM a 9:00 PM.</p>
+<div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
+<a id="heroWhatsappBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-accent-500 text-white px-6 py-3.5 rounded-full font-bold hover:bg-accent-600 transition shadow-lg shadow-accent-100">
+<span class="material-symbols-outlined">chat</span> Agendar Visita por WhatsApp
+</a>
+<a href="#contacto" class="flex items-center justify-center gap-2 bg-white text-brand-700 px-6 py-3.5 rounded-full font-bold border-2 border-brand-200 hover:border-brand-500 transition">
+<span class="material-symbols-outlined">edit_note</span> Solicitar Informes y Costos
+</a>
+</div>
+<p class="text-sm text-gray-500 flex items-center justify-center lg:justify-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-brand-600">verified</span>
+Atención adaptada a horarios laborales y de maquila · Seguridad y Monitoreo Digital
+</p>
+</div>
+<div class="relative mt-8 lg:mt-0">
+<div class="absolute inset-0 bg-amber-200 rounded-[3rem] blur-3xl opacity-40 translate-x-6 translate-y-6"></div>
+<div class="relative z-10 bg-white rounded-[2.5rem] p-10 shadow-2xl flex items-center justify-center aspect-square max-w-md mx-auto">
+<img alt="Gael Guardería y Estancia" class="w-full h-full object-contain" src="assets/logo-gael-full.png"/>
+</div>
+<div class="absolute -bottom-5 -left-5 bg-brand-700 text-white p-4 rounded-2xl shadow-xl z-20 flex flex-col items-center transform -rotate-6">
+<span class="text-[10px] uppercase font-bold tracking-wider mb-0.5">Horario</span>
+<span class="text-xl font-black">6AM – 9PM</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Propuesta de valor -->
+<section id="nosotros" class="scroll-mt py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-14">
+<span class="inline-block py-1 px-4 rounded-full bg-brand-100 text-brand-700 text-sm font-bold mb-4">¿Por qué elegirnos?</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">Pensados para las familias de Ciudad Juárez</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-alt rounded-[2rem] p-7 text-center flex flex-col items-center hover:shadow-lg transition-shadow">
+<div class="w-16 h-16 mb-4 bg-brand-100 rounded-full flex items-center justify-center text-brand-700"><span class="material-symbols-outlined text-3xl">schedule</span></div>
+<h3 class="font-display font-bold text-gray-900 mb-2">Horario Extendido</h3>
+<p class="text-sm text-gray-600">De 6:00 AM a 9:00 PM. Adaptamos nuestros turnos a tu jornada laboral o de maquila.</p>
+</div>
+<div class="bg-surface-alt rounded-[2rem] p-7 text-center flex flex-col items-center hover:shadow-lg transition-shadow">
+<div class="w-16 h-16 mb-4 bg-amber-100 rounded-full flex items-center justify-center text-amber-500"><span class="material-symbols-outlined text-3xl">emoji_events</span></div>
+<h3 class="font-display font-bold text-gray-900 mb-2">+20 Años de Trayectoria</h3>
+<p class="text-sm text-gray-600">Dos décadas formando generaciones juarenses, con personal certificado en primeros auxilios.</p>
+</div>
+<div class="bg-surface-alt rounded-[2rem] p-7 text-center flex flex-col items-center hover:shadow-lg transition-shadow">
+<div class="w-16 h-16 mb-4 bg-accent-100 rounded-full flex items-center justify-center text-accent-500"><span class="material-symbols-outlined text-3xl">diversity_3</span></div>
+<h3 class="font-display font-bold text-gray-900 mb-2">Atención por Etapas</h3>
+<p class="text-sm text-gray-600">Salones separados por edad: de bebés hasta apoyo con tareas para niños de 10 años.</p>
+</div>
+<div class="bg-surface-alt rounded-[2rem] p-7 text-center flex flex-col items-center hover:shadow-lg transition-shadow">
+<div class="w-16 h-16 mb-4 bg-brand-100 rounded-full flex items-center justify-center text-brand-700"><span class="material-symbols-outlined text-3xl">phone_iphone</span></div>
+<h3 class="font-display font-bold text-gray-900 mb-2">App de Seguimiento</h3>
+<p class="text-sm text-gray-600">Reportes diarios en tiempo real: qué comió, cómo durmió, asistencia y avisos de entrega segura.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Programas por edad -->
+<section id="programas" class="scroll-mt py-20 bg-surface-alt">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-14">
+<span class="inline-block py-1 px-4 rounded-full bg-white text-brand-700 text-sm font-bold mb-4 shadow-sm">Programas y Grupos</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">Un programa para cada etapa</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white rounded-[2rem] p-7 shadow-sm hover:shadow-xl transition-shadow border-t-8 border-brand-400 flex flex-col">
+<span class="text-4xl mb-3">🍼</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-1">Lactantes y Bebés</h3>
+<p class="text-xs text-gray-500 font-bold mb-3">45 días a 18 meses</p>
+<p class="text-sm text-gray-600 flex-grow">Estimulación temprana, control de siestas y alimentación personalizada. Bitácora en tiempo real de pañales, biberones y medicamentos.</p>
+</div>
+<div class="bg-white rounded-[2rem] p-7 shadow-sm hover:shadow-xl transition-shadow border-t-8 border-accent-400 flex flex-col">
+<span class="text-4xl mb-3">🎨</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-1">Maternal</h3>
+<p class="text-xs text-gray-500 font-bold mb-3">18 meses a 3 años</p>
+<p class="text-sm text-gray-600 flex-grow">Desarrollo de lenguaje, socialización, motricidad fina y control de esfínteres (dejar el pañal).</p>
+</div>
+<div class="bg-white rounded-[2rem] p-7 shadow-sm hover:shadow-xl transition-shadow border-t-8 border-amber-400 flex flex-col">
+<span class="text-4xl mb-3">📚</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-1">Guardería y Preescolar</h3>
+<p class="text-xs text-gray-500 font-bold mb-3">3 a 5 años</p>
+<p class="text-sm text-gray-600 flex-grow">Actividades pedagógicas, iniciación a la lectoescritura, artes y juegos interactivos.</p>
+</div>
+<div class="bg-white rounded-[2rem] p-7 shadow-sm hover:shadow-xl transition-shadow border-t-8 border-brand-700 flex flex-col">
+<span class="text-4xl mb-3">🎒</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-1">Estancia / After-School</h3>
+<p class="text-xs text-gray-500 font-bold mb-3">6 a 10 años</p>
+<p class="text-sm text-gray-600 flex-grow">Apoyo con tareas escolares, alimentación balanceada, talleres recreativos y supervisión segura.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Nutrición y Salud -->
+<section class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="bg-brand-50 rounded-[2rem] p-8">
+<span class="material-symbols-outlined text-4xl text-brand-600 mb-3 block">restaurant</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-2">Nutrición Balanceada</h3>
+<p class="text-sm text-gray-600">Menú semanal diseñado por expertos: desayuno, comida, colaciones y cena rápida, adaptado a la jornada del niño.</p>
+</div>
+<div class="bg-accent-50 rounded-[2rem] p-8">
+<span class="material-symbols-outlined text-4xl text-accent-500 mb-3 block">medical_information</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-2">Ficha Médica Digital</h3>
+<p class="text-sm text-gray-600">Control estricto de alergias, medicamentos autorizados y reportes inmediatos ante cualquier incidente menor.</p>
+</div>
+<div class="bg-amber-50 rounded-[2rem] p-8">
+<span class="material-symbols-outlined text-4xl text-amber-500 mb-3 block">sanitizer</span>
+<h3 class="font-display font-bold text-gray-900 text-lg mb-2">Higiene y Protocolos</h3>
+<p class="text-sm text-gray-600">Espacios sanitizados diariamente y ambiente climatizado para las temperaturas extremas de Juárez.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Seguridad -->
+<section id="seguridad" class="scroll-mt py-24 bg-brand-700 text-white wavy-top">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-14">
+<span class="inline-block py-1 px-4 rounded-full bg-white/15 text-white text-sm font-bold mb-4 backdrop-blur-sm">Seguridad y Entrega</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold max-w-2xl mx-auto leading-tight">La seguridad de tu hijo, en cada detalle</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+<div class="bg-white/10 rounded-[2rem] p-8 backdrop-blur-sm border border-white/10">
+<span class="material-symbols-outlined text-4xl mb-3 block">qr_code_2</span>
+<h3 class="font-display font-bold text-lg mb-2">Acceso Controlado y Registro QR</h3>
+<p class="text-sm text-brand-100">Solo personas registradas, con identificación oficial y autorización previa del tutor, pueden retirar al alumno.</p>
+</div>
+<div class="bg-white/10 rounded-[2rem] p-8 backdrop-blur-sm border border-white/10">
+<span class="material-symbols-outlined text-4xl mb-3 block">directions_car</span>
+<h3 class="font-display font-bold text-lg mb-2">Módulo "Ya voy en camino"</h3>
+<p class="text-sm text-brand-100">Notifica desde tu celular que estás cerca para alistar la entrega de tu hijo y evitar esperas.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- App / PWA -->
+<section class="py-20 bg-surface-alt">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div>
+<span class="inline-block py-1 px-4 rounded-full bg-brand-100 text-brand-700 text-sm font-bold mb-4">App Móvil / PWA</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-5 leading-tight">Todo el día de tu hijo, en tu celular</h2>
+<p class="text-gray-600 mb-6 text-lg">Instala nuestra app directo desde el navegador — sin tiendas de aplicaciones. Sabrás en tiempo real qué comió, cómo durmió y sus asistencias.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 text-xs">✓</span><span class="font-semibold text-gray-700">Reportes diarios en tiempo real</span></li>
+<li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 text-xs">✓</span><span class="font-semibold text-gray-700">Aviso de entrega segura con código QR</span></li>
+<li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 text-xs">✓</span><span class="font-semibold text-gray-700">Chat directo con la maestra de tu hijo</span></li>
+</ul>
+<a href="inicio_de_sesi_n.html" class="inline-flex items-center gap-2 bg-brand-600 text-white px-7 py-3.5 rounded-full font-bold hover:bg-brand-700 transition shadow-md">
+<span class="material-symbols-outlined">login</span> Acceder a mi cuenta
+</a>
+</div>
+<div class="relative">
+<div class="absolute inset-0 bg-brand-200 rounded-[3rem] blur-2xl opacity-40"></div>
+<div class="relative bg-white rounded-[2.5rem] shadow-2xl p-3 max-w-xs mx-auto border-8 border-white">
+<div class="bg-brand-700 rounded-[1.8rem] p-6 text-white text-center">
+<img alt="Gael" class="w-14 h-14 mx-auto mb-3" src="assets/logo-gael-icon.png"/>
+<p class="font-display font-bold text-lg mb-1">¡Hola, familia!</p>
+<p class="text-brand-100 text-sm mb-4">Aquí está el resumen del día de tu hijo</p>
+<div class="grid grid-cols-2 gap-2 text-left">
+<div class="bg-white/10 rounded-xl p-3"><p class="text-[10px] uppercase text-brand-200">Asistencia</p><p class="font-bold text-sm">Presente</p></div>
+<div class="bg-white/10 rounded-xl p-3"><p class="text-[10px] uppercase text-brand-200">Siesta</p><p class="font-bold text-sm">Hace 45 min</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Testimonios -->
+<section id="testimonios" class="scroll-mt py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-14">
+<span class="inline-block py-1 px-4 rounded-full bg-amber-100 text-amber-600 text-sm font-bold mb-4">Familias Juarenses</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900">Lo que dicen los padres</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+<div class="bg-surface-alt rounded-[2rem] p-8 relative">
+<span class="material-symbols-outlined text-5xl text-brand-200 absolute top-4 right-6">format_quote</span>
+<p class="text-gray-700 italic mb-5 relative z-10">"Por mi horario de trabajo me costaba mucho encontrar un lugar confiable que abriera desde las 6:00 AM. Llevo 3 años dejando a mis dos hijos y la app me da toda la tranquilidad del mundo."</p>
+<p class="font-display font-bold text-brand-700">Claudia M.</p>
+<p class="text-sm text-gray-500">Mamá de Mateo y Sofía</p>
+</div>
+<div class="bg-surface-alt rounded-[2rem] p-8 relative">
+<span class="material-symbols-outlined text-5xl text-brand-200 absolute top-4 right-6">format_quote</span>
+<p class="text-gray-700 italic mb-5 relative z-10">"Saber que tienen más de 20 años en Juárez me dio mucha confianza desde el primer día. El apoyo con las tareas por la tarde para mi hijo de 8 años ha sido excelente."</p>
+<p class="font-display font-bold text-brand-700">Ing. Roberto V.</p>
+<p class="text-sm text-gray-500">Papá de familia</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Formulario de contacto -->
+<section id="contacto" class="scroll-mt py-20 bg-brand-50">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-white rounded-[2.5rem] shadow-xl p-8 md:p-12">
+<div class="text-center mb-8">
+<span class="inline-block py-1 px-4 rounded-full bg-brand-100 text-brand-700 text-sm font-bold mb-4">Agenda tu visita</span>
+<h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-2">¡Asegura el lugar de tu hijo!</h2>
+<p class="text-gray-600">Agenda una visita guiada y conoce nuestras instalaciones</p>
+</div>
+<form id="leadForm" onsubmit="return submitLeadForm(event)" class="space-y-4">
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">Nombre completo del Padre/Tutor *</label>
+<input id="leadName" type="text" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:ring-0 outline-none transition-colors"/>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">Teléfono / WhatsApp *</label>
+<input id="leadPhone" type="tel" required placeholder="656 000 0000" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:ring-0 outline-none transition-colors"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">Edad de tu hijo(a) *</label>
+<select id="leadAge" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:ring-0 outline-none transition-colors bg-white">
+<option value="">Selecciona...</option>
+<option value="Bebé (45 días - 18 meses)">Bebé (45 días - 18 meses)</option>
+<option value="Maternal (18 meses - 3 años)">Maternal (18 meses - 3 años)</option>
+<option value="3 a 5 años">3 a 5 años</option>
+<option value="6 a 10 años">6 a 10 años</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-sm font-bold text-gray-700 mb-1">Horario de interés</label>
+<input id="leadSchedule" type="text" placeholder="Ej. 6:00 AM - 3:00 PM" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:ring-0 outline-none transition-colors"/>
+</div>
+<p id="leadError" class="hidden text-accent-600 text-sm font-semibold">Completa los campos obligatorios (*) antes de enviar.</p>
+<button type="submit" class="w-full bg-accent-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-accent-600 transition shadow-lg shadow-accent-100 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">chat</span> Solicitar Informes y Agendar Recorrido
+</button>
+<p class="text-xs text-gray-500 text-center">Al enviar, se abrirá WhatsApp con tus datos listos para mandarnos el mensaje.</p>
+</form>
+<div id="leadSuccess" class="hidden text-center py-6">
+<span class="material-symbols-outlined text-6xl text-brand-500 mb-3 block">check_circle</span>
+<h3 class="font-display font-bold text-xl text-gray-900 mb-2">¡Gracias, <span id="leadSuccessName"></span>!</h3>
+<p class="text-gray-600">Te contactaremos muy pronto para agendar tu visita guiada.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-brand-800 text-brand-100 pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+<div>
+<a class="flex items-center gap-2 mb-4" href="#inicio">
+<img alt="Gael" class="h-9 w-auto" src="assets/logo-gael-icon.png"/>
+<span class="font-display font-bold text-lg text-white">Gael</span>
+</a>
+<p class="text-sm mb-5">Guardería y Estancia Infantil en Ciudad Juárez. Más de 20 años cuidando lo que más amas.</p>
+<div class="flex gap-3">
+<a class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition" href="#" aria-label="Facebook"><span class="material-symbols-outlined text-[18px]">thumb_up</span></a>
+<a class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition" href="#" aria-label="Instagram"><span class="material-symbols-outlined text-[18px]">photo_camera</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-display font-bold text-white mb-4 uppercase tracking-wider text-sm">Enlaces</h4>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-white transition" href="#nosotros">Nosotros</a></li>
+<li><a class="hover:text-white transition" href="#programas">Programas</a></li>
+<li><a class="hover:text-white transition" href="#seguridad">Seguridad</a></li>
+<li><a class="hover:text-white transition" href="#contacto">Contacto</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-display font-bold text-white mb-4 uppercase tracking-wider text-sm">Horario</h4>
+<p class="text-sm mb-1">Lunes a Viernes</p>
+<p class="text-sm font-bold text-white mb-4">6:00 AM – 9:00 PM</p>
+<h4 class="font-display font-bold text-white mb-2 uppercase tracking-wider text-sm">Acceso</h4>
+<a href="inicio_de_sesi_n.html" class="inline-flex items-center gap-1 text-sm font-bold text-white hover:text-brand-200 transition">
+<span class="material-symbols-outlined text-[16px]">login</span> Iniciar Sesión
+</a>
+</div>
+<div>
+<h4 class="font-display font-bold text-white mb-4 uppercase tracking-wider text-sm">Contacto</h4>
+<p class="text-sm mb-2 flex items-start gap-2"><span class="material-symbols-outlined text-[16px] mt-0.5">location_on</span> Av. Principal, Ciudad Juárez, Chih.</p>
+<p class="text-sm mb-2 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call</span> (656) 000-0000</p>
+<p class="text-sm flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">mail</span> contacto@gael.mx</p>
+</div>
+</div>
+<div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+<p class="text-xs text-brand-200 text-center md:text-left">© 2026 Gael Guardería y Estancia. Todos los derechos reservados.</p>
+<div class="flex gap-4 text-xs text-brand-200">
+<a class="hover:text-white transition" href="#">Términos de Servicio</a>
+<a class="hover:text-white transition" href="#">Política de Privacidad</a>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- Botón flotante de WhatsApp -->
+<a id="floatingWhatsapp" href="#" target="_blank" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent-500 hover:bg-accent-600 text-white rounded-full shadow-xl flex items-center justify-center transition-transform hover:scale-110" aria-label="Escríbenos por WhatsApp">
+<span class="material-symbols-outlined text-3xl">chat</span>
+</a>
+
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+
+<script>
+// TODO: reemplazar por el número real de WhatsApp de la guardería (formato: 52 + 10 dígitos)
+const WHATSAPP_NUMBER = '526560000000';
+
+function buildWhatsappUrl(message){
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+function toggleMobileMenu(){
+  const menu = document.getElementById('mobileMenu');
+  const icon = document.getElementById('mobileMenuIcon');
+  const isHidden = menu.classList.contains('hidden');
+  menu.classList.toggle('hidden', !isHidden);
+  icon.textContent = isHidden ? 'close' : 'menu';
+}
+function closeMobileMenu(){
+  document.getElementById('mobileMenu').classList.add('hidden');
+  document.getElementById('mobileMenuIcon').textContent = 'menu';
+}
+
+function submitLeadForm(e){
+  e.preventDefault();
+  const name = document.getElementById('leadName').value.trim();
+  const phone = document.getElementById('leadPhone').value.trim();
+  const age = document.getElementById('leadAge').value;
+  const schedule = document.getElementById('leadSchedule').value.trim();
+
+  if(!name || !phone || !age){
+    document.getElementById('leadError').classList.remove('hidden');
+    return false;
+  }
+  document.getElementById('leadError').classList.add('hidden');
+
+  const message = `¡Hola Gael! Quiero agendar una visita guiada.\n\nNombre: ${name}\nTeléfono: ${phone}\nEdad de mi hijo(a): ${age}${schedule ? '\nHorario de interés: ' + schedule : ''}`;
+  const url = buildWhatsappUrl(message);
+  window.open(url, '_blank');
+
+  document.getElementById('leadSuccessName').textContent = name.split(' ')[0];
+  document.getElementById('leadForm').classList.add('hidden');
+  document.getElementById('leadSuccess').classList.remove('hidden');
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const heroMsg = '¡Hola Gael! Me gustaría agendar una visita para conocer sus instalaciones.';
+  document.getElementById('heroWhatsappBtn').href = buildWhatsappUrl(heroMsg);
+  document.getElementById('floatingWhatsapp').href = buildWhatsappUrl(heroMsg);
+});
+</script>
+</body>
+</html>
