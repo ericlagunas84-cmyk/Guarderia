@@ -161,6 +161,7 @@
 <option value="sofia">Sofía García · Salón Luna</option>
 <option value="mateo">Mateo López · Salón Sol</option>
 <option value="emma">Emma Davis · Salón Sol</option>
+<option value="diego">Diego Ramírez · Estancia (8 años)</option>
 </select>
 <span class="material-symbols-outlined absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">expand_more</span>
 </div>
@@ -441,6 +442,61 @@
 </section>
 </div>
 
+<!-- ===== Formularios para Estancia / After-School (6-10 años) ===== -->
+<div id="estanciaFormsWrap" style="display:none">
+<!-- A. Bitácora de Tareas -->
+<section class="col-span-1 md:col-span-7 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined icon-fill">assignment</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Bitácora de Tareas</h2>
+</div>
+<span id="taskProgress" class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">0/0</span>
+</div>
+<div class="space-y-2 mb-4" id="taskList"></div>
+<div class="flex gap-2">
+<input id="newTaskInput" onkeydown="if(event.key==='Enter'){event.preventDefault(); addTask();}" type="text" placeholder="Ej: Matemáticas pág. 24, Lectura cap. 3..." class="flex-1 p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none"/>
+<button type="button" onclick="addTask()" class="px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-surface-tint transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</section>
+
+<!-- B. Control de Horarios / Turno -->
+<section class="col-span-1 md:col-span-5 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low flex flex-col">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined icon-fill">schedule</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Horario / Turno</h2>
+</div>
+<div class="mb-4">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm">Turno de hoy</label>
+<div class="grid grid-cols-3 gap-2" id="shiftGroup">
+<button type="button" onclick="selectChip(this,'shiftGroup')" data-value="Matutino" class="chip-btn px-2 py-2 rounded-xl border-2 border-primary bg-primary-container text-on-primary-container font-label-sm text-label-sm transition-all text-center">Matutino<br/><span class="text-[10px] opacity-75">6am–1pm</span></button>
+<button type="button" onclick="selectChip(this,'shiftGroup')" data-value="Vespertino" class="chip-btn px-2 py-2 rounded-xl border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all text-center">Vespertino<br/><span class="text-[10px] opacity-75">1pm–9pm</span></button>
+<button type="button" onclick="selectChip(this,'shiftGroup')" data-value="Tiempo Completo" class="chip-btn px-2 py-2 rounded-xl border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all text-center">Completo<br/><span class="text-[10px] opacity-75">6am–9pm</span></button>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-sm mb-4 flex-1 flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant mb-1" id="shiftStatusIcon">radio_button_unchecked</span>
+<p class="font-label-md text-label-md text-on-surface" id="shiftStatusText">Sin registrar entrada hoy</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button type="button" id="checkInBtn" onclick="registerCheckIn()" class="py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-surface-tint transition-colors flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">login</span>
+Entrada
+</button>
+<button type="button" id="checkOutBtn" onclick="registerCheckOut()" disabled class="py-3 rounded-xl bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors flex flex-col items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+Salida
+</button>
+</div>
+</section>
+</div>
+
 <!-- Historial de Hoy -->
 <section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
 <h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-2">
@@ -458,18 +514,30 @@ const BABIES = {
   sofia: { name: 'Sofía García', short: 'Sofía', group: 'mayor', history: [] },
   mateo: { name: 'Mateo López', short: 'Mateo', group: 'mayor', history: [] },
   emma: { name: 'Emma Davis', short: 'Emma', group: 'mayor', history: [] },
+  diego: { name: 'Diego Ramírez', short: 'Diego', group: 'estancia', history: [],
+    tasks: [
+      { text: 'Matemáticas — ejercicios pág. 24', done: false },
+      { text: 'Lectura — capítulo 3', done: false },
+    ],
+    checkedIn: false, checkedOut: false, checkInTime: null, checkOutTime: null,
+  },
 };
 let currentBaby = 'leo';
 
 function switchBaby(key){
   currentBaby = key;
   document.getElementById('babyHistoryName').textContent = BABIES[key].short;
-  const isBaby = BABIES[key].group === 'lactante';
-  document.getElementById('babyFormsWrap').style.display = isBaby ? 'contents' : 'none';
-  document.getElementById('olderFormsWrap').style.display = isBaby ? 'none' : 'contents';
+  const group = BABIES[key].group;
+  document.getElementById('babyFormsWrap').style.display = group === 'lactante' ? 'contents' : 'none';
+  document.getElementById('olderFormsWrap').style.display = group === 'mayor' ? 'contents' : 'none';
+  document.getElementById('estanciaFormsWrap').style.display = group === 'estancia' ? 'contents' : 'none';
   const label = document.querySelector('#babyChildSelect').closest('.flex').querySelector('span.font-body-md');
-  if(label) label.textContent = isBaby ? 'Bebé:' : 'Alumno:';
+  if(label) label.textContent = group === 'lactante' ? 'Bebé:' : (group === 'estancia' ? 'Alumno (Estancia):' : 'Alumno:');
   resetActivityToggles();
+  if(group === 'estancia'){
+    renderTasks();
+    renderShiftStatus();
+  }
   renderHistory();
 }
 
@@ -580,6 +648,91 @@ function saveMood(){
   const mood = getSelectedChip('moodGroup') || 'Tranquilo';
   addHistoryEntry('mood', 'Estado de ánimo', mood);
   showToast(`Ánimo de ${BABIES[currentBaby].short} registrado: ${mood}`, 'check_circle');
+}
+
+/* ===== Bitácora de Tareas (Estancia / After-School) ===== */
+function renderTasks(){
+  const student = BABIES[currentBaby];
+  const list = document.getElementById('taskList');
+  if(!student.tasks || student.tasks.length === 0){
+    list.innerHTML = '<p class="text-on-surface-variant font-body-md text-body-md text-sm">Sin tareas registradas todavía — agrega una abajo.</p>';
+  } else {
+    list.innerHTML = student.tasks.map((t, i) => `
+      <div class="flex items-center justify-between gap-sm bg-surface-container rounded-xl p-sm">
+        <span class="font-body-md text-body-md text-on-surface text-sm ${t.done ? 'line-through text-on-surface-variant' : ''}">${t.text}</span>
+        <button type="button" onclick="toggleTask(${i})" class="shrink-0 px-3 py-1.5 rounded-full font-label-sm text-label-sm transition-colors ${t.done ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container-high text-on-surface-variant'}">
+          ${t.done ? 'Completada ✓' : 'Pendiente'}
+        </button>
+      </div>`).join('');
+  }
+  const total = student.tasks ? student.tasks.length : 0;
+  const done = student.tasks ? student.tasks.filter(t => t.done).length : 0;
+  document.getElementById('taskProgress').textContent = `${done}/${total}`;
+}
+function addTask(){
+  const input = document.getElementById('newTaskInput');
+  const text = input.value.trim();
+  if(!text) return;
+  BABIES[currentBaby].tasks.push({ text, done: false });
+  input.value = '';
+  renderTasks();
+  showToast('Tarea agregada a la bitácora', 'assignment_add');
+}
+function toggleTask(index){
+  const student = BABIES[currentBaby];
+  const task = student.tasks[index];
+  task.done = !task.done;
+  renderTasks();
+  if(task.done){
+    addHistoryEntry('assignment_turned_in', 'Tarea completada', task.text);
+    showToast(`Tarea marcada como completada para ${student.short}`, 'check_circle');
+  }
+}
+
+/* ===== Control de Horarios / Turno (Estancia) ===== */
+function renderShiftStatus(){
+  const student = BABIES[currentBaby];
+  const icon = document.getElementById('shiftStatusIcon');
+  const text = document.getElementById('shiftStatusText');
+  const inBtn = document.getElementById('checkInBtn');
+  const outBtn = document.getElementById('checkOutBtn');
+  if(student.checkedOut){
+    icon.textContent = 'task_alt';
+    text.textContent = `Salió a las ${student.checkOutTime}`;
+    inBtn.disabled = true;
+    outBtn.disabled = true;
+  } else if(student.checkedIn){
+    icon.textContent = 'directions_walk';
+    text.textContent = `En estancia desde las ${student.checkInTime}`;
+    inBtn.disabled = true;
+    outBtn.disabled = false;
+  } else {
+    icon.textContent = 'radio_button_unchecked';
+    text.textContent = 'Sin registrar entrada hoy';
+    inBtn.disabled = false;
+    outBtn.disabled = true;
+  }
+  inBtn.classList.toggle('opacity-40', inBtn.disabled);
+  inBtn.classList.toggle('cursor-not-allowed', inBtn.disabled);
+}
+function registerCheckIn(){
+  const student = BABIES[currentBaby];
+  const shift = getSelectedChip('shiftGroup') || 'Matutino';
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  student.checkedIn = true;
+  student.checkInTime = time;
+  renderShiftStatus();
+  addHistoryEntry('login', 'Entrada registrada · Turno ' + shift, `Llegó a las ${time}`);
+  showToast(`Entrada de ${student.short} registrada (turno ${shift})`, 'check_circle');
+}
+function registerCheckOut(){
+  const student = BABIES[currentBaby];
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  student.checkedOut = true;
+  student.checkOutTime = time;
+  renderShiftStatus();
+  addHistoryEntry('logout', 'Salida registrada', `Salió a las ${time}`);
+  showToast(`Salida de ${student.short} registrada`, 'check_circle');
 }
 </script>
 <!-- BottomNavBar (Mobile Only) -->
