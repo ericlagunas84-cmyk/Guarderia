@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Permisos - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-tint": "#1b6b4a",
+                        "tertiary-fixed": "#f6e291",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceeee",
+                        "background": "#f8fafa",
+                        "inverse-primary": "#8ad6ad",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-bright": "#f8fafa",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "outline": "#6f7a72",
+                        "surface-container-high": "#e6e8e9",
+                        "outline-variant": "#bfc9c0",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "secondary-container": "#a6e6fe",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface": "#f8fafa",
+                        "on-secondary-fixed": "#001f28",
+                        "primary-fixed": "#a6f3c8",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "on-primary-container": "#025d3d",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#1b6b4a",
+                        "on-secondary-container": "#22697d",
+                        "on-primary-fixed": "#002113",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-dim": "#d8dada",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "secondary": "#1f667a",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "lg": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle ambient shadows for tactile feel */
+        .ambient-shadow {
+            box-shadow: 0 4px 12px rgba(26, 43, 60, 0.05);
+        }
+        .ambient-shadow-hover:hover {
+            box-shadow: 0 8px 20px rgba(26, 43, 60, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        /* Input focus transition */
+        .input-tactile {
+            transition: all 0.2s ease;
+        }
+        .input-tactile:focus {
+            border-color: #1b6b4a;
+            box-shadow: 0 0 0 2px rgba(27, 107, 74, 0.2);
+        }
+        
+        /* Pulse animation for alerts */
+        @keyframes pulse-alert {
+            0% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(186, 26, 26, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
+        }
+        .pulse-urgent {
+            animation: pulse-alert 2s infinite;
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-full flex overflow-hidden">
+<!-- SideNavBar (Desktop) -->
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+<nav id="sidebarNav" class="fixed md:static inset-y-0 bg-surface-container-low dark:bg-inverse-surface shadow-md flex flex-col h-full py-md px-base transition-transform duration-300 ease-in-out left-0 w-64 z-50 -translate-x-full md:translate-x-0">
+<button onclick="closeSidebar()" class="md:hidden self-end mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
+<div class="flex items-center gap-sm px-sm mb-lg">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Gael Logo" class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
+</div>
+</div>
+<button onclick="location.href='alta_de_ni_os.html'" class="mb-md mx-sm bg-primary text-on-primary rounded-xl py-sm px-md flex items-center justify-center gap-2 font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined">add</span>
+            Agregar Alumno
+        </button>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-xs">
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Inicio
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="listado_de_ni_os.html"><span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Alumnos
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="alta_de_ni_os.html"><span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Dar de Alta
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="registro_diario_beb_s.html"><span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+                Registro Diario
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gesti_n_financiera.html"><span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Finanzas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                Fichas Médicas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
+                Personal
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined fill" data-icon="admin_panel_settings">admin_panel_settings</span>
+                Permisos
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reportes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Ajustes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Cerrar sesión
+            </a>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-full overflow-hidden md:ml-64">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-sm bg-surface/80 backdrop-blur-md shadow-sm h-16">
+<button onclick="toggleSidebar()" class="md:hidden text-on-surface p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Gael</h1>
+<div class="flex items-center gap-sm ml-auto">
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="ml-2 w-8 h-8 rounded-full overflow-hidden border-2 border-primary-container active:scale-95 duration-150 transition-transform">
+<img alt="Administrator profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsWmv3FJXdqSPQ7A5BACLgbXVuSIz6G6zQYmOi_DbGdQQq-F2whbGmDxewBivalb9AF60kK44H-KnMBJJPwgAxTDw0C6J7yIZCKJl3M15nK14TtSnLDMN8cxhYoAS7bMODgoncOsu_UpkK-ySugnMu4mGp-XgFyKxK3TMGScx5jtHKK1AM4XQ734XiHXbVfTjyzJrzpTvonJGuYtMZcv2F2lm3pfICwoBhqtiYDKKlL7a3vKK9_l6e"/>
+</button>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
+<div class="max-w-5xl mx-auto">
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Permisos de Acceso</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Decide qué puede ver y usar cada persona del equipo dentro de la plataforma.</p>
+</div>
+
+<div class="bg-primary-container/20 border border-primary/20 rounded-xl p-sm mb-lg flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary shrink-0">info</span>
+<p class="font-body-md text-body-md text-sm text-on-surface">Los permisos se asignan de forma individual — cada persona puede tener una combinación distinta. Usa las plantillas rápidas como punto de partida y ajusta lo que necesites después.</p>
+</div>
+
+<div id="permissionsGrid" class="space-y-md"></div>
+
+<div class="mt-lg flex flex-col sm:flex-row justify-end gap-sm">
+<button onclick="saveAllPermissions()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+Guardar todos los cambios
+</button>
+</div>
+</div>
+</main>
+</div>
+
+<script>
+const MODULES = [
+  { key: 'alumnos', label: 'Alumnos', icon: 'groups' },
+  { key: 'registro', label: 'Registro Diario', icon: 'edit_note' },
+  { key: 'fichas', label: 'Fichas Médicas', icon: 'medical_services' },
+  { key: 'altaDeNinos', label: 'Dar de Alta', icon: 'person_add' },
+  { key: 'finanzas', label: 'Finanzas', icon: 'payments' },
+  { key: 'personal', label: 'Personal', icon: 'badge' },
+  { key: 'reportes', label: 'Reportes', icon: 'assessment' },
+];
+
+const STAFF_PERMISSIONS = {
+  ana: { name: 'Maestra Ana López', role: 'Educadora · Salón Bebés', initials: 'AL',
+    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
+  carlos: { name: 'Maestro Carlos Ruíz', role: 'Educador · Salón Maternal', initials: 'CR',
+    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
+  sofia: { name: 'Maestra Sofia M.', role: 'Educadora · Preescolar 1', initials: 'SM',
+    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
+  elena: { name: 'Maestra Elena G.', role: 'Asistente General', initials: 'EG',
+    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: false, personal: true, reportes: false } },
+};
+
+const TEMPLATES = {
+  admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
+  maestra: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
+  ninguno: { alumnos: false, registro: false, fichas: false, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
+};
+
+function countActive(perms){
+  return Object.values(perms).filter(Boolean).length;
+}
+
+function renderPermissions(){
+  const grid = document.getElementById('permissionsGrid');
+  grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
+    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+      <div class="flex flex-wrap items-center justify-between gap-sm mb-sm">
+        <div class="flex items-center gap-sm">
+          <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${staff.initials}</div>
+          <div>
+            <p class="font-label-md text-label-md text-on-surface">${staff.name}</p>
+            <p class="font-body-md text-[13px] text-on-surface-variant">${staff.role}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full" id="permCount-${key}">${countActive(staff.perms)}/${MODULES.length} módulos</span>
+          <div class="relative">
+            <select onchange="applyTemplate('${key}', this.value); this.selectedIndex=0;" class="text-xs font-label-sm border border-outline-variant rounded-lg px-2 py-1.5 bg-surface-container-low text-on-surface-variant appearance-none pr-6 cursor-pointer">
+              <option value="">Plantilla rápida…</option>
+              <option value="admin">Administrador (todo)</option>
+              <option value="maestra">Maestra (básico)</option>
+              <option value="ninguno">Ninguno</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${MODULES.map(m => `
+          <label class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2 cursor-pointer hover:bg-surface-container transition-colors">
+            <input type="checkbox" ${staff.perms[m.key] ? 'checked' : ''} onchange="togglePermission('${key}', '${m.key}', this.checked)" class="w-4 h-4 accent-[#1b6b4a] shrink-0"/>
+            <span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">${m.icon}</span>
+            <span class="font-label-sm text-label-sm text-on-surface truncate">${m.label}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function togglePermission(staffKey, moduleKey, value){
+  STAFF_PERMISSIONS[staffKey].perms[moduleKey] = value;
+  document.getElementById('permCount-' + staffKey).textContent = countActive(STAFF_PERMISSIONS[staffKey].perms) + '/' + MODULES.length + ' módulos';
+  const moduleLabel = MODULES.find(m => m.key === moduleKey).label;
+  showToast(`${value ? 'Acceso otorgado' : 'Acceso quitado'}: ${moduleLabel} para ${STAFF_PERMISSIONS[staffKey].name}`, value ? 'check_circle' : 'block');
+}
+
+function applyTemplate(staffKey, templateKey){
+  if(!templateKey) return;
+  STAFF_PERMISSIONS[staffKey].perms = { ...TEMPLATES[templateKey] };
+  renderPermissions();
+  const templateNames = { admin: 'Administrador', maestra: 'Maestra', ninguno: 'Ninguno' };
+  showToast(`Plantilla "${templateNames[templateKey]}" aplicada a ${STAFF_PERMISSIONS[staffKey].name}`, 'auto_fix_high');
+}
+
+function saveAllPermissions(){
+  showToast('Permisos guardados para todo el equipo', 'save');
+}
+
+renderPermissions();
+</script>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>
