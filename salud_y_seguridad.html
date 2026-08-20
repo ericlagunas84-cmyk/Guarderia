@@ -132,13 +132,30 @@
 <img class="w-10 h-10 rounded-full object-cover" data-alt="A small circular avatar photo of a professional parent, smiling warmly in a bright modern setting. The style is clear, well-lit, and suitable for a childcare application profile icon, conveying trust and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdlqfqJA8kKuaJzvTi8M3QGlHBqNWvr8ea7c9QquTQjSqVbbzEbdUexFrIhBPRi1bU4sKf3Ged0w9LPGaR75TbEQRJkVGICB9LMow6U-TkNgDB1LTIs7Uoz6JFNct9k54OK-t1NrACp3kiQOk13FwFVVk5JdY9GD6PFZ7fdaNU6X749a0XZf3s6rXi94o6YbNaHrXN-oE4320kzKdZ2-ywWbiAlT19vaoqvhsnwSrxLMODLVSeJxNk"/>
 <h1 class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim">Gael</h1>
 </div>
+<button onclick="toggleSidebar()" aria-label="Abrir menú" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary"><span class="material-symbols-outlined">menu</span></button>
 <button aria-label="Notifications" class="text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full scale-95 transition-transform duration-200">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 </button>
 </div>
 </header>
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[55] md:hidden"></div>
+<nav id="sidebarNav" class="fixed md:static inset-y-0 left-0 z-[60] flex flex-col py-md bg-surface shadow-xl h-full w-80 rounded-r-xl -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+<button onclick="closeSidebar()" class="md:hidden self-end mr-4 mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+<div class="px-md mb-8 flex items-center gap-sm">
+<img alt="Child and Parent Profile" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC9EuP_ePFv42zQknvsUES949Xfo9o6dsb8IDGEWuSsNADGwM182lLFpwoSGksWrXD0-3zjD4KyYp4mJpM5hdaxXZ0Xbb1gx5HlbhjkJmk4nYAkrwhxhHTmX8qr3y3wOsZiGyWacpGDP7YJkYPaTtmnm1H_sypDh98xExJ1qBqpaRPNwQQy41GSI9jf5NssXklHf0s0_w3f6ndJT7SqDr3vb1JN-_08ywWjtkaLJXMVnJfRTtdkiUN"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">The Miller Family</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Child: Leo Miller</p>
+<span class="text-xs text-primary-container font-bold uppercase">Premium Member</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="dashboard_principal.html"><span class="material-symbols-outlined">dashboard</span><span class="font-label-md text-label-md">Inicio</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="jornada_diaria_detallada.html"><span class="material-symbols-outlined">event_note</span><span class="font-label-md text-label-md">Bitácora del Día</span></a><a class="bg-secondary-container text-on-secondary-container rounded-full mx-2 px-4 py-3 flex items-center gap-4 translate-x-1 transition-transform" href="salud_y_seguridad.html"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medical_services</span><span class="font-label-md text-label-md font-bold">Salud</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="seguimiento_estancia.html"><span class="material-symbols-outlined">distance</span><span class="font-label-md text-label-md">Estancia</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="Menusemanal.html"><span class="material-symbols-outlined">restaurant_menu</span><span class="font-label-md text-label-md">Menú Semanal</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="finanzas_y_calendario.html"><span class="material-symbols-outlined">payments</span><span class="font-label-md text-label-md">Pagos y Calendario</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="mensajer_a.html"><span class="material-symbols-outlined">mail</span><span class="font-label-md text-label-md">Mensajes</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="encuestas.html"><span class="material-symbols-outlined">rate_review</span><span class="font-label-md text-label-md">Encuestas</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="contacto.html"><span class="material-symbols-outlined">support_agent</span><span class="font-label-md text-label-md">Contacto</span></a>
+</div>
+</nav>
+
 <!-- Main Canvas -->
-<main class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md pb-24 space-y-md">
+<main class="w-full md:pl-80 px-margin-mobile md:px-margin-desktop py-md pb-24 space-y-md">
 <!-- Header Section -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-base mb-md">
 <div>
@@ -315,6 +332,24 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
 }
 </script>
 </body></html>
