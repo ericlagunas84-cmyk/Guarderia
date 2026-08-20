@@ -128,12 +128,20 @@
 <img alt="Parent Profile Image" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-high" data-alt="A small, soft-focus circular avatar portrait of a smiling parent in a bright, modern nursery setting. The lighting is warm and natural, emphasizing a nurturing and dependable mood. The colors are gentle pastels with hints of mint green." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWuwMlOkMli85QBtM-lPtFsjoAvvWCb4UVI6ONE2Lni0kCcoIKSBZg6DHEzV1ceLQuZlEDONU4iM7zU7-5aMmmZEwHJlXqEAtxrm9Z73mtp5LNflQ6SFXUT1D0CoUxmNRKdbEX1X56mQg8b1C_vEdcksK1qI17fZyr19vV8sdzF1FkHwRlcfD3eHObDqugTqSpnQ3dpptowYZdbKv-CPzu-WeRhL-cEDWnvGXoswu1pf8gJJeVwCxD"/>
 <span class="font-display-lg text-headline-md text-primary tracking-tight">Gael</span>
 </div>
+<div class="flex items-center gap-xs">
+<button onclick="toggleSidebar()" aria-label="Abrir menú" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:scale-95 duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <button aria-label="notifications" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:scale-95 duration-200">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
 </button>
+</div>
 </header>
 <!-- NavigationDrawer (Desktop) -->
-<nav class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col py-md h-full w-80 rounded-r-xl bg-surface shadow-2xl">
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[55] md:hidden"></div>
+<nav id="sidebarNav" class="fixed md:static inset-y-0 left-0 z-[60] flex flex-col py-md bg-surface shadow-xl h-full w-80 rounded-r-xl -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+<button onclick="closeSidebar()" class="md:hidden self-end mr-4 mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
 <div class="px-md mb-lg">
 <div class="flex items-center gap-sm mb-6">
 <img alt="Child and Parent Profile" class="w-12 h-12 rounded-full object-cover border-2 border-surface-container-high" data-alt="A small, soft-focus circular avatar portrait of a smiling parent and child in a bright, modern nursery setting. The lighting is warm and natural, emphasizing a nurturing and dependable mood. The colors are gentle pastels with hints of mint green." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWCc6fSMk6UTwBCFG3w3IaDFp2-55VYlu5240e8JABBn_IeY7iGh8-IY7tR737HH5Zr-1-4pyXWDMElk8LuV6N4LlGvW0cAwHuYMkTunGsSmTiDyXKF08RxQrpGTBPdVI8thC-0rRsvNwjbYTCXoWifbS8Am2cZJpNhGRQGyFStTSXG-_JVkfJc-NEzQRfPOlEcCGGDyRrgW3jLYEMnzXcchdRUNOG4JC7fTprUT0AgRlDN7_kFzho"/>
@@ -345,6 +353,24 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
 }
 </script>
 </body></html>

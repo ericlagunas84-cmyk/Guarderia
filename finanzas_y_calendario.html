@@ -130,12 +130,18 @@
 <img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of a young parent with a warm smile, set against a bright, softly blurred playground background. The lighting is sunny and optimistic, reflecting a nurturing childcare environment. Shot in a clear, modern lifestyle photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkTbqKObeaiY2tJoepn9f8KkFSNCy74cfMcTd9RgE_clK-cpjI99-w3WnVOPsDAL4CIa7f018XBhl4ypUF7ZN6yRb2Y-1Fg-t-hexGGp6EhAdFy6J9X3pelbkauS0P6B7QaId-wrcNBlAuwMWWk8HtCQgmShYOMosYceIOQnjaTG189P28mNd7DhrzPRLNpqt2fSSd3pG5YIWHInwxVMdcb9J7-sXWt7ObJx8UVG-lmWWQd-MJpEB_"/>
 </div>
 <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">Gael</h1>
+<button onclick="toggleSidebar()" class="text-primary p-2 hover:bg-surface-container-low transition-colors rounded-full squishy-btn" aria-label="Abrir menú">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <button class="text-primary p-2 hover:bg-surface-container-low transition-colors rounded-full squishy-btn">
 <span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
 </button>
 </header>
 <!-- Desktop Navigation Drawer -->
-<nav class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col py-md bg-surface shadow-2xl h-full w-80 rounded-r-xl">
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[55] md:hidden"></div>
+<nav id="sidebarNav" class="fixed md:static inset-y-0 left-0 z-[60] flex flex-col py-md bg-surface shadow-xl h-full w-80 rounded-r-xl -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+<button onclick="closeSidebar()" class="md:hidden self-end mr-4 mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
 <div class="px-md mb-lg">
 <div class="flex items-center gap-md mb-md">
 <img class="w-16 h-16 rounded-full object-cover shadow-md" data-alt="A portrait of a happy family, a mother and a young toddler boy, smiling warmly in a bright, modern nursery setting. The room is filled with soft natural light and colorful educational toys, conveying safety and joy. The photo has a premium, professional lifestyle feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn87vDwM9PFHRB8IzaXDtqA9hBEhEVQgSqp-Zzdyn_jasrxv3rm-Y74l_nl7BWeOqFOr7Zy2w5yHLQ4RCleCZx0FP3QMD_yc5CuOnkB9XDvxcfdDeEBBCMaq3J6V9T1-lUb8BH8Y-HJUhEy5W2BQp5-ZaXRYSPqteLn2YXOGBICX4Uuo-Zo_GViOmNsKv3yUBVpd-Pxv77ON0lsRg8tejCY3r4LcvyAVQJ-k9-YjW2frMGrzaNEHdr"/>
@@ -504,6 +510,24 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
 }
 </script>
 </body></html>

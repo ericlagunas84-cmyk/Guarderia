@@ -142,9 +142,14 @@
 <img class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of an adult parent smiling warmly. Soft, natural lighting. The image is professional yet approachable, fitting for a modern childcare app's top navigation bar avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDso-_RH20z2kT--15pErb6UGsYb-WHuWkNWVFv7hz86y_MGqis4WQRez3pPQd69XgKcMfJ7PCVNa8EPuJd6EDGFFWOE9kwjnt4MTqY10H16wM0WKFW0isYNdXMm_tJcHjQa5Yfw1a7kn4HHRVTeGDJMHH5VNa_lquAwUMIdWNWKvFRE24KLogJMhZIbTOo_zMIjbxOl_cxCczDnP7H2nXK8WIGKjW42hDhi-Y78VO9gjY5nQx1ttWf"/>
 <span class="font-display-lg text-headline-md text-primary">Gael</span>
 </div>
+<div class="flex items-center gap-xs">
+<button onclick="toggleSidebar()" aria-label="Abrir menú" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary">
 <span class="material-symbols-outlined icon-fill">notifications</span>
 </button>
+</div>
 </div>
 </header>
 <!-- Main Content -->
@@ -319,7 +324,10 @@ function addComment(){
 <!-- BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
 <!-- Desktop SideNav Placeholder (Hidden on mobile) -->
-<div class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col py-md bg-surface shadow-xl shadow-2xl h-full w-80 rounded-r-xl border-r-0">
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[55] md:hidden"></div>
+<div id="sidebarNav" class="fixed md:static inset-y-0 left-0 z-[60] flex flex-col py-md bg-surface shadow-xl h-full w-80 rounded-r-xl -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+<button onclick="closeSidebar()" class="md:hidden self-end mr-4 mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
 <div class="px-md mb-lg flex items-center gap-base">
 <img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of an adult parent smiling warmly. Soft, natural lighting. The image is professional yet approachable, fitting for a modern childcare app's navigation drawer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB3DYhQ0EMpBBqwY0GlRh4ZsO6-MJjlUvak51NDdCl-FRGFEnrbY2K2f0j1lSYu42teu8mwn19DdmK3Xqr9X51mL6__0LSDMopUTE4GaQCIsiORHMKPZUPzkxxsxDFPIquIR6wMG1yBvKZE8gVhjAbRDt01wJapyA---SyRKj9dFwrOUlQIeoUW0xqFcWCAmxWc6CeGGUAqXLF7rG4ynDRUK59thCfjCyS5Kj2F8AyfLJ5P4yPQNxi"/>
 <div>
@@ -370,6 +378,24 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
 }
 </script>
 </body></html>
