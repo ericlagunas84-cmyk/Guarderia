@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael - Listado de Niños</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3f4942",
+                        "on-primary-container": "#025d3d",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "outline-variant": "#bfc9c0",
+                        "surface-dim": "#d8dada",
+                        "surface-container": "#eceeee",
+                        "primary-fixed": "#a6f3c8",
+                        "surface-container-high": "#e6e8e9",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "secondary-fixed": "#b5ebff",
+                        "inverse-primary": "#8ad6ad",
+                        "on-secondary-fixed": "#001f28",
+                        "surface-bright": "#f8fafa",
+                        "secondary": "#1f667a",
+                        "on-secondary-container": "#22697d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "background": "#f8fafa",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#1b6b4a",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "outline": "#6f7a72",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-background": "#191c1d",
+                        "primary-container": "#88d4ab",
+                        "on-tertiary-fixed": "#211b00",
+                        "inverse-surface": "#2e3131",
+                        "primary": "#1b6b4a",
+                        "surface": "#f8fafa",
+                        "on-primary-fixed-variant": "#005235",
+                        "tertiary-fixed": "#f6e291",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#5e500d",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "tertiary-container": "#d7c476",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4",
+                        "secondary-container": "#a6e6fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "8px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "xl": "64px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "label-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- JSON Component: TopAppBar -->
+<header class="docked full-width top-0 bg-surface dark:bg-surface-dim shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] shadow-sm flex justify-between items-center w-full px-margin-mobile h-16 sticky z-40">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional, warm, and approachable close-up portrait of a female teacher in her 30s smiling gently. She has shoulder-length wavy hair and is wearing a soft beige sweater. The background is a minimalist, brightly lit interior classroom, creating a dependable and nurturing aesthetic for a childcare app user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoq1FasMsFgGPxguVxJ__zI1cfCeesfV7vTpxaAFSWFPQpkDMhWA4mitIJVgYfg5qhFtP1GVCFRYNuMM5MLJiwRXdSq1JwJb_6gLk0aEikDwYDzUWK3O-JaGHLAl2eywdrXN02KRo_4flum5S2kdnq5QRcUPBpX0eQOcy4GRSmw-NeN3skq4dej01124kzLllt2WrmDl44AMjZV7wOLYKsld1OdEXROymECNYRiCSr4ZsAmOjkQRIl"/>
+</div>
+<h1 class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim">Gael</h1>
+</div>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-95 transition-transform duration-200 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col w-full max-w-[600px] mx-auto pb-32">
+<!-- Header Section -->
+<div class="px-margin-mobile pt-md pb-base flex items-start justify-between gap-sm">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Alumnos</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Monitoreo y estado en tiempo real</p>
+</div>
+<button onclick="toggleSelectionMode()" id="selectModeBtn" class="shrink-0 bg-surface-container-lowest text-on-surface border border-outline-variant rounded-full p-2.5 shadow-sm hover:bg-surface-container-high transition-colors" aria-label="Selección múltiple">
+<span class="material-symbols-outlined">checklist</span>
+</button>
+<button onclick="location.href='alta_de_ni_os.html'" class="shrink-0 bg-primary text-on-primary rounded-full p-2.5 shadow-sm hover:bg-primary/90 transition-colors" aria-label="Dar de alta nuevo alumno">
+<span class="material-symbols-outlined">person_add</span>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="px-margin-mobile mb-4">
+<div class="relative flex items-center w-full h-12 rounded-full bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border-2 border-transparent focus-within:border-primary transition-colors duration-200 overflow-hidden group">
+<span class="material-symbols-outlined ml-4 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input id="childSearch" oninput="filterChildren()" class="w-full h-full bg-transparent border-none focus:ring-0 text-body-md font-body-md px-3 text-on-surface placeholder:text-outline-variant outline-none" placeholder="Buscar por nombre o salón..." type="text"/>
+</div>
+</div>
+<!-- Filters (Scrollable Row) -->
+<div class="px-margin-mobile flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-base">
+<button onclick="filterRoom(this,'todos')" data-room-filter="todos" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md transition-transform active:scale-95 shadow-sm">Todos</button>
+<button onclick="filterRoom(this,'salón sol')" data-room-filter="salón sol" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Sol</button>
+<button onclick="filterRoom(this,'salón luna')" data-room-filter="salón luna" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Luna</button>
+<button onclick="filterRoom(this,'bebés')" data-room-filter="bebés" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Bebés</button>
+</div>
+<!-- Acceso Rápido / Emergencia -->
+<div class="px-margin-mobile mb-base">
+<button onclick="openEmergencyMode()" class="w-full flex items-center gap-sm bg-error text-on-error rounded-xl px-4 py-3 shadow-md hover:bg-error/90 transition-colors">
+<span class="material-symbols-outlined text-[26px]">emergency</span>
+<span class="flex-1 text-left">
+<span class="font-label-md text-label-md block">Acceso Rápido de Emergencia</span>
+<span class="font-body-md text-[12px] opacity-90 block">Ver alergias y condiciones médicas de todo el grupo</span>
+</span>
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Child List (Soft Cards) -->
+<div class="px-margin-mobile flex flex-col gap-sm" id="childList">
+<!-- Card 1: Leo Miller (Present) -->
+<div onclick="handleCardClick(event, this, 'Leo Miller · Salón Sol · Presente desde las 8:12 AM', 'child_care')" data-name="leo miller" data-room="salón sol" data-child-id="leo" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div class="selection-checkbox hidden shrink-0 mr-3">
+<span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
+<span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
+</div>
+<div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-surface-container-highest relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality, brightly lit portrait photo of a smiling 4-year-old boy with curly brown hair, wearing a casual blue t-shirt. The background is a soft, blurred bright classroom setting, conveying a joyful and nurturing mood. The lighting is soft and natural, emphasizing a modern, clean aesthetic typical of premium childcare platforms." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_K1saspLo1b8CEFSQ71RzPst8TFoox6IMt1v-KVAqun4txIxNnRblzLBFXeVP22QIxq1WCojJzDwW2iEWk9ve8_9QRb8usds1PEw6FVeei06Zx4VXFT2j3_WbBMjPrRRwjIHNwFp2aGWA2i9R0LV7H3mkZVlrD_2ytmL2tF5rEM2m-uKnRtK5dXyWy1vmY6Zg0gOu_NcaKJ2qvlbPS2bzBiqWPuFL2GvpXMIiarOoROtf18ml8TeL"/>
+<!-- Status Indicator Dot -->
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="ml-4 flex-grow">
+<h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface group-hover:text-primary transition-colors">Leo Miller</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px]">Salón Sol</p>
+</div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Presente
+                    </span>
+</div>
+</div>
+<!-- Card 2: Sofía García (Napping) -->
+<div onclick="handleCardClick(event, this, 'Sofía García · Salón Luna · En siesta desde hace 45 min', 'bedtime')" data-name="sofía garcía" data-room="salón luna" data-child-id="sofia" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div class="selection-checkbox hidden shrink-0 mr-3">
+<span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
+<span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
+</div>
+<div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-secondary-container relative">
+<img class="w-full h-full object-cover opacity-90" data-alt="A high-quality, warmly lit portrait photo of a sleeping 3-year-old girl with dark hair, resting her head on a small colorful pillow. The setting is a cozy, peaceful nap room with soft ambient light filtering through a window, conveying a safe, calm, and dependable atmosphere suitable for a premium childcare app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQOPHuhgUzbYFymUOgmDJ1dzLASmQQsOTrY9eRFZl7XQvvbBCLkIe4B1g4kA90gl-mxYnOAdwH423XyAR42gRXeGyWq9B4dZW96diaF1N8iCb4-DFjSbuoJFghmJ0f66usXvfJHRqmMrn1QbR0gaVemKxVPRF2iQWisW7ZL2DaJH3beGbr-xRbL7tGoDPFLiccR0J8N2A4kbFAkjkkOQiWXnpZqQ5imMFGrFVmTqXwOOLMICEunUoD"/>
+<!-- Status Indicator Dot -->
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-secondary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="ml-4 flex-grow">
+<h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface group-hover:text-primary transition-colors">Sofía García</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px]">Salón Luna</p>
+</div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bedtime</span> En siesta
+                    </span>
+<!-- Time in state -->
+<span class="font-label-sm text-[10px] text-on-surface-variant">hace 45m</span>
+</div>
+</div>
+<!-- Card 3: Mateo López (Picked Up) -->
+<div onclick="handleCardClick(event, this, 'Mateo López · Salón Sol · Recogido a las 14:30', 'home')" data-name="mateo lópez" data-room="salón sol" data-child-id="mateo" class="child-card flex items-center p-4 rounded-xl bg-surface-container-low shadow-sm border border-transparent opacity-80 cursor-pointer group">
+<div class="selection-checkbox hidden shrink-0 mr-3">
+<span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
+<span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
+</div>
+<div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-outline-variant grayscale-[30%]">
+<img class="w-full h-full object-cover" data-alt="A high-quality portrait photo of an energetic 5-year-old boy with short black hair, wearing a green jacket, looking ready to go home. The background features blurred elements of a bright, modern school entrance area, lit with natural daylight, conveying a joyful and secure mood for a childcare application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5dGLneeEF-63j3VrCwypHfesp9NQu4zRViDqq_OLeNbGhnoWEL4YVLSYDMwWvoSr7qiB4C__zhXT4Fzv2uAh3GGmZaM1hTorwZnjkHkdX_PV9d8e_ZYAgBm0Doc7AwM5dG9NWQOFpJc-GEyJpOvh96aq4edUL-s4LePNM4x5LpjAuym4JLZrpJA9dY6vB8IqTSIpJ4kgln8La2ujW6_rgb6smGIfTXQmUXer-h5UiwAWtcLOqp8eR"/>
+</div>
+<div class="ml-4 flex-grow">
+<h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface-variant">Mateo López</h3>
+<p class="font-body-md text-body-md text-outline text-[14px]">Salón Sol</p>
+</div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">home</span> Recogido
+                    </span>
+<span class="font-label-sm text-[10px] text-outline">a las 14:30</span>
+</div>
+</div>
+<!-- Card 4: Emma Davis (Present - with Alert) -->
+<div onclick="handleCardClick(event, this, 'Emma Davis · Salón Sol · Presente · Alergia severa a mariscos', 'medical_information')" data-name="emma davis" data-room="salón sol" data-child-id="emma" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border-l-4 border-l-error-container cursor-pointer group">
+<div class="selection-checkbox hidden shrink-0 mr-3">
+<span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
+<span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
+</div>
+<div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-surface-container-highest relative">
+<img class="w-full h-full object-cover" data-alt="A bright, cheerful portrait photo of a 4-year-old girl with blonde pigtails wearing a yellow dress. She is smiling playfully in a brightly lit indoor play area. The lighting is soft and enveloping, typical of a modern, clean, and safe childcare environment depicted in premium mobile apps." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnNZ2blk6yFL-aroLgRUx6ERAJkR1QaZBmovVvJJ8Y7OE8E77VHF1iduKEskEihNtD1t0cM1-ixWccI1TrSoSbpXIwY7KT4KOrGM1_6bdSWvnikJZKjpSTLl7oNaeeFvdZj9AVw6EUC1qr6HyaujwxJM2traheI5-dWEAimFd5npGa71UBXA8FajgXDi1uXStM1YwCdoZnc3OYT5qEoeKeWUFtW7BM76KxymPs3p9fNWTt_VwquXNM"/>
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="ml-4 flex-grow">
+<h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface group-hover:text-primary transition-colors">Emma Davis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px]">Salón Sol</p>
+</div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm mb-1">
+                        Presente
+                    </span>
+<!-- Medical Alert Badge -->
+<span class="px-2 py-0.5 rounded-sm bg-error-container text-on-error-container font-label-sm text-[10px] uppercase tracking-wide flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">medical_information</span> Alergia
+                    </span>
+</div>
+</div>
+<p id="noResults" class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
+</div>
+</main>
+
+<!-- Barra de Acciones Masivas (aparece en modo selección) -->
+<div id="bulkActionBar" class="hidden fixed bottom-20 left-0 w-full z-40 px-margin-mobile pb-2">
+<div class="max-w-[600px] mx-auto bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-xl p-3 flex items-center gap-2">
+<span class="font-label-md text-label-md pl-2 flex-1" id="selectionCount">0 seleccionados</span>
+<button onclick="applyBulkAction('siesta')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">bedtime</span> Siesta
+</button>
+<button onclick="applyBulkAction('comida')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">restaurant</span> Comida
+</button>
+<button onclick="toggleSelectionMode()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0" aria-label="Cancelar selección">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+
+<!-- Modal: Acceso Rápido de Emergencia -->
+<div id="emergencyModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[200] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-lg max-h-[85vh] overflow-y-auto">
+<div class="sticky top-0 bg-error text-on-error px-lg py-md flex items-center gap-sm rounded-t-3xl md:rounded-t-2xl">
+<span class="material-symbols-outlined text-[28px]">emergency</span>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md">Acceso Rápido</h3>
+<p class="font-body-md text-[13px] opacity-90">Alergias y condiciones médicas — todo el grupo</p>
+</div>
+<button onclick="closeEmergencyMode()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-md space-y-sm" id="emergencyList"></div>
+</div>
+</div>
+<script>
+let currentRoomFilter = 'todos';
+function filterRoom(btn, room){
+  currentRoomFilter = room;
+  document.querySelectorAll('.room-filter-btn').forEach(b => {
+    b.classList.remove('bg-primary','text-on-primary','shadow-sm');
+    b.classList.add('bg-surface-container','text-on-surface-variant','border','border-outline-variant');
+  });
+  btn.classList.remove('bg-surface-container','text-on-surface-variant','border','border-outline-variant');
+  btn.classList.add('bg-primary','text-on-primary','shadow-sm');
+  filterChildren();
+}
+function normalizeText(str){
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+function filterChildren(){
+  const q = normalizeText(document.getElementById('childSearch').value.trim());
+  let visibleCount = 0;
+  document.querySelectorAll('.child-card').forEach(card => {
+    const name = normalizeText(card.dataset.name);
+    const room = normalizeText(card.dataset.room);
+    const matchesRoom = currentRoomFilter === 'todos' || card.dataset.room === currentRoomFilter;
+    const matchesSearch = !q || name.includes(q) || room.includes(q);
+    const show = matchesRoom && matchesSearch;
+    card.style.display = show ? '' : 'none';
+    if(show) visibleCount++;
+  });
+  document.getElementById('noResults').classList.toggle('hidden', visibleCount !== 0);
+}
+
+/* ===== Selección múltiple y acciones masivas ===== */
+let selectionMode = false;
+const selectedChildren = new Set();
+
+function toggleSelectionMode(){
+  selectionMode = !selectionMode;
+  selectedChildren.clear();
+  const btn = document.getElementById('selectModeBtn');
+  btn.classList.toggle('bg-primary', selectionMode);
+  btn.classList.toggle('text-on-primary', selectionMode);
+  btn.classList.toggle('bg-surface-container-lowest', !selectionMode);
+  btn.classList.toggle('text-on-surface', !selectionMode);
+  document.querySelectorAll('.selection-checkbox').forEach(cb => cb.classList.toggle('hidden', !selectionMode));
+  document.querySelectorAll('.child-card').forEach(card => {
+    card.classList.remove('ring-2', 'ring-primary', 'bg-primary-container/10');
+    card.querySelector('.checkbox-checked')?.classList.add('hidden');
+    card.querySelector('.checkbox-unchecked')?.classList.remove('hidden');
+  });
+  updateBulkBar();
+  if(selectionMode) showToast('Toca a los alumnos que quieras seleccionar', 'checklist');
+}
+
+function handleCardClick(event, card, msg, icon){
+  if(selectionMode){
+    event.preventDefault();
+    const id = card.dataset.childId;
+    const isSelected = selectedChildren.has(id);
+    if(isSelected){
+      selectedChildren.delete(id);
+    } else {
+      selectedChildren.add(id);
+    }
+    card.classList.toggle('ring-2', !isSelected);
+    card.classList.toggle('ring-primary', !isSelected);
+    card.classList.toggle('bg-primary-container/10', !isSelected);
+    card.querySelector('.checkbox-checked').classList.toggle('hidden', isSelected);
+    card.querySelector('.checkbox-unchecked').classList.toggle('hidden', !isSelected);
+    updateBulkBar();
+  } else {
+    showToast(msg, icon);
+  }
+}
+
+function updateBulkBar(){
+  const bar = document.getElementById('bulkActionBar');
+  const count = selectedChildren.size;
+  bar.classList.toggle('hidden', !selectionMode);
+  document.getElementById('selectionCount').textContent =
+    count === 0 ? 'Selecciona alumnos…' : count + (count === 1 ? ' seleccionado' : ' seleccionados');
+}
+
+function applyBulkAction(kind){
+  if(selectedChildren.size === 0){
+    showToast('Selecciona al menos un alumno', 'info');
+    return;
+  }
+  const label = kind === 'siesta' ? 'Siesta' : 'Comida';
+  const icon = kind === 'siesta' ? 'bedtime' : 'restaurant';
+  const total = selectedChildren.size;
+  selectedChildren.forEach(id => {
+    const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
+    if(!card) return;
+    const statusCol = card.querySelector('.flex.flex-col.items-end');
+    if(statusCol){
+      let badge = statusCol.querySelector('.batch-badge-' + kind);
+      if(!badge){
+        badge = document.createElement('span');
+        badge.className = 'batch-badge-' + kind + ' px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px] flex items-center gap-1 mt-1';
+        badge.innerHTML = `<span class="material-symbols-outlined text-[12px]">${icon}</span> ${label} ✓`;
+        statusCol.appendChild(badge);
+      }
+    }
+  });
+  showToast(`${label} registrada para ${total} alumno(s)`, 'check_circle');
+  toggleSelectionMode();
+}
+
+/* ===== Modo de Emergencia ===== */
+const EMERGENCY_DATA = [
+  { name: 'Emma Davis', room: 'Salón Sol', level: 'critico', detail: 'Alergia severa a mariscos. Requiere antihistamínico (en botiquín). Contactar a los padres de inmediato ante exposición.' },
+  { name: 'Leo Miller', room: 'Salón Sol', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
+  { name: 'Sofía García', room: 'Salón Luna', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
+  { name: 'Mateo López', room: 'Salón Sol', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
+];
+
+function openEmergencyMode(){
+  const sorted = [...EMERGENCY_DATA].sort((a, b) => (a.level === 'critico' ? -1 : 1) - (b.level === 'critico' ? -1 : 1));
+  const list = document.getElementById('emergencyList');
+  list.innerHTML = sorted.map(c => {
+    if(c.level === 'critico'){
+      return `<div class="bg-error-container border-2 border-error rounded-xl p-md">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="material-symbols-outlined text-error">warning</span>
+          <h4 class="font-headline-md text-[17px] text-on-error-container">${c.name}</h4>
+        </div>
+        <p class="font-label-sm text-label-sm text-on-error-container mb-1">${c.room}</p>
+        <p class="font-body-md text-body-md text-on-error-container font-bold">${c.detail}</p>
+      </div>`;
+    }
+    return `<div class="bg-surface-container-low rounded-xl p-md flex items-center gap-sm">
+      <span class="material-symbols-outlined text-primary">check_circle</span>
+      <div>
+        <h4 class="font-label-md text-label-md text-on-surface">${c.name} <span class="text-on-surface-variant font-normal">· ${c.room}</span></h4>
+        <p class="font-body-md text-[13px] text-on-surface-variant">${c.detail}</p>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('emergencyModal').classList.remove('hidden');
+}
+function closeEmergencyMode(){
+  document.getElementById('emergencyModal').classList.add('hidden');
+}
+</script>
+<!-- JSON Component: BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="listado_de_ni_os.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">groups</span><span class="font-label-sm text-[10px] text-center w-full truncate">Alumnos</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="registro_diario_beb_s.html"><span class="material-symbols-outlined mb-1">edit_note</span><span class="font-label-sm text-[10px] text-center w-full truncate">Registro</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Fichas</span></a></nav>
+<!-- Safe area padding for older devices without env(safe-area-inset-bottom) support naturally mapped in this generic tailwind -->
+<div class="h-6 w-full bg-surface-container-lowest fixed bottom-0 z-40 md:hidden"></div>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

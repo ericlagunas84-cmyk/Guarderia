@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seguimiento Estancia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&amp;family=Nunito+Sans:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#1f667a",
+                        "primary": "#1b6b4a",
+                        "tertiary": "#6c5e1b",
+                        "on-primary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#005235",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#211b00",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#f6e291",
+                        "on-secondary-fixed": "#001f28",
+                        "surface": "#f8fafa",
+                        "primary-fixed": "#a6f3c8",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "primary-container": "#88d4ab",
+                        "on-surface-variant": "#3f4942",
+                        "outline-variant": "#bfc9c0",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-container": "#eceeee",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#025d3d",
+                        "outline": "#6f7a72",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "surface-bright": "#f8fafa",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#8ad6ad",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "surface-dim": "#d8dada",
+                        "on-surface": "#191c1d",
+                        "on-background": "#191c1d",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "on-secondary-container": "#22697d",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface-container-high": "#e6e8e9",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#1b6b4a",
+                        "secondary-container": "#a6e6fe",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "background": "#f8fafa",
+                        "inverse-surface": "#2e3131",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-mobile": "16px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "base": "8px"
+                    },
+                    fontFamily: {
+                        "headline-lg-mobile": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "display-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "label-md": ["Nunito Sans"]
+                    },
+                    fontSize: {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface shadow-sm sticky top-0 z-40">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 max-w-7xl mx-auto">
+<div class="flex items-center gap-base">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A small, circular avatar portrait of a modern parent in a bright, natural setting. Soft, warm lighting illuminates their smiling face. High-quality professional photography style, conveying trust and approachability within a nurturing childcare application context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEytRvH1th43wrvfZVztVqY-Tc0XsAhZHIsAjDpd3-mNA2MNn9JJRstrj4Ly7Sj4zWrhKTtz1ejsY3IVWfSdHBU1uO7UbPnBlSRWnqWTT-8XkAyzyw_ojGHOf8MtyqKXyv5fw_0Fb5UUQkJS8OOd_45SllWDZclRnfwG0-L_XhHNWJ-B79GMTHWgKO-3YWNdKhP3EL5lVHR4_E_OSNHSxLJrCDO2jSqJJ8I9bwutzWHTH6cbgbZ9T8"/>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary tracking-tight">Gael</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant flex items-center justify-center relative active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md md:py-lg flex flex-col gap-lg">
+<!-- Header Section -->
+<section class="flex flex-col gap-xs">
+<div class="flex items-center gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface">Módulo Estancia</h2>
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-3 py-1 rounded-full uppercase">Activo</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Seguimiento de actividades y estancia para niños mayores.</p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-md">
+<!-- Tareas y Talleres (Col 1 - 8) -->
+<section class="col-span-1 md:col-span-8 bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-md transition-shadow hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)]">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-base">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">palette</span>
+                        Tareas y Talleres
+                    </h3>
+<button onclick="toggleStayHistory()" id="stayHistoryBtn" class="text-primary font-label-md text-label-md hover:underline flex items-center gap-xs">
+<span>Ver Historial</span>
+<span id="stayHistoryIcon" class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+<div class="flex flex-col gap-sm">
+<!-- Arte -->
+<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-secondary">
+<div class="bg-secondary-container text-on-secondary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">brush</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Taller de Arte</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Pintura con acuarelas</p>
+</div>
+<div class="flex items-center gap-sm shrink-0">
+<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-full rounded-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-primary">Completado</span>
+</div>
+</div>
+<!-- Inglés -->
+<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-primary">
+<div class="bg-primary-container text-on-primary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Inglés Avanzado</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Vocabulario de animales</p>
+</div>
+<div class="flex items-center gap-sm shrink-0">
+<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-1/2 rounded-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">En curso</span>
+</div>
+</div>
+<!-- Música -->
+<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-tertiary opacity-70">
+<div class="bg-tertiary-container text-on-tertiary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">music_note</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Música</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Práctica de flauta</p>
+</div>
+<div class="flex items-center gap-sm shrink-0">
+<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
+<div class="bg-outline h-full w-0 rounded-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Pendiente</span>
+</div>
+</div>
+</div>
+
+<!-- Historial de Estancia (oculto por defecto) -->
+<div id="stayHistoryPanel" class="hidden mt-md pt-md border-t border-surface-container flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Días anteriores</h4>
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Ayer, 17 oct</p>
+<p class="font-body-md text-sm text-on-surface-variant">Entrada 12:45 · Salida 17:30 · Arte, Música</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-label-md text-label-md text-on-surface">4h 45m</p>
+<p class="font-body-md text-sm text-primary font-semibold">$28.50</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Mar, 15 oct</p>
+<p class="font-body-md text-sm text-on-surface-variant">Entrada 13:15 · Salida 16:50 · Inglés, Arte</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-label-md text-label-md text-on-surface">3h 35m</p>
+<p class="font-body-md text-sm text-primary font-semibold">$21.50</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Lun, 14 oct</p>
+<p class="font-body-md text-sm text-on-surface-variant">Entrada 12:30 · Salida 18:00 · Música, Inglés, Arte</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-label-md text-label-md text-on-surface">5h 30m</p>
+<p class="font-body-md text-sm text-primary font-semibold">$33.00</p>
+</div>
+</div>
+<div class="flex justify-between items-center mt-xs px-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total de la semana</span>
+<span class="font-label-md text-label-md text-primary font-bold">$83.00</span>
+</div>
+</div>
+</section>
+<!-- Control de Horas & Costo (Col 9 - 12) -->
+<section class="col-span-1 md:col-span-4 flex flex-col gap-gutter md:gap-md">
+<div class="bg-primary text-on-primary rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md flex flex-col gap-base relative overflow-hidden h-full justify-between">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
+<div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white opacity-10 rounded-full"></div>
+<div class="z-10">
+<div class="flex items-center gap-xs text-primary-fixed mb-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Estancia Actual</span>
+</div>
+<div class="font-display-lg text-display-lg font-bold">4h 15m</div>
+<p class="font-body-md text-sm text-primary-fixed-dim">Entrada: 13:00</p>
+</div>
+<div class="z-10 mt-auto pt-md border-t border-primary-fixed/20">
+<div class="flex justify-between items-end">
+<div>
+<span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider block mb-1">Costo Acumulado</span>
+<div class="font-headline-lg text-headline-lg font-bold">$25.50</div>
+</div>
+<span class="material-symbols-outlined text-3xl opacity-80">payments</span>
+</div>
+</div>
+</div>
+
+<!-- Notificar Recogida -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">directions_car</span>
+Notificar Recogida
+</h4>
+<div class="grid grid-cols-4 gap-xs" id="etaGroup">
+<button onclick="selectEta(this,5)" data-eta="5" class="eta-btn bg-primary-container text-on-primary-container ring-2 ring-primary rounded-lg py-2 font-label-sm text-label-sm transition-transform active:scale-95">5 min</button>
+<button onclick="selectEta(this,10)" data-eta="10" class="eta-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg py-2 font-label-sm text-label-sm transition-transform active:scale-95">10 min</button>
+<button onclick="selectEta(this,15)" data-eta="15" class="eta-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg py-2 font-label-sm text-label-sm transition-transform active:scale-95">15 min</button>
+<button onclick="selectEta(this,20)" data-eta="20" class="eta-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg py-2 font-label-sm text-label-sm transition-transform active:scale-95">20 min</button>
+</div>
+<button id="pickupBtn" onclick="notifyPickup()" class="w-full bg-secondary text-on-secondary rounded-full py-3 font-label-md text-label-md shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-xs active:scale-95">
+<span id="pickupIcon" class="material-symbols-outlined">directions_car</span>
+<span id="pickupLabel">Voy en camino</span>
+</button>
+<p id="pickupStatus" class="text-center font-body-md text-sm text-on-surface-variant hidden"></p>
+</div>
+</section>
+<!-- Registro de Ánimo (Full Width) -->
+<section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-base">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">mood</span>
+                    Registro de Ánimo
+                </h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm" id="moodGrid">
+<!-- Sociable -->
+<button onclick="selectMood(this,'Sociable')" data-mood="Sociable" class="mood-btn bg-primary-container text-on-primary-container rounded-lg p-sm flex flex-col items-center justify-center gap-xs ring-2 ring-primary transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">groups</span>
+<span class="font-label-md text-label-md">Sociable</span>
+</button>
+<!-- Participativo -->
+<button onclick="selectMood(this,'Participativo')" data-mood="Participativo" class="mood-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg p-sm flex flex-col items-center justify-center gap-xs transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">front_hand</span>
+<span class="font-label-md text-label-md">Participativo</span>
+</button>
+<!-- Tranquilo -->
+<button onclick="selectMood(this,'Tranquilo')" data-mood="Tranquilo" class="mood-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg p-sm flex flex-col items-center justify-center gap-xs transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">self_improvement</span>
+<span class="font-label-md text-label-md">Tranquilo</span>
+</button>
+<!-- Cansado -->
+<button onclick="selectMood(this,'Cansado')" data-mood="Cansado" class="mood-btn bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-lg p-sm flex flex-col items-center justify-center gap-xs transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">bedtime</span>
+<span class="font-label-md text-label-md">Cansado</span>
+</button>
+</div>
+</section>
+<script>
+function selectMood(btn, mood){
+  document.querySelectorAll('.mood-btn').forEach(b => {
+    b.classList.remove('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
+    b.classList.add('bg-surface-container-low','text-on-surface-variant');
+  });
+  btn.classList.remove('bg-surface-container-low','text-on-surface-variant');
+  btn.classList.add('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
+  showToast('Ánimo de hoy registrado: ' + mood, 'mood');
+}
+
+function toggleStayHistory(){
+  const panel = document.getElementById('stayHistoryPanel');
+  const icon = document.getElementById('stayHistoryIcon');
+  const btnLabel = document.querySelector('#stayHistoryBtn span');
+  const willShow = panel.classList.contains('hidden');
+  panel.classList.toggle('hidden');
+  icon.textContent = willShow ? 'expand_less' : 'expand_more';
+  btnLabel.textContent = willShow ? 'Ocultar Historial' : 'Ver Historial';
+}
+
+let selectedEta = 5;
+function selectEta(btn, mins){
+  selectedEta = mins;
+  document.querySelectorAll('.eta-btn').forEach(b => {
+    b.classList.remove('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
+    b.classList.add('bg-surface-container-low','text-on-surface-variant');
+  });
+  btn.classList.remove('bg-surface-container-low','text-on-surface-variant');
+  btn.classList.add('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
+}
+
+let pickupSent = false;
+function notifyPickup(){
+  const btn = document.getElementById('pickupBtn');
+  const icon = document.getElementById('pickupIcon');
+  const label = document.getElementById('pickupLabel');
+  const status = document.getElementById('pickupStatus');
+  if(!pickupSent){
+    pickupSent = true;
+    icon.textContent = 'check_circle';
+    icon.style.fontVariationSettings = "'FILL' 1";
+    label.textContent = 'Aviso enviado';
+    btn.classList.remove('bg-secondary');
+    btn.classList.add('bg-primary');
+    const time = new Date();
+    time.setMinutes(time.getMinutes() + selectedEta);
+    const eta = time.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+    status.textContent = `La maestra fue notificada · llegada aprox. ${eta}`;
+    status.classList.remove('hidden');
+    showToast(`Aviso de recogida enviado — llegas en ${selectedEta} min`, 'directions_car');
+  } else {
+    pickupSent = false;
+    icon.textContent = 'directions_car';
+    icon.style.fontVariationSettings = "'FILL' 0";
+    label.textContent = 'Voy en camino';
+    btn.classList.remove('bg-primary');
+    btn.classList.add('bg-secondary');
+    status.classList.add('hidden');
+    showToast('Aviso de recogida cancelado', 'cancel');
+  }
+}
+</script>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

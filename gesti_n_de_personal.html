@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael - Gestión de Personal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-tint": "#1b6b4a",
+                        "tertiary-fixed": "#f6e291",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceeee",
+                        "background": "#f8fafa",
+                        "inverse-primary": "#8ad6ad",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-bright": "#f8fafa",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "outline": "#6f7a72",
+                        "surface-container-high": "#e6e8e9",
+                        "outline-variant": "#bfc9c0",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "secondary-container": "#a6e6fe",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface": "#f8fafa",
+                        "on-secondary-fixed": "#001f28",
+                        "primary-fixed": "#a6f3c8",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "on-primary-container": "#025d3d",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#1b6b4a",
+                        "on-secondary-container": "#22697d",
+                        "on-primary-fixed": "#002113",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-dim": "#d8dada",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "secondary": "#1f667a",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "lg": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8fafa; /* bg-background */
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafa;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d8dada;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #bfc9c0;
+        }
+    </style>
+<link href="manifest.json" rel="manifest"/>
+<meta content="#1B6B4A" name="theme-color"/>
+<link href="icons/favicon-32.png" rel="icon" type="image/png"/>
+<link href="icons/apple-touch-icon.png" rel="apple-touch-icon"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Gael" name="apple-mobile-web-app-title"/>
+</head>
+<body class="text-on-background font-body-md antialiased overflow-hidden flex h-screen">
+<!-- SideNavBar (Desktop/Tablet) -->
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+<nav id="sidebarNav" class="fixed md:static inset-y-0 left-0 flex flex-col h-screen py-md px-base bg-surface-container-low dark:bg-inverse-surface shadow-md w-64 z-50 transition-transform duration-300 ease-in-out shrink-0 -translate-x-full md:translate-x-0">
+<button onclick="closeSidebar()" class="md:hidden self-end mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
+<!-- Header -->
+<div class="flex items-center gap-base mb-lg px-base">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" data-weight="fill">child_care</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
+</div>
+</div>
+<!-- CTA -->
+<div class="px-base mb-md">
+<button class="w-full bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md py-sm px-md rounded-full shadow-[0_4px_12px_rgba(27,107,74,0.2)] hover:shadow-[0_8px_20px_rgba(27,107,74,0.3)] transition-all duration-200 flex items-center justify-center gap-base active:scale-95" onclick="location.href='alta_de_ni_os.html'">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                Agregar Alumno
+            </button>
+</div>
+<!-- Main Nav Links -->
+<div class="flex flex-col gap-xs flex-grow overflow-y-auto">
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Inicio
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="listado_de_ni_os.html"><span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Alumnos
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="alta_de_ni_os.html"><span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Dar de Alta
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="registro_diario_beb_s.html"><span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+                Registro Diario
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_financiera.html"><span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Finanzas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                Fichas Médicas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_de_personal.html"><span class="material-symbols-outlined fill" data-icon="badge">badge</span>
+                Personal
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reportes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Ajustes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Cerrar sesión
+            </a>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-col gap-xs mt-auto pt-md border-t border-surface-variant">
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-grow flex flex-col h-screen overflow-hidden relative md:ml-64">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-[72px] bg-surface/80 backdrop-blur-md shadow-sm shrink-0">
+<!-- Mobile Menu Toggle (Visible only on mobile) -->
+<button onclick="toggleSidebar()" class="md:hidden p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand / Mobile Title (Visible only on mobile) -->
+<div class="md:hidden flex items-center gap-sm">
+<h1 class="font-headline-md text-[20px] font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+</div>
+<!-- Search (Left aligned on desktop) -->
+<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-sm py-xs border border-surface-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all w-96">
+<span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-full placeholder-on-surface-variant/70 text-on-surface" placeholder="Buscar personal, documentos..." type="text"/>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="hidden sm:block p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">payments</span>
+</button>
+<button class="ml-xs flex items-center gap-xs hover:bg-surface-container-low p-xs rounded-full transition-colors active:scale-95 duration-150">
+<img alt="Administrator profile photo" class="w-8 h-8 rounded-full object-cover border border-surface-variant" data-alt="A professional headshot of a female childcare administrator with a warm smile, wearing a dark green blouse, well-lit in a modern office environment. High quality, realistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPAM08coiOZjh_jdXVCjNyWNW4KKUncCSC4Ag7iRbJsuw7sh1ktXF28h0QczBKEioQXZibl3mIeHTIClCvGUg6YKH9w2Cs5hKEKBdfFPDYYbxLoIJjQBsO2t4V54OcYtcwMNc6Na3JwLoJoVc6Xyx_VyMN08llwo_b2wQtbheXS6lGdb_-z0KsqeHGXDNsHnLSSrHZiUWdHP7T8jkjiuIShV6yuc9Aew6iwjnYYNK3Akkj4g1rZCYK"/>
+<span class="hidden lg:block font-label-md text-label-md text-on-surface">Profile</span>
+</button>
+</div>
+</header>
+<!-- Page Content Canvas -->
+<main class="flex-grow overflow-y-auto p-margin-mobile md:p-margin-desktop relative">
+<!-- Animated Shader Background (Ambient) -->
+<div class="absolute inset-0 pointer-events-none opacity-20 z-0">
+<!-- Placeholder animation tag as requested by instructions -->
+<!-- Assuming a subtle abstract shader for a modern feel -->
+</div>
+<div class="relative z-10 max-w-7xl mx-auto space-y-lg">
+<!-- Page Header & Main Action -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-sm">
+<div>
+<h2 class="font-display-lg text-display-lg md:text-[36px] text-on-background">Gestión de Personal</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-xs">Manage your team, track attendance, and monitor required certifications.</p>
+</div>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md py-sm px-md rounded-full shadow-[0_4px_12px_rgba(27,107,74,0.2)] hover:shadow-[0_8px_20px_rgba(27,107,74,0.3)] transition-all duration-200 flex items-center gap-base shrink-0" onclick="openNewStaffModal()">
+<span class="material-symbols-outlined">person_add</span>
+                        Registrar Nueva Maestra
+                    </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Staff List (Takes up 8 columns on large screens) -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Staff Directory Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(26,43,60,0.05)] border border-surface-variant overflow-hidden flex flex-col h-full">
+<div class="p-md border-b border-surface-variant flex justify-between items-center bg-surface/50">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary">groups</span>
+                                    Directorio de Educadoras
+                                </h3>
+<div class="flex gap-xs">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors border border-surface-variant" onclick="showToast('Filtros del directorio de educadoras', 'filter_list')">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+</div>
+<div class="p-md flex-grow overflow-x-auto">
+<!-- Cards Layout for Staff instead of a plain table -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-sm">
+<!-- Staff Card 1 -->
+<div class="staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group" data-staff="ana" data-status="presente" onclick="toggleAttendance(this,'Maestra Ana López')">
+<img alt="Maestra Ana" class="w-12 h-12 rounded-full object-cover border-2 border-primary-container" data-alt="A portrait of a cheerful female preschool teacher in her 30s with short brown hair, wearing a light blue polo shirt, brightly lit with a soft background. High quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrWWwm2QB9RRILyxosF7G7NlJ1AjcQUQ_d1H_9qGIG7HUtHUcyQtTEtU-El1e8KExrOiYLtK0PP4CsGp98SaJQVnZj8saindY3Ff499ho_yp0qlVHVQbOeaTspACE_BzY_yNrGj1AaRO_3_3PcUas7sJxmpZht2ZSG4grc0_GlkSjyaoRuzDFM9QZ4OhCw4c6r463Pf-giQFTum5G6gIN7Z5WYfqGcVQ3CHAQTkYxAEiYvtJlFaFqR"/>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">Maestra Ana López</h4>
+<button class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors" onclick="event.stopPropagation(); openStaffDetail('ana')">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    Presente
+                                                </span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Salón Bebés (0-12m)</p>
+<div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+<span class="staff-schedule flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 08:00 - 16:00</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">verified</span> Docs OK</span>
+</div>
+</div>
+</div>
+<!-- Staff Card 2 -->
+<div class="staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group" data-staff="carlos" data-status="ausente" onclick="toggleAttendance(this,'Maestro Carlos Ruíz')">
+<img alt="Maestro Carlos" class="w-12 h-12 rounded-full object-cover border-2 border-surface-variant" data-alt="A portrait of an energetic young male preschool teacher with curly hair, wearing a vibrant yellow t-shirt, standing in a brightly lit classroom environment. Warm, inviting style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYImayMcDrdC-MD05Cw5HkBQtk0yWJnTd2p3E7M-5_-rz-as8yxfeJ7ffEBvac0bmPKWO9KCboVmaFMYjAQMp4QrRHgocS5fRGJIBVu1fzvBRCkD8hQVeJXF3w5QEkKePQ37olSpC8lEGG6x8E642A10Dz-Fqk6HfZlaJIHDvo0PCIbW44ERKmoQdE5xw7_LyH8Cy6Rr1LxoSlKYWzAKU53E_yqllAyA8XRXarJB3L5KFkLUhVDGlL"/>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">Maestro Carlos Ruíz</h4>
+<button class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors" onclick="event.stopPropagation(); openStaffDetail('carlos')">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                                    Ausente
+                                                </span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Salón Maternal (1-2y)</p>
+<div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+<span class="staff-schedule flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 09:00 - 17:00</span>
+<span class="flex items-center gap-1 text-error"><span class="material-symbols-outlined text-[14px]">warning</span> 1 Pendiente</span>
+</div>
+</div>
+</div>
+<!-- Staff Card 3 -->
+<div class="staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group" data-staff="sofia" data-status="retraso" onclick="toggleAttendance(this,'Maestra Sofia M.')">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary-fixed-dim text-on-secondary-container font-headline-md">
+                                            SM
+                                        </div>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">Maestra Sofia M.</h4>
+<button class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors" onclick="event.stopPropagation(); openStaffDetail('sofia')">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                                    Retraso
+                                                </span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Preescolar 1 (3y)</p>
+<div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+<span class="staff-schedule flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 08:00 - 14:00</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">verified</span> Docs OK</span>
+</div>
+</div>
+</div>
+<!-- Staff Card 4 -->
+<div class="staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group" data-staff="elena" data-status="presente" onclick="toggleAttendance(this,'Maestra Elena G.')">
+<img alt="Maestra Elena" class="w-12 h-12 rounded-full object-cover border-2 border-primary-container" data-alt="A portrait of an experienced female early childhood educator with glasses and grey hair pulled back, wearing a navy cardigan, soft lighting, professional and nurturing demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlALzfrNyG0Vjj5p34betOCidC3343xYvQWRZvWcQ5DRD9Cp-NOmzdg0zCYk5Wr22SuXKMeaX0trsFYmvx27QPvVxq3kVIOnitDb9Zozm2OcCEbg2og9ZVjIdZMWWgBpWbxNRfTXSzwpJMoMCgmn-AG_u0G_hs-mDH0Y_9NfdTDjDFhvpz1e2lQZCTZkWTnAKYQzYgW09zLr20A5CzQuWn3UJEdlWpG9pAAvNCBN_V3AFfRjz0Xw9-"/>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">Maestra Elena G.</h4>
+<button class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors" onclick="event.stopPropagation(); openStaffDetail('elena')">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    Presente
+                                                </span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Asistente General</p>
+<div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+<span class="staff-schedule flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 10:00 - 18:00</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">verified</span> Docs OK</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-sm border-t border-surface-variant text-center bg-surface-container-low">
+<button class="text-primary font-label-md hover:underline" onclick="showToast('Mostrando el directorio completo de 24 educadoras', 'groups')">View All 24 Staff Members</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Documents & Attendance Log (Takes up 4 columns on large screens) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Document Management Alerts -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(26,43,60,0.05)] border border-surface-variant p-md">
+<h3 class="font-headline-md text-[20px] text-on-surface flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-secondary">assignment_late</span>
+                                Alertas de Documentos
+                            </h3>
+<div class="space-y-sm">
+<!-- Alert 1 -->
+<div class="bg-error-container/30 border border-error-container rounded-lg p-sm flex items-start gap-sm">
+<div class="w-8 h-8 rounded-full bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">emergency</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-error-container">Certificado de Primeros Auxilios Vencido</h4>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Maestro Carlos Ruíz</p>
+<button class="mt-2 text-error font-label-sm hover:underline" onclick="showToast('Solicitud de actualización enviada a Maestro Carlos Ruíz', 'mail')">Solicitar Actualización</button>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="bg-tertiary-container/30 border border-tertiary-container rounded-lg p-sm flex items-start gap-sm">
+<div class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">pending_actions</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-tertiary-container">Evaluación Psicológica Pendiente</h4>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">Nueva Ingreso: Laura T.</p>
+<button class="mt-2 text-tertiary font-label-sm hover:underline" onclick="showToast('Abriendo expediente de Laura T.', 'folder_open')">Revisar Expediente</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Mini Attendance Log -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(26,43,60,0.05)] border border-surface-variant p-md flex-grow">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-[20px] text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary">history</span>
+                                    Log de Asistencia
+                                </h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="showToast('Mostrando historial completo de asistencia', 'history')">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="space-y-base relative before:absolute before:inset-y-0 before:left-3 before:w-0.5 before:bg-surface-variant pl-8">
+<!-- Log Item -->
+<div class="relative">
+<div class="absolute -left-8 w-6 h-6 rounded-full bg-surface-container-highest border-2 border-surface flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-primary">login</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">Hoy, 08:05 AM</p>
+<div class="bg-surface border border-surface-variant rounded-md p-2 mt-1">
+<p class="font-body-md text-[14px] text-on-surface"><span class="font-bold">Maestra Ana</span> hizo Check-in.</p>
+</div>
+</div>
+<!-- Log Item -->
+<div class="relative">
+<div class="absolute -left-8 w-6 h-6 rounded-full bg-surface-container-highest border-2 border-surface flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-tertiary">warning</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">Hoy, 08:15 AM</p>
+<div class="bg-surface border border-surface-variant rounded-md p-2 mt-1">
+<p class="font-body-md text-[14px] text-on-surface"><span class="font-bold">Maestra Sofia</span> reportó retraso (Trafico).</p>
+</div>
+</div>
+<!-- Log Item -->
+<div class="relative">
+<div class="absolute -left-8 w-6 h-6 rounded-full bg-surface-container-highest border-2 border-surface flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">logout</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">Ayer, 18:05 PM</p>
+<div class="bg-surface border border-surface-variant rounded-md p-2 mt-1">
+<p class="font-body-md text-[14px] text-on-surface"><span class="font-bold">Maestra Elena</span> hizo Check-out.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal: Detalle de Educadora (Horarios y Documentos) -->
+<div class="hidden fixed inset-0 bg-inverse-surface/50 z-[200] flex items-center justify-center p-margin-mobile" id="staffModal">
+<div class="bg-surface rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-lg relative">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors" onclick="closeStaffModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="flex items-center gap-sm mb-md">
+<div class="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md text-headline-md shrink-0" id="stAvatar"></div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="stName"></h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="stRoom"></p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mb-md">
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Teléfono</p>
+<p class="font-label-md text-label-md text-on-surface" id="stPhone"></p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Correo</p>
+<p class="font-label-md text-label-md text-on-surface truncate" id="stEmail"></p>
+</div>
+</div>
+<div class="mb-md">
+<div class="flex items-center justify-between mb-xs">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Horario</p>
+<button class="text-primary font-label-sm text-label-sm hover:underline" id="stEditBtn" onclick="toggleEditSchedule()">Editar</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-1" id="stScheduleView"></p>
+<div class="hidden flex items-center gap-sm" id="stScheduleEdit">
+<input class="px-sm py-1 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md" id="stStart" type="time"/>
+<span class="text-on-surface-variant">a</span>
+<input class="px-sm py-1 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md" id="stEnd" type="time"/>
+<button class="text-primary font-label-sm text-label-sm bg-primary-container/30 px-3 py-1 rounded-lg" onclick="saveSchedule()">Guardar</button>
+</div>
+</div>
+<div class="mb-md bg-surface-container-low rounded-lg p-sm">
+<div class="flex items-center justify-between mb-1">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Contratación</p>
+<span class="font-label-md text-label-md text-on-surface" id="stContractType"></span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant" id="stPayEstimate"></p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Documentos</p>
+<div class="space-y-xs" id="stDocs"></div>
+</div>
+</div>
+</div>
+<!-- Modal: Registrar Nueva Maestra -->
+<div class="hidden fixed inset-0 bg-inverse-surface/50 z-[200] flex items-center justify-center p-margin-mobile" id="newStaffModal">
+<div class="bg-surface rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-lg relative">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors" onclick="closeNewStaffModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person_add</span>
+Registrar Nueva Maestra
+</h3>
+<form class="space-y-sm" id="newStaffForm" onsubmit="return submitNewStaff(event)">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre completo *</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsName" required="" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Salón asignado *</label>
+<select class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsRoom" required="">
+<option value="">Selecciona...</option>
+<option>Salón Bebés (0-12m)</option>
+<option>Salón Maternal (1-2y)</option>
+<option>Preescolar 1 (3y)</option>
+<option>Preescolar 2 (4y)</option>
+<option>Asistente General</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Entrada *</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsStart" required="" type="time" value="08:00"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Salida *</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsEnd" required="" type="time" value="16:00"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm items-end">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Tipo de contratación</label>
+<select class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsContractType" onchange="toggleHourlyRate()">
+<option value="Tiempo completo">Tiempo completo</option>
+<option value="Medio tiempo">Medio tiempo</option>
+<option value="Por horas">Por horas (Estancia)</option>
+</select>
+</div>
+<div id="nsHourlyRateWrap" class="hidden">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Tarifa por hora ($)</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsHourlyRate" type="number" placeholder="120"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Teléfono</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsPhone" placeholder="55-0000-0000" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsEmail" placeholder="nombre@correo.com" type="email"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Documentos entregados</label>
+<div class="space-y-1">
+<label class="flex items-center gap-2 text-sm font-body-md text-on-surface"><input class="w-4 h-4 accent-[#1b6b4a]" id="nsDocId" type="checkbox"/> Identificación oficial</label>
+<label class="flex items-center gap-2 text-sm font-body-md text-on-surface"><input class="w-4 h-4 accent-[#1b6b4a]" id="nsDocCert" type="checkbox"/> Certificado de primeros auxilios</label>
+<label class="flex items-center gap-2 text-sm font-body-md text-on-surface"><input class="w-4 h-4 accent-[#1b6b4a]" id="nsDocBg" type="checkbox"/> Verificación de antecedentes</label>
+<label class="flex items-center gap-2 text-sm font-body-md text-on-surface"><input class="w-4 h-4 accent-[#1b6b4a]" id="nsDocCv" type="checkbox"/> CV / referencias laborales</label>
+</div>
+</div>
+<p class="hidden text-error font-label-sm text-label-sm" id="nsError">Completa los campos obligatorios (*) antes de guardar.</p>
+<button class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md mt-sm hover:bg-primary/90 transition-colors" type="submit">Registrar Educadora</button>
+</form>
+</div>
+</div>
+<script>
+const STAFF_DATA = {
+  ana: { name: 'Maestra Ana López', room: 'Salón Bebés (0-12m)', start: '08:00', end: '16:00', phone: '55-1122-3344', email: 'ana.lopez@gael.mx', contractType: 'Tiempo completo', hourlyRate: null,
+    docs: [{ name: 'Identificación oficial', status: 'ok' }, { name: 'Certificado de primeros auxilios', status: 'ok' }, { name: 'Verificación de antecedentes', status: 'ok' }] },
+  carlos: { name: 'Maestro Carlos Ruíz', room: 'Salón Maternal (1-2y)', start: '09:00', end: '17:00', phone: '55-6677-8899', email: 'carlos.ruiz@gael.mx', contractType: 'Tiempo completo', hourlyRate: null,
+    docs: [{ name: 'Identificación oficial', status: 'ok' }, { name: 'Certificado de primeros auxilios', status: 'expired' }, { name: 'Verificación de antecedentes', status: 'ok' }] },
+  sofia: { name: 'Maestra Sofia M.', room: 'Preescolar 1 (3y)', start: '08:00', end: '14:00', phone: '55-3344-5566', email: 'sofia.m@gael.mx', contractType: 'Medio tiempo', hourlyRate: null,
+    docs: [{ name: 'Identificación oficial', status: 'ok' }, { name: 'Certificado de primeros auxilios', status: 'ok' }, { name: 'Verificación de antecedentes', status: 'ok' }] },
+  elena: { name: 'Maestra Elena G.', room: 'Asistente General', start: '10:00', end: '18:00', phone: '55-9988-7766', email: 'elena.g@gael.mx', contractType: 'Por horas', hourlyRate: 130,
+    docs: [{ name: 'Identificación oficial', status: 'ok' }, { name: 'Certificado de primeros auxilios', status: 'ok' }, { name: 'Verificación de antecedentes', status: 'ok' }] },
+};
+let currentStaffKey = null;
+
+function toggleHourlyRate(){
+  const type = document.getElementById('nsContractType').value;
+  document.getElementById('nsHourlyRateWrap').classList.toggle('hidden', type !== 'Por horas');
+}
+
+function hoursBetween(start, end){
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+  let mins = (eh * 60 + em) - (sh * 60 + sm);
+  if(mins < 0) mins += 24 * 60;
+  return mins / 60;
+}
+
+function payEstimateText(s){
+  if(s.contractType === 'Por horas' && s.hourlyRate){
+    const hrs = hoursBetween(s.start, s.end);
+    const total = hrs * s.hourlyRate;
+    return `Turno de ${hrs.toFixed(1)} h × $${s.hourlyRate}/hora ≈ $${total.toFixed(2)} estimado hoy`;
+  }
+  return s.contractType === 'Medio tiempo' ? 'Salario fijo por medio tiempo — no aplica pago por hora.' : 'Salario fijo de tiempo completo — no aplica pago por hora.';
+}
+
+
+function staffInitials(name){
+  return name.replace(/^(Maestra|Maestro)\s+/i, '').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+function docRow(doc){
+  const styles = { ok: 'bg-primary-container text-on-primary-container', pending: 'bg-tertiary-container text-on-tertiary-container', expired: 'bg-error-container text-on-error-container' };
+  const icons = { ok: 'check_circle', pending: 'pending_actions', expired: 'error' };
+  const labels = { ok: 'Vigente', pending: 'Pendiente', expired: 'Vencido' };
+  return `<div class="flex items-center justify-between bg-surface-container-low rounded-lg p-sm">
+    <span class="font-body-md text-body-md text-on-surface text-sm">${doc.name}</span>
+    <span class="inline-flex items-center gap-1 ${styles[doc.status]} px-2 py-0.5 rounded-full font-label-sm text-[10px]"><span class="material-symbols-outlined text-[12px]">${icons[doc.status]}</span>${labels[doc.status]}</span>
+  </div>`;
+}
+function formatSchedule(start, end){
+  return `<span class="material-symbols-outlined text-[16px]">schedule</span> ${start} - ${end}`;
+}
+
+function openStaffDetail(key){
+  const s = STAFF_DATA[key];
+  if(!s) return;
+  currentStaffKey = key;
+  document.getElementById('stAvatar').textContent = staffInitials(s.name);
+  document.getElementById('stName').textContent = s.name;
+  document.getElementById('stRoom').textContent = s.room;
+  document.getElementById('stPhone').textContent = s.phone || 'No registrado';
+  document.getElementById('stEmail').textContent = s.email || 'No registrado';
+  document.getElementById('stScheduleView').innerHTML = formatSchedule(s.start, s.end);
+  document.getElementById('stStart').value = s.start;
+  document.getElementById('stEnd').value = s.end;
+  document.getElementById('stScheduleView').classList.remove('hidden');
+  document.getElementById('stScheduleEdit').classList.add('hidden');
+  document.getElementById('stEditBtn').textContent = 'Editar';
+  document.getElementById('stContractType').textContent = s.contractType || 'Tiempo completo';
+  document.getElementById('stPayEstimate').textContent = payEstimateText(s);
+  document.getElementById('stDocs').innerHTML = s.docs.length
+    ? s.docs.map(docRow).join('')
+    : '<p class="font-body-md text-body-md text-on-surface-variant text-sm">Sin documentos registrados.</p>';
+  document.getElementById('staffModal').classList.remove('hidden');
+}
+function closeStaffModal(){
+  document.getElementById('staffModal').classList.add('hidden');
+}
+function toggleEditSchedule(){
+  const view = document.getElementById('stScheduleView');
+  const edit = document.getElementById('stScheduleEdit');
+  const btn = document.getElementById('stEditBtn');
+  const editing = edit.classList.contains('hidden');
+  view.classList.toggle('hidden', editing);
+  edit.classList.toggle('hidden', !editing);
+  btn.textContent = editing ? 'Cancelar' : 'Editar';
+}
+function saveSchedule(){
+  const start = document.getElementById('stStart').value;
+  const end = document.getElementById('stEnd').value;
+  STAFF_DATA[currentStaffKey].start = start;
+  STAFF_DATA[currentStaffKey].end = end;
+  document.getElementById('stScheduleView').innerHTML = formatSchedule(start, end);
+  document.getElementById('stPayEstimate').textContent = payEstimateText(STAFF_DATA[currentStaffKey]);
+  toggleEditSchedule();
+  const card = document.querySelector(`.staff-card[data-staff="${currentStaffKey}"]`);
+  if(card){
+    const scheduleSpan = card.querySelector('.staff-schedule');
+    if(scheduleSpan) scheduleSpan.innerHTML = formatSchedule(start, end);
+  }
+  showToast('Horario actualizado', 'schedule');
+}
+
+function openNewStaffModal(){
+  document.getElementById('newStaffForm').reset();
+  document.getElementById('nsStart').value = '08:00';
+  document.getElementById('nsEnd').value = '16:00';
+  document.getElementById('nsError').classList.add('hidden');
+  document.getElementById('nsHourlyRateWrap').classList.add('hidden');
+  document.getElementById('newStaffModal').classList.remove('hidden');
+}
+function closeNewStaffModal(){
+  document.getElementById('newStaffModal').classList.add('hidden');
+}
+function submitNewStaff(e){
+  e.preventDefault();
+  const name = document.getElementById('nsName').value.trim();
+  const room = document.getElementById('nsRoom').value;
+  const start = document.getElementById('nsStart').value;
+  const end = document.getElementById('nsEnd').value;
+  const contractType = document.getElementById('nsContractType').value;
+  const hourlyRateRaw = document.getElementById('nsHourlyRate').value;
+  if(!name || !room || !start || !end || (contractType === 'Por horas' && !hourlyRateRaw)){
+    document.getElementById('nsError').classList.remove('hidden');
+    return false;
+  }
+  const hourlyRate = contractType === 'Por horas' ? parseFloat(hourlyRateRaw) : null;
+  const phone = document.getElementById('nsPhone').value.trim();
+  const email = document.getElementById('nsEmail').value.trim();
+  const docs = [];
+  if(document.getElementById('nsDocId').checked) docs.push({ name: 'Identificación oficial', status: 'ok' });
+  if(document.getElementById('nsDocCert').checked) docs.push({ name: 'Certificado de primeros auxilios', status: 'ok' });
+  if(document.getElementById('nsDocBg').checked) docs.push({ name: 'Verificación de antecedentes', status: 'ok' });
+  if(document.getElementById('nsDocCv').checked) docs.push({ name: 'CV / referencias laborales', status: 'ok' });
+  const allDocs = ['Identificación oficial','Certificado de primeros auxilios','Verificación de antecedentes','CV / referencias laborales'];
+  allDocs.forEach(d => { if(!docs.find(x => x.name === d)) docs.push({ name: d, status: 'pending' }); });
+
+  const key = normalizeStaffText(name);
+  STAFF_DATA[key] = { name, room, start, end, phone, email, contractType, hourlyRate, docs };
+
+  const docsOk = docs.every(d => d.status === 'ok');
+  const card = document.createElement('div');
+  card.onclick = () => toggleAttendance(card, name);
+  card.dataset.status = 'presente';
+  card.dataset.staff = key;
+  card.className = 'staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group';
+  card.innerHTML = `
+    <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary-fixed-dim text-on-secondary-container font-headline-md">${staffInitials(name)}</div>
+    <div class="flex-grow min-w-0">
+      <div class="flex justify-between items-start">
+        <h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">${name}</h4>
+        <button onclick="event.stopPropagation(); openStaffDetail('${key}')" class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors"><span class="material-symbols-outlined text-[18px]">info</span></button>
+      </div>
+      <div class="flex items-center gap-xs mt-1">
+        <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Presente</span>
+      </div>
+      <p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">${room}</p>
+      <div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+        <span class="staff-schedule flex items-center gap-1">${formatSchedule(start, end)}</span>
+        <span class="flex items-center gap-1 ${docsOk ? 'text-primary' : 'text-error'}"><span class="material-symbols-outlined text-[14px]">${docsOk ? 'verified' : 'warning'}</span>${docsOk ? 'Docs OK' : 'Docs pendientes'}</span>
+      </div>
+    </div>`;
+  document.querySelector('.staff-card').closest('.grid').prepend(card);
+
+  closeNewStaffModal();
+  showToast(`${name} registrada exitosamente`, 'check_circle');
+  return false;
+}
+function normalizeStaffText(str){
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g,'-');
+}
+</script>
+<script>
+const ATT_STYLES = {
+  presente: { badge: 'bg-primary-container text-on-primary-container', dot: 'bg-primary', label: 'Presente' },
+  ausente:  { badge: 'bg-surface-container-high text-on-surface', dot: 'bg-outline', label: 'Ausente' },
+  retraso:  { badge: 'bg-tertiary-container text-on-tertiary-container', dot: 'bg-tertiary', label: 'Retraso' },
+};
+const ATT_ORDER = ['presente', 'ausente', 'retraso'];
+function toggleAttendance(card, name){
+  const current = card.dataset.status;
+  const next = ATT_ORDER[(ATT_ORDER.indexOf(current) + 1) % ATT_ORDER.length];
+  card.dataset.status = next;
+  const style = ATT_STYLES[next];
+  const badge = card.querySelector('span.inline-flex');
+  badge.className = 'inline-flex items-center gap-xs px-2 py-1 rounded-full font-label-sm text-[10px] ' + style.badge;
+  badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${style.dot}"></span>${style.label}`;
+  showToast(`${name}: marcada como ${style.label}`, 'how_to_reg');
+}
+</script>
+</div>
+<!-- Shared Toast Component -->
+<div class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300" id="app-toast">
+<div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" id="app-toast-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span id="app-toast-msg">Listo</span>
+</div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+}
+</script>
+</body></html>

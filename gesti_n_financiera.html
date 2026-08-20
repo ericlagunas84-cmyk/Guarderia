@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael - Gestión de Cobros y Finanzas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;family=Quicksand:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-tint": "#1b6b4a",
+                        "tertiary-fixed": "#f6e291",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceeee",
+                        "background": "#f8fafa",
+                        "inverse-primary": "#8ad6ad",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-bright": "#f8fafa",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "outline": "#6f7a72",
+                        "surface-container-high": "#e6e8e9",
+                        "outline-variant": "#bfc9c0",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "secondary-container": "#a6e6fe",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface": "#f8fafa",
+                        "on-secondary-fixed": "#001f28",
+                        "primary-fixed": "#a6f3c8",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "on-primary-container": "#025d3d",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#1b6b4a",
+                        "on-secondary-container": "#22697d",
+                        "on-primary-fixed": "#002113",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-dim": "#d8dada",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "secondary": "#1f667a",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "lg": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .table-row-hover:hover { background-color: rgba(136, 212, 171, 0.05); }
+    </style>
+<link href="manifest.json" rel="manifest"/>
+<meta content="#1B6B4A" name="theme-color"/>
+<link href="icons/favicon-32.png" rel="icon" type="image/png"/>
+<link href="icons/apple-touch-icon.png" rel="apple-touch-icon"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Gael" name="apple-mobile-web-app-title"/>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+<aside id="sidebarNav" class="flex flex-col h-screen inset-y-0 left-0 w-64 bg-surface-container-low shadow-md py-md px-base shrink-0 fixed z-50 transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
+<button onclick="closeSidebar()" class="md:hidden self-end mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
+<div class="flex items-center gap-sm mb-lg px-base">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">child_care</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Gael</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Inicio
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="listado_de_ni_os.html"><span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Alumnos
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="alta_de_ni_os.html"><span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Dar de Alta
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="registro_diario_beb_s.html"><span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+                Registro Diario
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_financiera.html"><span class="material-symbols-outlined fill" data-icon="payments">payments</span>
+                Finanzas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                Fichas Médicas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
+                Personal
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reportes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Ajustes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Cerrar sesión
+            </a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant/30 space-y-xs">
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 w-full">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop bg-surface/80 backdrop-blur-md shadow-sm h-16 md:h-20 shrink-0">
+<div class="flex items-center md:hidden gap-sm">
+<button onclick="toggleSidebar()" class="p-2 -ml-2 text-primary hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary">Gael</span>
+</div>
+<div class="hidden md:flex items-center w-96 relative">
+<span class="material-symbols-outlined absolute left-sm text-outline">search</span>
+<input class="w-full pl-lg pr-sm py-sm rounded-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface transition-colors font-body-md text-body-md text-on-surface outline-none placeholder:text-outline" placeholder="Buscar alumnos, familias..." type="text"/>
+</div>
+<div class="flex items-center gap-sm md:gap-md">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant/50 hidden md:block"></div>
+<div class="flex items-center gap-sm cursor-pointer hover:bg-surface-container-low p-1 pr-3 rounded-full transition-colors active:scale-95 duration-150 border border-outline-variant/30">
+<img alt="Administrator profile photo" class="w-8 h-8 rounded-full object-cover border border-surface-container-high" data-alt="A professional headshot of an administrator in a modern office setting, bright and approachable, warm lighting, conveying trust and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBspcHyg_eU5eMFqoGEVAVzM6n-VWhXeZCxohcV6bNNv6nGHvbhI3s69M7u8RWCalG5_E-K3-w3f6wRCtvI6i75TyuwhUM0VEbdUECW1d-WJWzxOrFzvH-ZORvNrAkXlev4Kadpk8wZE0CFiG2BfhewpTu95-BqCM8EBzkcahKfPUvdeTUR6K-DKlAhP5WKDvVH7OS4Phsb5BvnPwZNKOfbxXtOGnnoXVmiKjQVc1KdXk7aMsSqKRPm"/>
+<span class="font-label-md text-label-md hidden md:block text-on-surface">Ana G.</span>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop space-y-md md:space-y-lg max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-sm">
+<div>
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-primary">Gestión de Cobros y Finanzas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Monitoreo de ingresos, facturación y estado de cuentas.</p>
+</div>
+<button class="flex items-center justify-center gap-xs bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-xl shadow-[0_4px_12px_rgba(27,107,74,0.2)] hover:shadow-[0_8px_20px_rgba(27,107,74,0.25)] hover:bg-on-primary-container transition-all active:scale-95 h-12 w-full md:w-auto" onclick="showToast('Facturas de octubre generadas para todas las familias', 'receipt_long')">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+                    Emitir Factura Masiva
+                </button>
+</div>
+<!-- Financial Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-sm md:gap-md">
+<!-- Total por Cobrar -->
+<div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">Total por Cobrar (Mes Actual)</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">pending_actions</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-headline-lg md:text-display-lg text-on-surface">$12,450</span>
+<span class="font-body-md text-label-sm text-on-surface-variant ml-xs">USD</span>
+</div>
+<div class="mt-auto pt-sm flex items-center gap-xs text-primary">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="font-label-sm text-label-sm">+5% vs mes anterior</span>
+</div>
+</div>
+<!-- Total Recaudado -->
+<div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Recaudado</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-headline-lg md:text-display-lg text-on-surface">$38,200</span>
+<span class="font-body-md text-label-sm text-on-surface-variant ml-xs">USD</span>
+</div>
+<div class="mt-auto pt-sm flex items-center gap-xs text-on-surface-variant">
+<span class="font-label-sm text-label-sm">82% de la meta mensual</span>
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden ml-xs">
+<div class="h-full bg-primary w-[82%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Pagos Vencidos -->
+<div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">Pagos Vencidos</span>
+<div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-on-error-container">
+<span class="material-symbols-outlined text-sm">warning</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-headline-lg md:text-display-lg text-error">$3,150</span>
+<span class="font-body-md text-label-sm text-error/70 ml-xs">USD</span>
+</div>
+<div class="mt-auto pt-sm flex items-center gap-xs text-error">
+<span class="material-symbols-outlined text-sm">group_off</span>
+<span class="font-label-sm text-label-sm">8 familias con atrasos</span>
+</div>
+</div>
+</div>
+
+<!-- Corte de Caja Diario -->
+<div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+<div class="flex items-center justify-between mb-md flex-wrap gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">point_of_sale</span>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] text-on-surface">Corte de Caja Diario</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="cashCutDate"></p>
+</div>
+</div>
+<span id="cashCutStatus" class="inline-flex items-center gap-xs px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Caja abierta
+</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-sm mb-md">
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Efectivo (sistema)</p>
+<p class="font-label-md text-label-md text-on-surface text-lg">$1,850.00</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Tarjeta</p>
+<p class="font-label-md text-label-md text-on-surface text-lg">$3,120.00</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Transferencia</p>
+<p class="font-label-md text-label-md text-on-surface text-lg">$920.00</p>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-sm items-start md:items-end mb-md">
+<div class="flex-1 w-full">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Efectivo contado físicamente</label>
+<input id="cashCounted" type="number" placeholder="0.00" oninput="updateCashDiff()" class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md"/>
+</div>
+<div class="flex-1 w-full">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Diferencia vs. sistema</p>
+<p id="cashDiff" class="font-label-md text-label-md text-on-surface-variant">Ingresa el conteo para comparar</p>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low rounded-lg p-sm mb-md">
+<span class="font-label-md text-label-md text-on-surface">Total del día (efectivo + tarjeta + transferencia)</span>
+<span class="font-headline-md text-[20px] text-primary">$5,890.00</span>
+</div>
+<button id="closeCashBtn" onclick="closeCashRegister()" class="w-full md:w-auto bg-primary text-on-primary rounded-xl px-lg py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+Cerrar Caja del Día
+</button>
+<p id="cashCutSummary" class="hidden mt-md p-sm bg-primary-container/20 rounded-lg font-body-md text-body-md text-sm text-on-surface"></p>
+</div>
+<!-- Table Controls & Filters -->
+<div class="bg-surface rounded-t-xl p-sm md:p-md border border-outline-variant/30 border-b-0 shadow-[0_4px_12px_rgba(26,43,60,0.02)] flex flex-col md:flex-row gap-sm justify-between items-center">
+<div class="flex flex-col md:flex-row gap-sm w-full md:w-auto">
+<!-- Search Input -->
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-lg pr-sm py-2 rounded-lg bg-surface-container-low border-2 border-outline-variant/30 focus:border-primary focus:bg-surface transition-colors font-body-md text-body-md text-on-surface outline-none placeholder:text-outline/70" placeholder="Buscar familia o alumno..." type="text"/>
+</div>
+<!-- Status Filter -->
+<select class="w-full md:w-auto px-sm py-2 rounded-lg bg-surface-container-low border-2 border-outline-variant/30 focus:border-primary focus:bg-surface font-body-md text-body-md text-on-surface outline-none appearance-none pr-8 relative cursor-pointer" id="statusFilter" onchange="filterInvoices()">
+<option value="all">Todos los Estados</option>
+<option value="pagado">Pagado</option>
+<option value="pendiente">Pendiente</option>
+<option value="atrasado">Atrasado</option>
+</select>
+</div>
+<!-- Month Selector -->
+<div class="flex items-center gap-xs bg-surface-container-low p-1 rounded-lg border border-outline-variant/30 w-full md:w-auto justify-between md:justify-start">
+<button class="p-1 hover:bg-surface-variant rounded-md text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<span class="font-label-md text-label-md text-on-surface px-sm min-w-[120px] text-center">Octubre 2023</span>
+<button class="p-1 hover:bg-surface-variant rounded-md text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface rounded-b-xl border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="py-sm px-md font-bold w-1/4">Familia / Alumno</th>
+<th class="py-sm px-md font-bold">Concepto</th>
+<th class="py-sm px-md font-bold">Monto</th>
+<th class="py-sm px-md font-bold">Fecha Límite</th>
+<th class="py-sm px-md font-bold">Estado</th>
+<th class="py-sm px-md font-bold text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/20">
+<!-- Row 1: Pagado -->
+<tr class="table-row-hover transition-colors group" data-status="pagado">
+<td class="py-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-label-sm">R</div>
+<div>
+<p class="font-label-md text-label-md">Familia Rodríguez</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Mateo R. (Sala Cuna)</p>
+</div>
+</div>
+</td>
+<td class="py-sm px-md text-on-surface-variant">Colegiatura Octubre</td>
+<td class="py-sm px-md font-label-md">$450.00</td>
+<td class="py-sm px-md text-on-surface-variant">05/10/2023</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    Pagado
+                                </span>
+</td>
+<td class="py-sm px-md text-right">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors tooltip-trigger" onclick="showToast('Mostrando recibo de Familia Rodríguez', 'visibility')" title="Ver Recibo">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-surface-container-high rounded-md transition-colors" onclick="showToast('Descargando recibo en PDF...', 'download')" title="Descargar PDF">
+<span class="material-symbols-outlined text-sm">download</span>
+</button>
+<button class="px-2 py-1 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="generateInvoice('Familia Rodríguez', '$450.00', this)" title="Generar Factura">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
+<span class="hidden md:inline">Factura</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Pendiente -->
+<tr class="table-row-hover transition-colors group" data-status="pendiente" id="rowGarcia">
+<td class="py-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-sm">G</div>
+<div>
+<p class="font-label-md text-label-md">Familia García</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sofía G. (Pre-K)</p>
+</div>
+</div>
+</td>
+<td class="py-sm px-md text-on-surface-variant">Colegiatura Octubre + Comedor</td>
+<td class="py-sm px-md font-label-md">$520.00</td>
+<td class="py-sm px-md text-on-surface-variant">10/10/2023</td>
+<td class="py-sm px-md" id="statusCellGarcia">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-label-sm border border-tertiary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                    Pendiente
+                                </span>
+</td>
+<td class="py-sm px-md text-right" id="actionsCellGarcia">
+<div class="flex items-center justify-end gap-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="markPaid('Garcia')">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">check_circle</span>
+<span class="hidden md:inline">Marcar Pagado</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" onclick="showToast('Recordatorio de pago enviado a Familia García', 'notifications_active')" title="Enviar Recordatorio">
+<span class="material-symbols-outlined text-sm">notifications_active</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Atrasado -->
+<tr class="table-row-hover transition-colors group bg-error-container/10" data-status="atrasado">
+<td class="py-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-label-sm border border-error/20">L</div>
+<div>
+<p class="font-label-md text-label-md text-error">Familia López</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Lucas L. (Jardín)</p>
+</div>
+</div>
+</td>
+<td class="py-sm px-md text-on-surface-variant">Colegiatura Septiembre</td>
+<td class="py-sm px-md font-label-md">$450.00</td>
+<td class="py-sm px-md text-error font-semibold">05/09/2023</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-error text-on-error font-label-sm text-label-sm shadow-sm animate-pulse">
+<span class="material-symbols-outlined text-sm" style="font-size: 14px;">warning</span>
+                                    Atrasado
+                                </span>
+</td>
+<td class="py-sm px-md text-right">
+<div class="flex items-center justify-end gap-xs">
+<button class="px-2 py-1 border border-error text-error hover:bg-error-container font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="showToast('Aviso de cobro enviado a Familia López', 'mail')">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">mail</span>
+<span class="hidden md:inline">Reclamar</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Pendiente -->
+<tr class="table-row-hover transition-colors group" data-status="pendiente" id="rowMartinez">
+<td class="py-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-sm">M</div>
+<div>
+<p class="font-label-md text-label-md">Familia Martínez</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Emma M. (Sala Cuna)</p>
+</div>
+</div>
+</td>
+<td class="py-sm px-md text-on-surface-variant">Materiales Anuales</td>
+<td class="py-sm px-md font-label-md">$150.00</td>
+<td class="py-sm px-md text-on-surface-variant">15/10/2023</td>
+<td class="py-sm px-md" id="statusCellMartinez">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-label-sm border border-tertiary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                    Pendiente
+                                </span>
+</td>
+<td class="py-sm px-md text-right" id="actionsCellMartinez">
+<div class="flex items-center justify-end gap-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-2 py-1 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="markPaid('Martinez')">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">check_circle</span>
+<span class="hidden md:inline">Marcar Pagado</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination (Simple) -->
+<div class="px-md py-sm border-t border-outline-variant/30 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm bg-surface-container-lowest">
+<span>Mostrando 1-4 de 42 registros</span>
+<div class="flex gap-xs">
+<button class="p-1 rounded hover:bg-surface-container-high disabled:opacity-50"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="p-1 rounded bg-primary-container text-on-primary-container w-6 h-6 flex items-center justify-center">1</button>
+<button class="p-1 rounded hover:bg-surface-container-high w-6 h-6 flex items-center justify-center">2</button>
+<button class="p-1 rounded hover:bg-surface-container-high w-6 h-6 flex items-center justify-center">...</button>
+<button class="p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+<script>
+const FAMILY_NAMES = { Garcia: 'Familia García', Martinez: 'Familia Martínez' };
+function markPaid(key){
+  const statusCell = document.getElementById('statusCell' + key);
+  const actionsCell = document.getElementById('actionsCell' + key);
+  const row = document.getElementById('row' + key);
+  const amount = row.querySelector('td:nth-child(3)').textContent.trim();
+  statusCell.innerHTML = `
+    <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
+      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+      Pagado
+    </span>`;
+  actionsCell.innerHTML = `
+    <div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+      <button onclick="showToast('Mostrando recibo', 'visibility')" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" title="Ver Recibo">
+        <span class="material-symbols-outlined text-sm">visibility</span>
+      </button>
+      <button onclick="showToast('Descargando recibo en PDF...', 'download')" class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-surface-container-high rounded-md transition-colors" title="Descargar PDF">
+        <span class="material-symbols-outlined text-sm">download</span>
+      </button>
+      <button onclick="generateInvoice('${FAMILY_NAMES[key]}', '${amount}', this)" class="px-2 py-1 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary font-label-sm rounded-md transition-colors flex items-center gap-xs" title="Generar Factura">
+        <span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
+        <span class="hidden md:inline">Factura</span>
+      </button>
+    </div>`;
+  row.dataset.status = 'pagado';
+  showToast(`Pago de ${FAMILY_NAMES[key]} marcado como recibido`, 'check_circle');
+  filterInvoices();
+}
+function filterInvoices(){
+  const val = document.getElementById('statusFilter').value;
+  document.querySelectorAll('tbody tr[data-status]').forEach(row => {
+    row.style.display = (val === 'all' || row.dataset.status === val) ? '' : 'none';
+  });
+}
+
+/* ===== Facturación en 1 clic ===== */
+let invoiceCounter = 3200;
+function generateInvoice(family, amount, btn){
+  invoiceCounter++;
+  const folio = 'FAC-' + invoiceCounter;
+  if(btn){
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin" style="font-size:16px;">progress_activity</span><span class="hidden md:inline">Generando…</span>';
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm" style="font-size:16px;">check_circle</span><span class="hidden md:inline">' + folio + '</span>';
+      btn.classList.add('opacity-70');
+      showToast(`Factura ${folio} generada para ${family} · ${amount}`, 'receipt_long');
+    }, 700);
+  }
+}
+
+/* ===== Corte de Caja Diario ===== */
+const CASH_SYSTEM_TOTAL = 1850.00;
+let cashRegisterClosed = false;
+
+function setCashCutDate(){
+  const el = document.getElementById('cashCutDate');
+  if(el) el.textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function updateCashDiff(){
+  const input = document.getElementById('cashCounted');
+  const diffEl = document.getElementById('cashDiff');
+  const raw = input.value.trim();
+  if(raw === ''){
+    diffEl.textContent = 'Ingresa el conteo para comparar';
+    diffEl.className = 'font-label-md text-label-md text-on-surface-variant';
+    return;
+  }
+  const counted = parseFloat(raw) || 0;
+  const diff = counted - CASH_SYSTEM_TOTAL;
+  if(Math.abs(diff) < 0.01){
+    diffEl.textContent = '$0.00 · Cuadra exacto ✓';
+    diffEl.className = 'font-label-md text-label-md text-primary font-bold';
+  } else if(diff > 0){
+    diffEl.textContent = '+$' + diff.toFixed(2) + ' (sobrante)';
+    diffEl.className = 'font-label-md text-label-md text-tertiary font-bold';
+  } else {
+    diffEl.textContent = '-$' + Math.abs(diff).toFixed(2) + ' (faltante)';
+    diffEl.className = 'font-label-md text-label-md text-error font-bold';
+  }
+}
+
+function closeCashRegister(){
+  if(cashRegisterClosed) return;
+  const input = document.getElementById('cashCounted');
+  if(input.value.trim() === ''){
+    showToast('Ingresa el efectivo contado antes de cerrar la caja', 'error');
+    return;
+  }
+  cashRegisterClosed = true;
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  const statusEl = document.getElementById('cashCutStatus');
+  statusEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Caja cerrada';
+  statusEl.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+  statusEl.classList.add('bg-primary-container', 'text-on-primary-container');
+
+  const btn = document.getElementById('closeCashBtn');
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+  input.disabled = true;
+
+  const diffText = document.getElementById('cashDiff').textContent;
+  const summary = document.getElementById('cashCutSummary');
+  summary.textContent = `Caja cerrada a las ${time} por Ana G. · Total del día: $5,890.00 · Efectivo contado: $${parseFloat(input.value).toFixed(2)} (${diffText})`;
+  summary.classList.remove('hidden');
+
+  showToast('Corte de caja del día cerrado correctamente', 'lock');
+}
+
+setCashCutDate();
+</script>
+</div>
+<!-- Shared Toast Component -->
+<div class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300" id="app-toast">
+<div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" id="app-toast-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span id="app-toast-msg">Listo</span>
+</div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+}
+</script>
+</body></html>

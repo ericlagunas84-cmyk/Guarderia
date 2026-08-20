@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>La Jornada de Leo - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-high": "#e6e8e9",
+                        "outline-variant": "#bfc9c0",
+                        "secondary-container": "#a6e6fe",
+                        "surface": "#f8fafa",
+                        "inverse-primary": "#8ad6ad",
+                        "primary-container": "#88d4ab",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "on-surface-variant": "#3f4942",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "tertiary": "#6c5e1b",
+                        "on-secondary-container": "#22697d",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#025d3d",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "on-tertiary-container": "#5e500d",
+                        "surface-bright": "#f8fafa",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "primary": "#1b6b4a",
+                        "surface-tint": "#1b6b4a",
+                        "on-primary-fixed-variant": "#005235",
+                        "secondary": "#1f667a",
+                        "primary-fixed": "#a6f3c8",
+                        "surface-variant": "#e1e3e3",
+                        "on-primary-fixed": "#002113",
+                        "surface-dim": "#d8dada",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#211b00",
+                        "tertiary-container": "#d7c476",
+                        "surface-container": "#eceeee",
+                        "inverse-surface": "#2e3131",
+                        "secondary-fixed": "#b5ebff",
+                        "tertiary-fixed": "#f6e291",
+                        "on-error-container": "#93000a",
+                        "background": "#f8fafa",
+                        "outline": "#6f7a72",
+                        "on-secondary-fixed": "#001f28",
+                        "surface-container-low": "#f2f4f4",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xl": "64px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "base": "8px"
+                    },
+                    fontFamily: {
+                        "label-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "display-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"]
+                    },
+                    fontSize: {
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "700" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "display-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.03em", fontWeight: "800" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom timeline line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: -24px;
+            left: 23px; /* Center of the 48px icon container */
+            width: 2px;
+            background-color: theme('colors.surface-container-high');
+            z-index: 0;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-surface shadow-sm shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] sticky z-40">
+<div class="flex justify-between items-center w-full px-margin-mobile h-16">
+<div class="flex items-center gap-base">
+<img class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of an adult parent smiling warmly. Soft, natural lighting. The image is professional yet approachable, fitting for a modern childcare app's top navigation bar avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDso-_RH20z2kT--15pErb6UGsYb-WHuWkNWVFv7hz86y_MGqis4WQRez3pPQd69XgKcMfJ7PCVNa8EPuJd6EDGFFWOE9kwjnt4MTqY10H16wM0WKFW0isYNdXMm_tJcHjQa5Yfw1a7kn4HHRVTeGDJMHH5VNa_lquAwUMIdWNWKvFRE24KLogJMhZIbTOo_zMIjbxOl_cxCczDnP7H2nXK8WIGKjW42hDhi-Y78VO9gjY5nQx1ttWf"/>
+<span class="font-display-lg text-headline-md text-primary">Gael</span>
+</div>
+<button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary">
+<span class="material-symbols-outlined icon-fill">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="max-w-2xl mx-auto px-margin-mobile py-md flex flex-col gap-md">
+<!-- Header Section -->
+<section class="flex flex-col gap-xs mb-sm">
+<div class="flex items-center gap-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden border-4 border-surface shadow-md flex-shrink-0 z-10 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up, joyful portrait of a toddler boy named Leo, laughing outside. Soft dappled sunlight through trees. Bright, warm, nurturing aesthetic. Used as the main child profile image at the top of the daily log screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOzBsq_99BIdKxA-lEQBTfzZ-17dPA9u7BS7O1H4oFOzURdFhzVbVUM2SV9kURJgNg7rhp3cLZmIgcjugGiyC7QXgWcWIBeAXKMcIj2uEj3gtVDGZL0do63NOhegPd92o9VmNuh_Zbh-FMdQA8HTKoKzcyF5FO_vZLkKPu8QBpmbxsGYAEdSLgKnnQ4VKdjOMCNqb68ep0tuSXmY4AyS3ierR-DnKZhcP5X76pjtYXvBwaqQpL0XFH"/>
+</div>
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">La Jornada de Leo</h1>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        Hoy, 24 de Octubre
+                    </p>
+</div>
+</div>
+</section>
+<!-- Timeline Container -->
+<div class="flex flex-col gap-lg relative">
+<!-- 1. Alimentación -->
+<div class="timeline-item relative">
+<div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
+<div class="flex gap-sm relative z-10">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined icon-fill">restaurant</span>
+</div>
+<div class="flex-grow pt-2">
+<h2 class="font-headline-md text-headline-md text-secondary mb-sm">Alimentación</h2>
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container flex flex-col gap-sm">
+<!-- Desayuno -->
+<div class="flex justify-between items-start border-b border-surface-container-high pb-sm">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Desayuno</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Fruta y Avena</p>
+<p class="font-label-sm text-label-sm text-outline mt-1">8:30 AM</p>
+</div>
+<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] icon-fill">check_circle</span>
+<span class="font-label-sm text-label-sm">Completado</span>
+</div>
+</div>
+<!-- Almuerzo -->
+<div class="flex justify-between items-start pt-sm">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Almuerzo</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Pollo con Verduras</p>
+<p class="font-label-sm text-label-sm text-outline mt-1">12:30 PM</p>
+</div>
+<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] icon-fill">check_circle</span>
+<span class="font-label-sm text-label-sm">Completado</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Sueño -->
+<div class="timeline-item relative">
+<div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
+<div class="flex gap-sm relative z-10">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined icon-fill">bedtime</span>
+</div>
+<div class="flex-grow pt-2">
+<h2 class="font-headline-md text-headline-md text-primary mb-sm">Sueño</h2>
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-12 bg-primary rounded-full"></div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Siesta Mañana</h3>
+<p class="font-body-md text-body-md text-primary font-medium mt-1">10:00 - 11:30</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[16px]">sentiment_satisfied</span>
+                                        Descansó muy tranquilo
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Higiene -->
+<div class="timeline-item relative">
+<div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
+<div class="flex gap-sm relative z-10">
+<div class="w-12 h-12 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined icon-fill">clean_hands</span>
+</div>
+<div class="flex-grow pt-2">
+<h2 class="font-headline-md text-headline-md text-tertiary mb-sm">Higiene</h2>
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<div class="bg-surface-container-high p-2 rounded-full text-on-surface-variant">
+<span class="material-symbols-outlined">baby_changing_station</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Cambio de pañal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Todo bien, sin irritaciones.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-outline">11:45 AM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Actividades -->
+<div class="timeline-item relative">
+<div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
+<div class="flex gap-sm relative z-10">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed-dim text-on-secondary-fixed-variant flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined icon-fill">palette</span>
+</div>
+<div class="flex-grow pt-2">
+<h2 class="font-headline-md text-headline-md text-secondary mb-sm">Actividades</h2>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container">
+<img class="w-full h-40 object-cover" data-alt="A bright, colorful photograph of a toddler's hands covered in non-toxic finger paints, creating art on a large white paper. The environment is a clean, well-lit classroom. Warm, playful, and creative mood. Used as a memory photo for a childcare daily log." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFmmNDMjiDxUt3TpkR6-hHMnKlEVawAHUund50Y22wPRrWZOZV2g_ornsVQEJg0XpIMILafih_0ndsmcbkC54Hlg91aKiXOQIjF86MehOn6XD9CCLGMkgc6_hsDYk5xwO22fdNjoBRdbTGr-6Ho3iPxJb-EkkOI5z6Fff5pOkxzL4QhS5ZQI7UX2oI94Swv2PH-ahn4HLB5A_5DL9GG03DTtP5XedrUyvJTImaha2KkpTX4fqk-kGF"/>
+<div class="p-md">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label-md text-label-md text-on-surface text-lg">Taller de Arte</h3>
+<span class="font-label-sm text-label-sm text-outline bg-surface-container-low px-2 py-1 rounded">2:00 PM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Pintura con dedos explorando texturas y colores primarios. ¡Se divirtió mucho creando su propia obra maestra!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Reacción y comentario en vivo -->
+<div class="mt-lg bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container">
+<div class="flex items-center gap-sm mb-sm">
+<button id="likeBtn" onclick="toggleLike()" class="flex items-center gap-1 px-3 py-2 rounded-full bg-error-container text-on-error-container font-label-md text-label-md transition-transform active:scale-95">
+<span id="likeIcon" class="material-symbols-outlined text-[18px]">favorite_border</span>
+<span id="likeCount">Enviar cariño</span>
+</button>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-sm">Comentario para la maestra</h3>
+<textarea id="commentInput" class="w-full border border-outline-variant rounded-lg p-sm font-body-md text-body-md" rows="2" placeholder="Escribe una nota sobre el día de Leo..."></textarea>
+<button onclick="addComment()" class="mt-sm bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md">Enviar</button>
+<div id="commentList" class="mt-md space-y-2"></div>
+</div>
+</div>
+</div>
+</main>
+<script>
+let liked = false;
+function toggleLike(){
+  liked = !liked;
+  document.getElementById('likeIcon').textContent = liked ? 'favorite' : 'favorite_border';
+  document.getElementById('likeIcon').style.fontVariationSettings = liked ? "'FILL' 1" : "'FILL' 0";
+  document.getElementById('likeCount').textContent = liked ? '¡Cariño enviado!' : 'Enviar cariño';
+  if(liked) showToast('La maestra de Leo recibió tu mensaje de cariño ❤️', 'favorite');
+}
+function addComment(){
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if(!text){ showToast('Escribe algo antes de enviar', 'error'); return; }
+  const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'bg-secondary-container/30 rounded-lg p-sm text-body-md font-body-md text-on-surface flex justify-between gap-sm';
+  div.innerHTML = `<span>${text.replace(/</g,'&lt;')}</span><span class="text-outline text-[11px] whitespace-nowrap">${time}</span>`;
+  document.getElementById('commentList').prepend(div);
+  input.value = '';
+  showToast('Comentario enviado a la maestra', 'send');
+}
+</script>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
+<!-- Desktop SideNav Placeholder (Hidden on mobile) -->
+<div class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col py-md bg-surface shadow-xl shadow-2xl h-full w-80 rounded-r-xl border-r-0">
+<div class="px-md mb-lg flex items-center gap-base">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of an adult parent smiling warmly. Soft, natural lighting. The image is professional yet approachable, fitting for a modern childcare app's navigation drawer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB3DYhQ0EMpBBqwY0GlRh4ZsO6-MJjlUvak51NDdCl-FRGFEnrbY2K2f0j1lSYu42teu8mwn19DdmK3Xqr9X51mL6__0LSDMopUTE4GaQCIsiORHMKPZUPzkxxsxDFPIquIR6wMG1yBvKZE8gVhjAbRDt01wJapyA---SyRKj9dFwrOUlQIeoUW0xqFcWCAmxWc6CeGGUAqXLF7rG4ynDRUK59thCfjCyS5Kj2F8AyfLJ5P4yPQNxi"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">The Miller Family</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Child: Leo Miller</p>
+<p class="font-label-sm text-label-sm text-primary mt-1">Premium Member</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="dashboard_principal.html"><span class="material-symbols-outlined">dashboard</span><span class="font-label-md text-label-md">Inicio</span></a>
+<a class="bg-secondary-container text-on-secondary-container rounded-full mx-2 px-4 py-3 flex items-center gap-4 translate-x-1 transition-transform" href="jornada_diaria_detallada.html"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event_note</span><span class="font-label-md text-label-md font-bold">Bitácora del Día</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="salud_y_seguridad.html"><span class="material-symbols-outlined">medical_services</span><span class="font-label-md text-label-md">Salud</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="seguimiento_estancia.html"><span class="material-symbols-outlined">distance</span><span class="font-label-md text-label-md">Estancia</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="Menusemanal.html"><span class="material-symbols-outlined">restaurant_menu</span><span class="font-label-md text-label-md">Menú Semanal</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="finanzas_y_calendario.html"><span class="material-symbols-outlined">payments</span><span class="font-label-md text-label-md">Pagos y Calendario</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="mensajer_a.html"><span class="material-symbols-outlined">mail</span><span class="font-label-md text-label-md">Mensajes</span></a>
+
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="encuestas.html"><span class="material-symbols-outlined">rate_review</span><span class="font-label-md text-label-md">Encuestas</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="contacto.html"><span class="material-symbols-outlined">support_agent</span><span class="font-label-md text-label-md">Contacto</span></a>
+
+
+
+
+
+</nav>
+</div>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

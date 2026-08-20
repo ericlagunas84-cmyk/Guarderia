@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael - Panel de Administración</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-tint": "#1b6b4a",
+                        "tertiary-fixed": "#f6e291",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceeee",
+                        "background": "#f8fafa",
+                        "inverse-primary": "#8ad6ad",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-bright": "#f8fafa",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "outline": "#6f7a72",
+                        "surface-container-high": "#e6e8e9",
+                        "outline-variant": "#bfc9c0",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "secondary-container": "#a6e6fe",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface": "#f8fafa",
+                        "on-secondary-fixed": "#001f28",
+                        "primary-fixed": "#a6f3c8",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "on-primary-container": "#025d3d",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#1b6b4a",
+                        "on-secondary-container": "#22697d",
+                        "on-primary-fixed": "#002113",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-dim": "#d8dada",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "secondary": "#1f667a",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "lg": "40px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="manifest.json" rel="manifest"/>
+<meta content="#1B6B4A" name="theme-color"/>
+<link href="icons/favicon-32.png" rel="icon" type="image/png"/>
+<link href="icons/apple-touch-icon.png" rel="apple-touch-icon"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Gael" name="apple-mobile-web-app-title"/>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+<aside id="sidebarNav" class="fixed md:static inset-y-0 left-0 flex flex-col h-full py-md px-base bg-surface-container-low dark:bg-inverse-surface shadow-md w-64 z-50 transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
+<button onclick="closeSidebar()" class="md:hidden self-end mb-sm p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined">close</span></button>
+
+<div class="mb-lg flex flex-col items-center">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-sm shadow-sm">
+<span class="material-symbols-outlined fill text-on-primary-container text-[32px]" data-icon="child_care">child_care</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim text-center">Gael</h1>
+<p class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant text-center mt-xs">Panel de Administración</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-sm px-sm py-sm bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined fill" data-icon="dashboard">dashboard</span>
+                Inicio
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="listado_de_ni_os.html"><span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Alumnos
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="alta_de_ni_os.html"><span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Dar de Alta
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="registro_diario_beb_s.html"><span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+                Registro Diario
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_financiera.html"><span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Finanzas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                Fichas Médicas
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
+                Personal
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reportes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Ajustes
+            </a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 rounded-xl font-label-md text-label-md transition-all duration-200 ease-in-out" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Cerrar sesión
+            </a>
+</nav>
+<div class="mt-auto pt-md space-y-sm border-t border-surface-variant/50">
+<button class="w-full flex items-center justify-center gap-sm py-sm px-md bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-sm hover:shadow-md transition-all duration-200 active:scale-95" onclick="location.href='alta_de_ni_os.html'">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Agregar Alumno
+            </button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative md:ml-64">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop bg-surface/80 backdrop-blur-md shadow-sm h-16 md:h-20 flex-shrink-0">
+<div class="flex items-center gap-sm md:hidden">
+<button onclick="toggleSidebar()" class="p-xs text-on-surface hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">Gael</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-md ml-lg">
+<div class="relative w-full">
+<span class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</span>
+<input class="w-full pl-xl pr-md py-sm bg-surface-container-low border-2 border-surface-variant rounded-full font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:bg-surface transition-colors placeholder:text-outline-variant" onkeydown="if(event.key==='Enter'){showToast('Buscando: '+this.value, 'search');}" placeholder="Buscar alumnos, personal..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm ml-auto">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</button>
+<div class="h-8 w-px bg-surface-variant mx-xs"></div>
+<button class="flex items-center gap-xs p-xs hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
+<img alt="Administrator profile photo" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJLmaHwUNyqRJN5TbFa4u4HkYR-voN8I2pVf-xZvh6Nm8Ka7_ds7xWq52ZTn-N4Hhst06noPLrrUf8kIy75M7volynCGcBxpw0xgp8qr74q2glasLjX0Tx7sbIoHfyVQwp6svfSXlwJUwSp9zaTSlmYgNdpzkdp4BAWAE0_FoyzjG4x41kX1qfzWqG61gOF4zxPO-rct1Hbq3zTnCxB4oiapyUPWgQYCAr-Ywtr1QjmgG73jWkFgRE"/>
+</button>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background pb-xl">
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Panel de Administración</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Bienvenido de vuelta. Aquí está el resumen de hoy.</p>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 md:flex-none items-center justify-center gap-xs px-md py-sm bg-primary-container text-on-primary-container rounded-full font-label-md text-label-md hover:bg-primary/20 transition-colors shadow-sm active:scale-95" onclick="location.href='alta_de_ni_os.html'">
+<span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                            Inscribir
+                        </button>
+<button class="flex-1 md:flex-none items-center justify-center gap-xs px-md py-sm bg-surface-container-high text-on-surface rounded-full font-label-md text-label-md hover:bg-surface-variant transition-colors shadow-sm active:scale-95" onclick="location.href='gesti_n_financiera.html'">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+                            Pago
+                        </button>
+</div>
+</div>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Metric Card 1 -->
+<div class="bg-surface rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all duration-300 border border-surface-variant/30 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary-container/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-primary-container/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Alumnos Activos</h3>
+</div>
+<div class="mt-auto relative z-10">
+<p class="font-display-lg text-display-lg text-on-surface">45</p>
+<p class="font-label-sm text-label-sm text-primary mt-xs flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                                +2 esta semana
+                            </p>
+</div>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all duration-300 border border-surface-variant/30 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-secondary-container/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-secondary-container/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Personal Presente</h3>
+</div>
+<div class="mt-auto relative z-10">
+<div class="flex items-baseline gap-xs">
+<p class="font-display-lg text-display-lg text-on-surface">12</p>
+<p class="font-body-md text-body-md text-on-surface-variant">/ 15</p>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 mt-sm overflow-hidden">
+<div class="bg-secondary h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all duration-300 border border-surface-variant/30 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-tertiary-container/20 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/50 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Ingresos del Mes</h3>
+</div>
+<div class="mt-auto relative z-10">
+<p class="font-headline-md text-headline-md text-on-surface truncate">$125,000</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">MXN Mensual</p>
+</div>
+</div>
+<!-- Metric Card 4 -->
+<div class="bg-error-container/30 rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_rgba(186,26,26,0.1)] transition-all duration-300 border border-error-container flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-error/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error animate-pulse">
+<span class="material-symbols-outlined fill" data-icon="warning">warning</span>
+</div>
+<h3 class="font-label-md text-label-md text-error">Alertas de Salud</h3>
+</div>
+<div class="mt-auto relative z-10">
+<p class="font-display-lg text-display-lg text-error">2</p>
+<p class="font-label-sm text-label-sm text-on-error-container mt-xs">Requieren atención</p>
+</div>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Recent Activity Panel -->
+<div class="lg:col-span-2 bg-surface rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] border border-surface-variant/30 flex flex-col">
+<div class="flex justify-between items-center mb-md pb-sm border-b border-surface-variant/50">
+<h3 class="font-headline-md text-headline-md text-on-surface">Actividad Reciente</h3>
+<button class="text-primary font-label-md text-label-md hover:underline" onclick="location.href='gesti_n_financiera.html'">Ver todo</button>
+</div>
+<div class="space-y-base flex-1">
+<!-- Activity Item 1 -->
+<div class="flex items-start gap-md p-sm hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center text-primary shrink-0 mt-xs">
+<span class="material-symbols-outlined" data-icon="paid">paid</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface font-semibold">Pago recibido de Familia Miller</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Colegiatura mensual - Salón Sol</p>
+</div>
+<span class="font-label-sm text-label-sm text-outline shrink-0">Hace 10 min</span>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-start gap-md p-sm bg-error-container/20 rounded-lg transition-colors border border-error-container/50">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error shrink-0 mt-xs">
+<span class="material-symbols-outlined" data-icon="medical_information">medical_information</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-error font-semibold">Alerta de Alergia: Emma Davis</p>
+<p class="font-body-md text-body-md text-on-error-container text-sm">Revisión de menú sugerida por exposición a nueces.</p>
+</div>
+<span class="font-label-sm text-label-sm text-error shrink-0">Hace 45 min</span>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-start gap-md p-sm hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary shrink-0 mt-xs">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface font-semibold">Nuevo reporte de incidente: Mateo López</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Caída leve en área de juegos. Padre notificado.</p>
+</div>
+<span class="font-label-sm text-label-sm text-outline shrink-0">Hace 2 horas</span>
+</div>
+</div>
+<button class="mt-md w-full py-sm border-2 border-surface-variant rounded-full font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors active:scale-95" onclick="showToast('Generando reporte diario en PDF...', 'summarize')">
+                            Generar Reporte Diario
+                        </button>
+</div>
+<!-- Occupancy Chart Panel -->
+<div class="bg-surface rounded-xl p-md shadow-[0_4px_12px_rgba(26,43,60,0.05)] border border-surface-variant/30 flex flex-col">
+<div class="mb-md pb-sm border-b border-surface-variant/50">
+<h3 class="font-headline-md text-headline-md text-on-surface">Ocupación por Salón</h3>
+</div>
+<div class="flex-1 flex flex-col justify-center space-y-md">
+<!-- Class 1 -->
+<div>
+<div class="flex justify-between mb-xs">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+                                        Salón Sol (Pre-K)
+                                    </span>
+<span class="font-label-md text-label-md text-on-surface-variant">18/20</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<!-- Class 2 -->
+<div>
+<div class="flex justify-between mb-xs">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+                                        Salón Luna (Toddlers)
+                                    </span>
+<span class="font-label-md text-label-md text-on-surface-variant">15/15</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Class 3 -->
+<div>
+<div class="flex justify-between mb-xs">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+                                        Bebés (Nursery)
+                                    </span>
+<span class="font-label-md text-label-md text-on-surface-variant">12/15</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<div class="mt-md p-sm bg-surface-container-low rounded-lg flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-xs" data-icon="info">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Salón Luna se encuentra a máxima capacidad. Considere reasignación para nuevas inscripciones.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Shared Toast Component -->
+<div class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300" id="app-toast">
+<div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]" id="app-toast-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span id="app-toast-msg">Listo</span>
+</div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+
+<script>
+function toggleSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const opening = nav.classList.contains('-translate-x-full');
+  nav.classList.toggle('-translate-x-full', !opening);
+  nav.classList.toggle('translate-x-0', opening);
+  backdrop.classList.toggle('hidden', !opening);
+}
+function closeSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  nav.classList.add('-translate-x-full');
+  nav.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+}
+</script>
+</body></html>

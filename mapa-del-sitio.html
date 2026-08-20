@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gael — Mapa del sitio</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&family=Quicksand:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1b6b4a; --primary-container:#88d4ab; --bg:#f8fafa; --ink:#191c1d;
+    --muted:#3f4942; --border:#e1e3e3; --secondary:#1f667a; --secondary-container:#a6e6fe;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Nunito Sans',sans-serif; background:var(--bg); color:var(--ink);}
+  header{padding:40px 24px 24px; text-align:center;}
+  header h1{font-family:'Quicksand',sans-serif; font-size:32px; color:var(--primary); margin:0 0 6px;}
+  header p{color:var(--muted); margin:0;}
+  .cta{
+    display:inline-block; margin-top:18px; background:var(--primary); color:#fff; text-decoration:none;
+    padding:12px 28px; border-radius:999px; font-weight:700; font-family:'Nunito Sans',sans-serif;
+  }
+  main{max-width:1000px; margin:0 auto; padding:0 24px 60px;}
+  .group{margin-bottom:36px;}
+  .group h2{font-family:'Quicksand',sans-serif; color:var(--ink); font-size:20px; border-bottom:2px solid var(--border); padding-bottom:10px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin-top:16px;}
+  a.card{
+    display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--border);
+    border-radius:14px; padding:14px 16px; text-decoration:none; color:var(--ink);
+    box-shadow:0 4px 12px rgba(26,43,60,0.05); transition:transform .15s, box-shadow .15s;
+  }
+  a.card:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(26,43,60,0.1);}
+  .icn{
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--primary-container); color:var(--primary); font-family:'Material Symbols Outlined'; flex-shrink:0;
+  }
+  .group.staff .icn{background:var(--secondary-container); color:var(--secondary);}
+  .card span.label{font-weight:700; font-size:14.5px;}
+</style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body>
+<header>
+  <h1>🌱 Gael</h1>
+  <p>Mapa de navegación del prototipo — todas las pantallas están conectadas entre sí.</p>
+  <a class="cta" href="inicio_de_sesi_n.html">Ir al inicio de sesión</a>
+</header>
+<main>
+  <div class="group">
+    <h2>👨‍👩‍👧 App de Padres</h2>
+    <div class="grid">
+      <a class="card" href="dashboard_principal.html"><span class="icn">🏠</span><span class="label">Dashboard Principal</span></a>
+      <a class="card" href="jornada_diaria_detallada.html"><span class="icn">📔</span><span class="label">Bitácora del Día</span></a>
+      <a class="card" href="salud_y_seguridad.html"><span class="icn">🩺</span><span class="label">Salud y Seguridad</span></a>
+      <a class="card" href="seguimiento_estancia.html"><span class="icn">📍</span><span class="label">Seguimiento Estancia</span></a>
+      <a class="card" href="Menusemanal.html"><span class="icn">🍽️</span><span class="label">Menú Semanal</span></a>
+      <a class="card" href="finanzas_y_calendario.html"><span class="icn">💳</span><span class="label">Finanzas y Calendario</span></a>
+      <a class="card" href="mensajer_a.html"><span class="icn">💬</span><span class="label">Mensajería</span></a>
+      <a class="card" href="encuestas.html"><span class="icn">📝</span><span class="label">Encuestas</span></a>
+      <a class="card" href="contacto.html"><span class="icn">📞</span><span class="label">Contacto</span></a>
+    </div>
+  </div>
+  <div class="group staff">
+    <h2>🍎 App de Staff / Administración</h2>
+    <div class="grid">
+      <a class="card" href="dashboard_de_administraci_n.html"><span class="icn">🖥️</span><span class="label">Dashboard Admin</span></a>
+      <a class="card" href="listado_de_ni_os.html"><span class="icn">🧒</span><span class="label">Listado de Niños</span></a>
+      <a class="card" href="alta_de_ni_os.html"><span class="icn">📝</span><span class="label">Dar de Alta</span></a>
+      <a class="card" href="registro_diario_beb_s.html"><span class="icn">🍼</span><span class="label">Registro Diario Bebés</span></a>
+      <a class="card" href="gesti_n_financiera.html"><span class="icn">💰</span><span class="label">Gestión Financiera</span></a>
+      <a class="card" href="fichas_m_dicas_y_salud.html"><span class="icn">🏥</span><span class="label">Fichas Médicas y Salud</span></a>
+      <a class="card" href="gesti_n_de_personal.html"><span class="icn">👩‍🏫</span><span class="label">Gestión de Personal</span></a>
+    </div>
+  </div>
+  <div class="group">
+    <h2>🔑 Acceso</h2>
+    <div class="grid">
+      <a class="card" href="inicio_de_sesi_n.html"><span class="icn">🔐</span><span class="label">Iniciar Sesión</span></a>
+    </div>
+  </div>
+</main>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>

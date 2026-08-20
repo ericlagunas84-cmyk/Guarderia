@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mensajería - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#b5ebff",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "surface-dim": "#d8dada",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "inverse-primary": "#8ad6ad",
+                        "surface-container": "#eceeee",
+                        "tertiary": "#6c5e1b",
+                        "outline": "#6f7a72",
+                        "primary-fixed": "#a6f3c8",
+                        "on-secondary-container": "#22697d",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "on-tertiary-container": "#5e500d",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8fafa",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-container-low": "#f2f4f4",
+                        "background": "#f8fafa",
+                        "surface": "#f8fafa",
+                        "surface-variant": "#e1e3e3",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "outline-variant": "#bfc9c0",
+                        "surface-container-high": "#e6e8e9",
+                        "secondary-container": "#a6e6fe",
+                        "surface-tint": "#1b6b4a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-primary-container": "#025d3d",
+                        "tertiary-container": "#d7c476",
+                        "error": "#ba1a1a",
+                        "secondary": "#1f667a",
+                        "tertiary-fixed": "#f6e291",
+                        "primary": "#1b6b4a",
+                        "on-primary-fixed": "#002113",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#001f28",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    "spacing": { "gutter": "16px", "md": "24px", "lg": "40px", "sm": "12px", "margin-mobile": "16px", "margin-desktop": "32px", "base": "8px", "xs": "4px", "xl": "64px" },
+                    "fontFamily": { "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "display-lg": ["Quicksand"], "body-lg": ["Nunito Sans"], "headline-lg-mobile": ["Quicksand"], "label-sm": ["Nunito Sans"], "headline-lg": ["Quicksand"], "label-md": ["Nunito Sans"] },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-24 md:pb-0">
+<!-- Header -->
+<header class="sticky top-0 z-40 flex items-center gap-sm px-margin-mobile md:px-margin-desktop py-sm bg-surface-container-lowest border-b border-surface-variant shadow-sm">
+<img alt="Maestra Ana" class="w-11 h-11 rounded-full object-cover shrink-0" data-alt="A portrait of a friendly female preschool teacher smiling warmly, wearing a green polo shirt in a bright classroom setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZoNkhdrjjHhOf4PeblxULzDdXRRbErRPEo6IzwH98N6IVhMVK-eXgea_6nccr0Bxff4MCRnkuFXrUkpkAUSZP-Sjr20E8GCVPyHom_FiHJT5fUMriAXPY-eT8T0T_hGaoeFEdC1OhlosO9R8Le97NFjLY2U4KCskO1Vncnn2bvUMQb4usWcyjaElrWlbrl408C8XBRdXB8UlKT8_mJxSm1gVfu0wkrA755iFfqiYqk7j0HODKQMsE"/>
+<div class="flex-1 min-w-0">
+<h1 class="font-headline-md text-[18px] text-on-surface leading-tight truncate">Maestra Ana</h1>
+<p class="font-label-sm text-label-sm text-secondary truncate">Salón Abejitas · Leo</p>
+</div>
+<a class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary-container/20 transition-colors shrink-0" href="contacto.html" title="Otras formas de contacto">
+<span class="material-symbols-outlined">call</span>
+</a>
+</header>
+
+<!-- Chat Thread -->
+<main class="flex-1 overflow-y-auto p-md space-y-4 bg-surface-bright max-w-3xl w-full mx-auto" id="chatThread"></main>
+
+<!-- Input Bar -->
+<div class="sticky bottom-20 md:bottom-0 z-30 p-3 bg-surface-container-lowest border-t border-surface-variant max-w-3xl w-full mx-auto">
+<div class="flex items-center gap-2">
+<input id="chatInput" onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 pl-4 pr-4 py-3 rounded-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:bg-surface focus:ring-0 font-body-md text-body-md transition-all" placeholder="Escribe un mensaje..." type="text"/>
+<button onclick="sendMessage()" class="w-11 h-11 shrink-0 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px] ml-0.5">send</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-center mt-2">Un solo hilo de conversación por alumno con su maestra.</p>
+</div>
+
+<!-- Mobile BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
+
+<script>
+const MESSAGES = [
+  { from: 'them', text: '¡Buen día familia Miller! Quería contarles que Leo tuvo una excelente mañana. Estuvimos trabajando con pinturas de dedos y compartió muy bien con sus compañeros.', time: '10:30 AM' },
+  { from: 'me', text: '¡Qué bueno! Gracias por contarnos, Maestra Ana. A él le encanta pintar en casa también.', time: '11:02 AM' },
+  { from: 'them', text: 'Se nota. Cualquier cosa que necesiten para la clase de mañana me avisan por aquí.', time: '11:10 AM' },
+];
+const REPLY = '¡Recibido! Te aviso cualquier novedad. 😊';
+
+function renderThread(){
+  const thread = document.getElementById('chatThread');
+  thread.innerHTML = MESSAGES.map(m => {
+    if(m.from === 'me'){
+      return `<div class="flex items-end gap-2 max-w-[85%] ml-auto justify-end">
+        <div class="bg-primary text-on-primary rounded-2xl rounded-br-sm p-3 shadow-sm">
+          <p class="font-body-md text-body-md">${m.text.replace(/</g,'&lt;')}</p>
+          <div class="flex items-center justify-end gap-1 mt-1 text-on-primary/80">
+            <span class="font-label-sm text-label-sm">${m.time}</span>
+            <span class="material-symbols-outlined text-[16px]">done_all</span>
+          </div>
+        </div>
+      </div>`;
+    }
+    return `<div class="flex items-end gap-2 max-w-[85%]">
+      <img class="w-7 h-7 rounded-full object-cover mb-1 hidden md:block shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZcT9d-DBxq2Ezt5h-QlnZoXc3BZMB8FU61rzzhvsx-08B3D2Kvtr93uqnav0PcvlWP1o1xWhOuxAzMTw3oUSFuQVkHWnVHtwmlzVe-3OtURNhsxAtNaDfWdIwkA_OJvKrMC6UPxfbMuiIWmHS6oqAhUYpeR_X8ZmnhDF9IAExHIp-eXBNhYb4nzR8S-PdI3NZjpPhxkaIfoItitEji-2q8117qrzAvORh3Kjs1ViMUvscgJ6n52nD"/>
+      <div class="bg-surface-container rounded-2xl rounded-bl-sm p-3 shadow-sm text-on-surface">
+        <p class="font-body-md text-body-md">${m.text.replace(/</g,'&lt;')}</p>
+        <span class="font-label-sm text-label-sm text-on-surface-variant mt-1 block text-right">${m.time}</span>
+      </div>
+    </div>`;
+  }).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function sendMessage(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  MESSAGES.push({ from: 'me', text, time });
+  renderThread();
+  input.value = '';
+
+  setTimeout(() => {
+    const replyTime = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    MESSAGES.push({ from: 'them', text: REPLY, time: replyTime });
+    renderThread();
+    showToast('Nuevo mensaje de Maestra Ana', 'mail');
+  }, 1200);
+}
+
+renderThread();
+</script>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

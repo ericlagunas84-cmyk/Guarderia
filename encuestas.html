@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Encuestas - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#3f4942",
+                        "on-primary-container": "#025d3d",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "outline-variant": "#bfc9c0",
+                        "surface-dim": "#d8dada",
+                        "surface-container": "#eceeee",
+                        "primary-fixed": "#a6f3c8",
+                        "surface-container-high": "#e6e8e9",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "secondary-fixed": "#b5ebff",
+                        "inverse-primary": "#8ad6ad",
+                        "on-secondary-fixed": "#001f28",
+                        "surface-bright": "#f8fafa",
+                        "secondary": "#1f667a",
+                        "on-secondary-container": "#22697d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "background": "#f8fafa",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#1b6b4a",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "outline": "#6f7a72",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-background": "#191c1d",
+                        "primary-container": "#88d4ab",
+                        "on-tertiary-fixed": "#211b00",
+                        "inverse-surface": "#2e3131",
+                        "primary": "#1b6b4a",
+                        "surface": "#f8fafa",
+                        "on-primary-fixed-variant": "#005235",
+                        "tertiary-fixed": "#f6e291",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#5e500d",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "tertiary-container": "#d7c476",
+                        "tertiary": "#6c5e1b",
+                        "surface-container-low": "#f2f4f4",
+                        "secondary-container": "#a6e6fe"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xs": "4px",
+                        "base": "8px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "xl": "64px",
+                        "sm": "12px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "label-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); }
+        .shadow-soft { box-shadow: 0 4px 12px 0 rgba(26,43,60,0.05); }
+        .shadow-hover { box-shadow: 0 8px 20px 0 rgba(26,43,60,0.08); }
+        
+        /* Smiley Rating Styles */
+        .smiley-radio:checked + label {
+            background-color: theme('colors.primary-container');
+            color: theme('colors.on-primary-container');
+            transform: scale(1.1);
+        }
+        .smiley-label {
+            transition: all 0.2s ease-in-out;
+        }
+        .smiley-label:hover {
+            transform: scale(1.05);
+            background-color: theme('colors.surface-container-high');
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="text-on-background min-h-screen pb-24 font-body-md text-body-md antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full bg-surface dark:bg-surface-dim shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] z-50 flex justify-between items-center px-margin-mobile h-16 transition-colors">
+<div class="flex items-center gap-sm">
+<button aria-label="Parent Profile" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container hover:bg-surface-container-low transition-colors">
+<img class="w-full h-full object-cover" data-alt="A brightly lit, high-quality professional portrait of an approachable parent smiling warmly. The lighting is soft and natural, emphasizing a nurturing and dependable brand aesthetic. The background is a blurred, light-mode minimalist environment in soft neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNMcmTcXiSrpOfEsKFMc17N0wELopAE6DzRwlJKtGzsli1yEScKp-G5zXSNX2ZD-BTnsRMkAx2BkhyPEt9uWEChdOZpxVBBUS1q_UVc3GsVC4JZibgKC-62xaNAX1-cCIOfOKglUfzU9zCdJ0HfFyHFZwbvJZMmTSbjYZ9QETuUJAIS7AmCJle7Oq1VwkOxzuGsc4AkNCnAutu4fuvn4xYyTO5OXeiYlqQxVt-m26Ozh-7MDgo4KlV"/>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed-dim font-bold tracking-tight">Gael</h1>
+</div>
+<button aria-label="Notifications" class="p-2 rounded-full text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto">
+<!-- Page Header -->
+<div class="mb-md">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Tus Encuestas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Ayúdanos a mejorar compartiendo tu experiencia.</p>
+</div>
+<!-- Bento Grid Layout for Surveys -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Active Survey Card (Spans full on mobile, 8 cols on desktop) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl shadow-soft hover:shadow-hover transition-all p-md border-t-4 border-primary">
+<div class="flex items-center justify-between mb-sm">
+<span class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-3 py-1 rounded-full">Activa ahora</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Termina en 2 días</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Satisfacción Festival de Primavera</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">
+                    ¡Hola! Nos encantaría conocer tu opinión sobre el reciente Festival de Primavera. Tu feedback nos ayuda a crear experiencias más alegres y seguras para los pequeños.
+                </p>
+<form class="space-y-lg mt-md" id="surveyForm" onsubmit="return submitSurvey(event)">
+<!-- Rating Question -->
+<div class="bg-surface-container-low rounded-lg p-sm md:p-md">
+<label class="block font-headline-md text-body-lg text-on-surface mb-sm">1. ¿Qué tanto disfrutaron tú y tu hijo/a las actividades?</label>
+<div class="flex justify-between items-center max-w-sm mx-auto">
+<div class="relative flex flex-col items-center gap-xs">
+<input class="smiley-radio sr-only" id="q1-1" name="q1" type="radio" value="1"/>
+<label class="smiley-label w-12 h-12 flex items-center justify-center rounded-full bg-surface-container cursor-pointer text-on-surface-variant shadow-sm" for="q1-1">
+<span class="material-symbols-outlined text-[28px]">sentiment_very_dissatisfied</span>
+</label>
+</div>
+<div class="relative flex flex-col items-center gap-xs">
+<input class="smiley-radio sr-only" id="q1-2" name="q1" type="radio" value="2"/>
+<label class="smiley-label w-12 h-12 flex items-center justify-center rounded-full bg-surface-container cursor-pointer text-on-surface-variant shadow-sm" for="q1-2">
+<span class="material-symbols-outlined text-[28px]">sentiment_dissatisfied</span>
+</label>
+</div>
+<div class="relative flex flex-col items-center gap-xs">
+<input class="smiley-radio sr-only" id="q1-3" name="q1" type="radio" value="3"/>
+<label class="smiley-label w-12 h-12 flex items-center justify-center rounded-full bg-surface-container cursor-pointer text-on-surface-variant shadow-sm" for="q1-3">
+<span class="material-symbols-outlined text-[28px]">sentiment_neutral</span>
+</label>
+</div>
+<div class="relative flex flex-col items-center gap-xs">
+<input class="smiley-radio sr-only" id="q1-4" name="q1" type="radio" value="4"/>
+<label class="smiley-label w-12 h-12 flex items-center justify-center rounded-full bg-surface-container cursor-pointer text-on-surface-variant shadow-sm" for="q1-4">
+<span class="material-symbols-outlined text-[28px]">sentiment_satisfied</span>
+</label>
+</div>
+<div class="relative flex flex-col items-center gap-xs">
+<input class="smiley-radio sr-only" id="q1-5" name="q1" type="radio" value="5"/>
+<label class="smiley-label w-12 h-12 flex items-center justify-center rounded-full bg-surface-container cursor-pointer text-on-surface-variant shadow-sm" for="q1-5">
+<span class="material-symbols-outlined text-[28px]">sentiment_very_satisfied</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Multiple Choice Question -->
+<div class="bg-surface-container-low rounded-lg p-sm md:p-md">
+<label class="block font-headline-md text-body-lg text-on-surface mb-sm">2. ¿Qué actividad fue su favorita?</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<label class="flex items-center p-3 rounded-lg border-2 border-outline-variant bg-surface-container-lowest hover:border-primary cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input class="text-primary focus:ring-primary w-5 h-5 border-outline-variant" name="q2" type="radio" value="manualidades"/>
+<span class="ml-3 font-body-md text-on-surface">Taller de Manualidades</span>
+</label>
+<label class="flex items-center p-3 rounded-lg border-2 border-outline-variant bg-surface-container-lowest hover:border-primary cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input class="text-primary focus:ring-primary w-5 h-5 border-outline-variant" name="q2" type="radio" value="musica"/>
+<span class="ml-3 font-body-md text-on-surface">Juegos Musicales</span>
+</label>
+<label class="flex items-center p-3 rounded-lg border-2 border-outline-variant bg-surface-container-lowest hover:border-primary cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input class="text-primary focus:ring-primary w-5 h-5 border-outline-variant" name="q2" type="radio" value="cuentacuentos"/>
+<span class="ml-3 font-body-md text-on-surface">Cuentacuentos Mágico</span>
+</label>
+<label class="flex items-center p-3 rounded-lg border-2 border-outline-variant bg-surface-container-lowest hover:border-primary cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input class="text-primary focus:ring-primary w-5 h-5 border-outline-variant" name="q2" type="radio" value="merienda"/>
+<span class="ml-3 font-body-md text-on-surface">Merienda Compartida</span>
+</label>
+</div>
+</div>
+<button id="surveySubmitBtn" class="w-full bg-primary hover:bg-surface-tint text-on-primary font-label-md text-label-md py-4 rounded-full shadow-[0_4px_12px_0_rgba(27,107,74,0.3)] transition-transform active:scale-[0.98] flex items-center justify-center gap-2" type="submit">
+<span>Enviar Respuestas</span>
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</form>
+<script>
+function submitSurvey(e){
+  e.preventDefault();
+  const form = document.getElementById('surveyForm');
+  const q1 = form.querySelector('input[name="q1"]:checked');
+  const q2 = form.querySelector('input[name="q2"]:checked');
+  if(!q1 || !q2){
+    showToast('Por favor responde ambas preguntas antes de enviar', 'error');
+    return false;
+  }
+  const btn = document.getElementById('surveySubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: \'FILL\' 1;">check_circle</span><span>¡Gracias por tu respuesta!</span>';
+  btn.classList.add('opacity-80','cursor-default');
+  showToast('Encuesta enviada — ¡gracias por tu opinión!', 'check_circle');
+  return false;
+}
+</script>
+</div>
+<!-- Sidebar / Completed & Other Pending -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Pending List -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft p-sm">
+<h4 class="font-headline-md text-[18px] text-on-surface mb-sm px-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">pending_actions</span>
+                        Otras Pendientes
+                    </h4>
+<ul class="space-y-xs">
+<li>
+<button class="w-full text-left p-3 rounded-lg hover:bg-surface-container-low transition-colors flex items-start gap-3">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Menú Mensual - Abril</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Expira mañana</p>
+</div>
+</button>
+</li>
+</ul>
+</div>
+<!-- Completed List -->
+<div class="bg-surface-container-lowest rounded-xl shadow-soft p-sm">
+<h4 class="font-headline-md text-[18px] text-on-surface mb-sm px-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">task_alt</span>
+                        Completadas
+                    </h4>
+<ul class="space-y-xs">
+<li>
+<div class="p-3 flex items-start gap-3 opacity-70">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface line-through">Horarios de Entrada</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Completada hace 1 semana</p>
+</div>
+</div>
+</li>
+<li>
+<div class="p-3 flex items-start gap-3 opacity-70">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface line-through">Evaluación Trimestral</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Completada en Enero</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

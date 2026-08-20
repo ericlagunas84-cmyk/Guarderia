@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Finanzas y Calendario - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;family=Quicksand:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed": "#f6e291",
+                        "surface-bright": "#f8fafa",
+                        "on-primary-fixed-variant": "#005235",
+                        "secondary-container": "#a6e6fe",
+                        "surface-dim": "#d8dada",
+                        "secondary": "#1f667a",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "primary-container": "#88d4ab",
+                        "surface-container": "#eceeee",
+                        "on-primary-container": "#025d3d",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#5e500d",
+                        "on-surface": "#191c1d",
+                        "surface": "#f8fafa",
+                        "outline-variant": "#bfc9c0",
+                        "surface-tint": "#1b6b4a",
+                        "inverse-surface": "#2e3131",
+                        "surface-variant": "#e1e3e3",
+                        "on-tertiary-fixed": "#211b00",
+                        "on-background": "#191c1d",
+                        "primary-fixed": "#a6f3c8",
+                        "on-surface-variant": "#3f4942",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "inverse-primary": "#8ad6ad",
+                        "on-secondary": "#ffffff",
+                        "background": "#f8fafa",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e6e8e9",
+                        "outline": "#6f7a72",
+                        "on-secondary-fixed": "#001f28",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "secondary-fixed": "#b5ebff",
+                        "on-secondary-container": "#22697d",
+                        "tertiary-container": "#d7c476",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f4",
+                        "surface-container-highest": "#e1e3e3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "tertiary": "#6c5e1b",
+                        "inverse-on-surface": "#eff1f1",
+                        "primary": "#1b6b4a",
+                        "tertiary-fixed-dim": "#d9c678"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "md": "24px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "lg": "40px",
+                        "gutter": "16px",
+                        "xl": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Quicksand"],
+                        "headline-lg": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "label-sm": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "label-md": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .squishy-btn:active { transform: scale(0.95); transition: transform 0.2s ease; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 md:pl-80">
+<!-- Mobile TopAppBar -->
+<header class="md:hidden sticky top-0 z-40 bg-surface shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] w-full h-16 flex justify-between items-center px-margin-mobile">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of a young parent with a warm smile, set against a bright, softly blurred playground background. The lighting is sunny and optimistic, reflecting a nurturing childcare environment. Shot in a clear, modern lifestyle photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkTbqKObeaiY2tJoepn9f8KkFSNCy74cfMcTd9RgE_clK-cpjI99-w3WnVOPsDAL4CIa7f018XBhl4ypUF7ZN6yRb2Y-1Fg-t-hexGGp6EhAdFy6J9X3pelbkauS0P6B7QaId-wrcNBlAuwMWWk8HtCQgmShYOMosYceIOQnjaTG189P28mNd7DhrzPRLNpqt2fSSd3pG5YIWHInwxVMdcb9J7-sXWt7ObJx8UVG-lmWWQd-MJpEB_"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">Gael</h1>
+<button class="text-primary p-2 hover:bg-surface-container-low transition-colors rounded-full squishy-btn">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Desktop Navigation Drawer -->
+<nav class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col py-md bg-surface shadow-2xl h-full w-80 rounded-r-xl">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-md mb-md">
+<img class="w-16 h-16 rounded-full object-cover shadow-md" data-alt="A portrait of a happy family, a mother and a young toddler boy, smiling warmly in a bright, modern nursery setting. The room is filled with soft natural light and colorful educational toys, conveying safety and joy. The photo has a premium, professional lifestyle feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn87vDwM9PFHRB8IzaXDtqA9hBEhEVQgSqp-Zzdyn_jasrxv3rm-Y74l_nl7BWeOqFOr7Zy2w5yHLQ4RCleCZx0FP3QMD_yc5CuOnkB9XDvxcfdDeEBBCMaq3J6V9T1-lUb8BH8Y-HJUhEy5W2BQp5-ZaXRYSPqteLn2YXOGBICX4Uuo-Zo_GViOmNsKv3yUBVpd-Pxv77ON0lsRg8tejCY3r4LcvyAVQJ-k9-YjW2frMGrzaNEHdr"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">The Miller Family</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Child: Leo Miller</p>
+<span class="inline-block mt-xs px-2 py-1 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-full">Premium Member</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm flex-grow">
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="dashboard_principal.html"><span class="material-symbols-outlined">dashboard</span><span class="font-label-md text-label-md">Inicio</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="jornada_diaria_detallada.html"><span class="material-symbols-outlined">event_note</span><span class="font-label-md text-label-md">Bitácora del Día</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="salud_y_seguridad.html"><span class="material-symbols-outlined">medical_services</span><span class="font-label-md text-label-md">Salud</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="seguimiento_estancia.html"><span class="material-symbols-outlined">distance</span><span class="font-label-md text-label-md">Estancia</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="Menusemanal.html"><span class="material-symbols-outlined">restaurant_menu</span><span class="font-label-md text-label-md">Menú Semanal</span></a>
+<a class="bg-secondary-container text-on-secondary-container rounded-full mx-2 px-4 py-3 flex items-center gap-4 translate-x-1 transition-transform" href="finanzas_y_calendario.html"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span><span class="font-label-md text-label-md font-bold">Pagos y Calendario</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="mensajer_a.html"><span class="material-symbols-outlined">mail</span><span class="font-label-md text-label-md">Mensajes</span></a>
+
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="encuestas.html"><span class="material-symbols-outlined">rate_review</span><span class="font-label-md text-label-md">Encuestas</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="contacto.html"><span class="material-symbols-outlined">support_agent</span><span class="font-label-md text-label-md">Contacto</span></a>
+
+
+
+
+
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="max-w-5xl mx-auto p-margin-mobile md:p-margin-desktop space-y-lg">
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:justify-between md:items-end gap-sm">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary">Estado de Cuenta</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-xs">Resumen financiero y calendario de actividades.</p>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+<!-- Finances Section (Left / Top) -->
+<div class="lg:col-span-7 flex flex-col gap-md">
+<!-- Main Balance Card -->
+<div class="bg-gradient-to-br from-primary to-secondary p-md rounded-xl shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] text-on-primary relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+<div class="absolute -left-10 -bottom-10 w-32 h-32 bg-primary-fixed opacity-20 rounded-full blur-xl"></div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div>
+<p class="font-label-md text-label-md text-primary-fixed uppercase tracking-wider mb-xs">Saldo Pendiente</p>
+<h3 id="balanceAmount" class="font-display-lg text-display-lg font-bold">$3,500<span class="text-headline-md font-normal opacity-80">.00 MXN</span></h3>
+<p id="balanceDue" class="font-body-md text-body-md text-primary-fixed-dim mt-2">Vence en 5 días (20 Oct)</p>
+</div>
+<div class="mt-lg">
+<button id="payBtn" onclick="payTuition()" class="w-full sm:w-auto bg-surface-container-lowest text-primary font-headline-md text-headline-md py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all squishy-btn flex items-center justify-center gap-sm">
+<span id="payIcon" class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
+<span id="payLabel">Pagar Colegiatura</span>
+                            </button>
+</div>
+</div>
+</div>
+<!-- Payment History -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                        Historial Reciente
+                    </h4>
+<div class="space-y-sm mt-md" id="historyList">
+<!-- History Item 1 -->
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Colegiatura Septiembre · $3,500.00 · 05 Sep 2023', 'receipt_long')">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Colegiatura Septiembre</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">05 Sep 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
+<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+</div>
+</div>
+<div class="h-px bg-surface-variant w-full"></div>
+<!-- History Item 2 -->
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Material Didáctico · $850.00 · 15 Ago 2023', 'receipt_long')">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Material Didáctico</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">15 Ago 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">-$850.00</p>
+<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+</div>
+</div>
+<div id="moreHistory" class="hidden space-y-sm">
+<div class="h-px bg-surface-variant w-full"></div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Colegiatura Agosto · $3,500.00 · 05 Ago 2023', 'receipt_long')">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Colegiatura Agosto</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">05 Ago 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
+<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+</div>
+</div>
+<div class="h-px bg-surface-variant w-full"></div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Inscripción anual · $1,200.00 · 20 Jul 2023', 'receipt_long')">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Inscripción Anual</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">20 Jul 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">-$1,200.00</p>
+<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+</div>
+</div>
+</div>
+</div>
+<button id="toggleHistoryBtn" onclick="toggleHistory()" class="w-full mt-sm text-primary font-label-md text-label-md py-2 hover:bg-primary-container/20 rounded-lg transition-colors flex items-center justify-center gap-xs">
+<span>Ver historial completo</span>
+<span id="toggleHistoryIcon" class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+
+<!-- Métodos de Pago -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="credit_card">credit_card</span>
+                        Métodos de Pago
+                    </h4>
+<div class="space-y-sm mt-md" id="cardList">
+<label class="flex items-center gap-sm p-sm rounded-lg border-2 border-primary bg-primary-container/10 cursor-pointer transition-colors">
+<input type="radio" name="paycard" checked="" class="w-4 h-4 accent-[#1b6b4a]"/>
+<div class="w-10 h-7 rounded bg-secondary flex items-center justify-center text-on-secondary font-label-sm text-[10px] font-bold shrink-0">VISA</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Terminación 4242</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Vence 08/27</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]">Predeterminada</span>
+</label>
+<label class="flex items-center gap-sm p-sm rounded-lg border-2 border-surface-variant hover:border-primary/40 cursor-pointer transition-colors">
+<input type="radio" name="paycard" class="w-4 h-4 accent-[#1b6b4a]"/>
+<div class="w-10 h-7 rounded bg-tertiary flex items-center justify-center text-on-tertiary font-label-sm text-[10px] font-bold shrink-0">MC</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Terminación 8810</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Vence 03/26</p>
+</div>
+</label>
+</div>
+<button onclick="showToast('Formulario para agregar un nuevo método de pago', 'add_card')" class="w-full mt-sm text-primary font-label-md text-label-md py-2 border border-primary/30 rounded-lg hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Agregar método de pago</span>
+</button>
+</div>
+
+<!-- Recordatorios de Pago -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+                        Recordatorios de Pago
+                    </h4>
+<div class="space-y-sm mt-md">
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Avisarme 3 días antes</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Recordatorio previo al vencimiento</p>
+</div>
+<button type="button" id="rem3d" onclick="toggleReminder('rem3d')" class="reminder-toggle relative w-11 h-6 rounded-full bg-primary transition-colors shrink-0" aria-pressed="true">
+<span class="reminder-knob absolute top-0.5 left-0.5 w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform translate-x-5"></span>
+</button>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Notificación push</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Aviso directo en tu celular</p>
+</div>
+<button type="button" id="remPush" onclick="toggleReminder('remPush')" class="reminder-toggle relative w-11 h-6 rounded-full bg-primary transition-colors shrink-0" aria-pressed="true">
+<span class="reminder-knob absolute top-0.5 left-0.5 w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform translate-x-5"></span>
+</button>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Aviso por correo</p>
+<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Copia del recordatorio a tu email</p>
+</div>
+<button type="button" id="remEmail" onclick="toggleReminder('remEmail')" class="reminder-toggle relative w-11 h-6 rounded-full bg-surface-variant transition-colors shrink-0" aria-pressed="false">
+<span class="reminder-knob absolute top-0.5 left-0.5 w-5 h-5 bg-surface-container-lowest rounded-full shadow-sm transition-transform"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Calendar Section (Right / Bottom) -->
+<div class="lg:col-span-5 flex flex-col gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant flex-grow flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="event">event</span>
+                            Próximos Eventos
+                        </h4>
+</div>
+<!-- Mini Calendar Graphic (CSS/HTML placeholder) -->
+<div class="mb-md bg-secondary-container rounded-lg p-sm flex items-center justify-center h-32 relative overflow-hidden">
+<span class="material-symbols-outlined text-on-secondary-container opacity-20 absolute -right-4 -bottom-4" data-icon="calendar_month" style="font-size: 120px;">calendar_month</span>
+<div class="text-center relative z-10">
+<p class="font-label-md text-label-md text-on-secondary-container uppercase tracking-wider">Octubre</p>
+<p class="font-display-lg text-display-lg text-on-secondary-container font-bold">15</p>
+</div>
+</div>
+<div class="space-y-sm flex-grow">
+<!-- Event 1 -->
+<div class="flex items-start gap-sm p-sm rounded-lg border border-transparent hover:border-surface-variant hover:bg-surface-container-low transition-all">
+<div class="flex flex-col items-center justify-center w-12 h-12 bg-tertiary-container text-on-tertiary-container rounded-lg shrink-0">
+<span class="font-label-sm text-label-sm font-bold">OCT</span>
+<span class="font-headline-md text-headline-md leading-none mt-1">15</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Viernes de Pijamas</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Venir en pijama, traer peluche favorito. Habrá cine en el salón.</p>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="flex items-start gap-sm p-sm rounded-lg border border-transparent hover:border-surface-variant hover:bg-surface-container-low transition-all">
+<div class="flex flex-col items-center justify-center w-12 h-12 bg-primary-container text-on-primary-container rounded-lg shrink-0">
+<span class="font-label-sm text-label-sm font-bold">OCT</span>
+<span class="font-headline-md text-headline-md leading-none mt-1">18</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Cumpleaños de Sofía</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Celebración pequeña a la hora del almuerzo. (Sin nueces).</p>
+</div>
+</div>
+</div>
+<button onclick="showToast('Eventos de la guardería sincronizados con tu calendario', 'sync')" class="mt-md w-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md py-3 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center justify-center gap-sm squishy-btn">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+                        Sincronizar con mi Calendario
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+let paid = false;
+function selectedCardLabel(){
+  const checked = document.querySelector('input[name="paycard"]:checked');
+  if(!checked) return 'tu método de pago';
+  const row = checked.closest('label');
+  return row.querySelector('p.font-label-md').textContent;
+}
+function payTuition(){
+  if(paid) return;
+  paid = true;
+  const btn = document.getElementById('payBtn');
+  const icon = document.getElementById('payIcon');
+  const label = document.getElementById('payLabel');
+  const card = selectedCardLabel();
+  icon.textContent = 'hourglass_top';
+  label.textContent = 'Procesando...';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('balanceAmount').innerHTML = '$0<span class="text-headline-md font-normal opacity-80">.00 MXN</span>';
+    document.getElementById('balanceDue').textContent = 'Sin adeudos pendientes';
+    icon.textContent = 'check_circle';
+    icon.style.fontVariationSettings = "'FILL' 1";
+    label.textContent = 'Pagado';
+    btn.classList.add('opacity-70','cursor-default');
+
+    const time = new Date().toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'});
+    const item = document.createElement('div');
+    item.innerHTML = `
+      <div class="h-px bg-surface-variant w-full mb-sm"></div>
+      <div class="flex items-center justify-between p-sm rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors" onclick="showToast('Recibo: Colegiatura Octubre · $3,500.00 · ${time}', 'receipt_long')">
+        <div class="flex items-center gap-sm">
+          <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+          <div>
+            <p class="font-label-md text-label-md text-on-surface">Colegiatura Octubre</p>
+            <p class="font-body-sm text-body-md text-on-surface-variant text-sm">${time} · ${card}</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
+          <p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+        </div>
+      </div>`;
+    document.getElementById('historyList').prepend(item);
+    showToast(`Pago de $3,500.00 MXN con ${card} procesado con éxito`, 'check_circle');
+  }, 900);
+}
+
+function toggleHistory(){
+  const more = document.getElementById('moreHistory');
+  const btn = document.getElementById('toggleHistoryBtn');
+  const icon = document.getElementById('toggleHistoryIcon');
+  const expanded = more.classList.toggle('hidden') === false;
+  btn.querySelector('span').textContent = expanded ? 'Ocultar historial anterior' : 'Ver historial completo';
+  icon.textContent = expanded ? 'expand_less' : 'expand_more';
+}
+
+document.querySelectorAll('input[name="paycard"]').forEach(input => {
+  input.addEventListener('change', () => {
+    document.querySelectorAll('#cardList label').forEach(l => {
+      l.classList.remove('border-primary', 'bg-primary-container/10');
+      l.classList.add('border-surface-variant');
+    });
+    const row = input.closest('label');
+    row.classList.remove('border-surface-variant');
+    row.classList.add('border-primary', 'bg-primary-container/10');
+    showToast('Método de pago predeterminado actualizado', 'credit_card');
+  });
+});
+
+function toggleReminder(id){
+  const btn = document.getElementById(id);
+  const knob = btn.querySelector('.reminder-knob');
+  const isOn = btn.getAttribute('aria-pressed') === 'true';
+  const next = !isOn;
+  btn.setAttribute('aria-pressed', String(next));
+  btn.classList.toggle('bg-primary', next);
+  btn.classList.toggle('bg-surface-variant', !next);
+  knob.classList.toggle('translate-x-5', next);
+  const labels = { rem3d: 'Recordatorio 3 días antes', remPush: 'Notificación push', remEmail: 'Aviso por correo' };
+  showToast(`${labels[id]}: ${next ? 'activado' : 'desactivado'}`, next ? 'notifications_active' : 'notifications_off');
+}
+</script>
+<!-- Mobile BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

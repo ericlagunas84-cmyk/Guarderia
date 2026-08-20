@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gael - Registro Diario</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@100..900&family=Quicksand:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#1f667a",
+                        "primary": "#1b6b4a",
+                        "tertiary": "#6c5e1b",
+                        "on-primary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#005235",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#211b00",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#f6e291",
+                        "on-secondary-fixed": "#001f28",
+                        "surface": "#f8fafa",
+                        "primary-fixed": "#a6f3c8",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "primary-container": "#88d4ab",
+                        "on-surface-variant": "#3f4942",
+                        "outline-variant": "#bfc9c0",
+                        "secondary-fixed": "#b5ebff",
+                        "surface-container": "#eceeee",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#025d3d",
+                        "outline": "#6f7a72",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "surface-bright": "#f8fafa",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#8ad6ad",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "surface-dim": "#d8dada",
+                        "on-surface": "#191c1d",
+                        "on-background": "#191c1d",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "on-secondary-container": "#22697d",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "surface-container-high": "#e6e8e9",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#1b6b4a",
+                        "secondary-container": "#a6e6fe",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "tertiary-container": "#d7c476",
+                        "on-tertiary-container": "#5e500d",
+                        "background": "#f8fafa",
+                        "inverse-surface": "#2e3131",
+                        "surface-container-low": "#f2f4f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "display-lg": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-md": ["Quicksand"],
+                        "label-md": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Quicksand', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Custom Input Styling */
+        input[type="time"], input[type="number"], textarea {
+            transition: all 0.2s ease-in-out;
+        }
+        input[type="time"]:focus, input[type="number"]:focus, textarea:focus {
+            border-color: #1b6b4a; /* primary */
+            box-shadow: 0 0 0 2px rgba(136, 212, 171, 0.5); /* primary-container */
+        }
+        
+        /* Hide scrollbar for horizontal scrolling chips */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-surface text-on-background font-body-md min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 docked full-width bg-surface shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] flex justify-between items-center w-full px-margin-mobile h-16">
+<div class="flex items-center gap-sm">
+<img alt="Parent Profile Image" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" data-alt="A warm, professional portrait photo of a smiling mother, softly lit, representing a user profile picture in a modern childcare app, circular crop, bright and welcoming aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA13ivD_s1WD0ozxwKrknJSsJYqjiklRrV_UFSHrS8fQPxLO_rskQWBRxTPTsuJV0L9N7_OywvCsPhlKT7aCnT30En4Dg64OG1HT92CkUCB_jaHleTGqrpG57KMjGphxjQZe2ExDpZzkkYxFlVgmGapJtrdLqrHZc-lgj-VX7tPzTfPgyjLshaxzB___sy7D7v2LHA_dg5RwoC8f6cCCMPMDggsT3oK3kVft2Pxdu7vvw-jb4W9x3sV"/>
+<span class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary tracking-tight">Gael</span>
+</div>
+<button aria-label="Notifications" class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="pt-24 px-margin-mobile max-w-lg mx-auto md:max-w-6xl md:px-margin-desktop">
+<!-- Page Header & Date Navigation -->
+<div class="flex items-center justify-between mb-md">
+<div class="flex flex-col">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Registro Diario</h1>
+<div class="flex items-center gap-xs mt-1">
+<span class="font-body-md text-body-md text-on-surface-variant">Bebé:</span>
+<div class="relative">
+<select id="babyChildSelect" onchange="switchBaby(this.value)" class="appearance-none font-bold font-body-md text-body-md text-on-surface bg-surface-container-low pl-2 pr-7 py-1 rounded-full border-2 border-transparent focus:border-primary focus:outline-none cursor-pointer">
+<option value="leo">Leo Miller · Salón Sol</option>
+<option value="sofia">Sofía García · Salón Luna</option>
+<option value="mateo">Mateo López · Salón Sol</option>
+<option value="emma">Emma Davis · Salón Sol</option>
+</select>
+<span class="material-symbols-outlined absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-full p-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+<span class="font-label-md text-label-md text-on-surface px-sm">Hoy</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors opacity-50 cursor-not-allowed"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<div id="babyFormsWrap" style="display:contents">
+<!-- 1. Lactancia/Biberones Card -->
+<section class="col-span-1 md:col-span-7 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined icon-fill">water_drop</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Alimentación</h2>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col md:flex-row gap-sm">
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Hora exacta</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">schedule</span>
+<input id="feedTime" class="w-full pl-10 pr-4 py-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none" type="time" value="10:30"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Cantidad</label>
+<div class="relative flex items-center">
+<input id="feedAmount" class="w-full pl-4 pr-16 py-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none" placeholder="0" type="number"/>
+<div class="absolute right-2 flex items-center bg-surface-container-high rounded-lg p-1" id="feedUnitGroup">
+<button type="button" onclick="selectChip(this,'feedUnitGroup')" data-value="ml" class="chip-btn px-2 py-1 rounded-md font-label-sm text-label-sm bg-surface text-on-surface shadow-sm">ml</button>
+<button type="button" onclick="selectChip(this,'feedUnitGroup')" data-value="oz" class="chip-btn px-2 py-1 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-variant transition-colors">oz</button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Tipo</label>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2" id="feedTypeGroup">
+<button type="button" onclick="selectChip(this,'feedTypeGroup')" data-value="Leche Materna" class="chip-btn shrink-0 px-4 py-2 rounded-full border-2 border-primary bg-primary-container text-on-primary-container font-label-md text-label-md transition-all">Leche Materna</button>
+<button type="button" onclick="selectChip(this,'feedTypeGroup')" data-value="Fórmula" class="chip-btn shrink-0 px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Fórmula</button>
+<button type="button" onclick="selectChip(this,'feedTypeGroup')" data-value="Sólidos" class="chip-btn shrink-0 px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Sólidos</button>
+</div>
+</div>
+<button type="button" onclick="saveFeeding()" class="w-full py-4 mt-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-md hover:bg-surface-tint hover:shadow-lg active:scale-95 transition-all duration-200 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+                        Guardar Registro
+                    </button>
+</div>
+</section>
+<!-- 2. Registro de Pañales Card -->
+<section class="col-span-1 md:col-span-5 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low flex flex-col">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined icon-fill">baby_changing_station</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Pañales</h2>
+</div>
+<div class="space-y-4 flex-1 flex flex-col">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm">Tipo de cambio</label>
+<div class="grid grid-cols-3 gap-2" id="diaperTypeGroup">
+<button type="button" onclick="selectChip(this,'diaperTypeGroup')" data-value="Pipí" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-secondary mb-1 group-hover:scale-110 transition-transform">water_drop</span>
+<span class="font-label-sm text-label-sm text-on-surface">Pipí</span>
+</button>
+<button type="button" onclick="selectChip(this,'diaperTypeGroup')" data-value="Popó" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-tertiary bg-tertiary-container/30 transition-all group">
+<span class="material-symbols-outlined text-tertiary mb-1 icon-fill">spa</span>
+<span class="font-label-sm text-label-sm text-on-surface">Popó</span>
+</button>
+<button type="button" onclick="selectChip(this,'diaperTypeGroup')" data-value="Ropa limpia" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant mb-1 group-hover:scale-110 transition-transform">checkroom</span>
+<span class="font-label-sm text-label-sm text-on-surface text-center leading-tight">Ropa<br/>limpia</span>
+</button>
+</div>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Notas (Consistencia/Color)</label>
+<textarea id="diaperNotes" class="w-full p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none resize-none" placeholder="Ej: Consistencia normal, color amarillento..." rows="2"></textarea>
+</div>
+<button type="button" onclick="saveDiaper()" class="w-full py-4 mt-auto rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-variant active:scale-95 transition-all duration-200">
+                        Registrar Cambio
+                    </button>
+</div>
+</section>
+<!-- 3. Monitoreo de Sueño Card -->
+<section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-fixed-dim/20 rounded-bl-full -z-0"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-lg">
+<div class="md:w-1/3">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined icon-fill">bedtime</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Sueño</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Registra los periodos de descanso para mantener una rutina saludable.</p>
+</div>
+<div class="md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex gap-2">
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Inicio</label>
+<input id="sleepStart" class="w-full p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none" type="time"/>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Fin</label>
+<input id="sleepEnd" class="w-full p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none" type="time"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Calidad del sueño</label>
+<div class="flex flex-wrap gap-2" id="sleepQualityGroup">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="sleep_quality" type="radio" value="Tranquilo"/>
+<div class="px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container font-label-md text-label-md transition-all">
+                                        Tranquilo
+                                    </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="sleep_quality" type="radio" value="Inquieto"/>
+<div class="px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container font-label-md text-label-md transition-all">
+                                        Inquieto
+                                    </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="sleep_quality" type="radio" value="Se despertó"/>
+<div class="px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant peer-checked:border-primary peer-checked:bg-primary-container peer-checked:text-on-primary-container font-label-md text-label-md transition-all">
+                                        Se despertó
+                                    </div>
+</label>
+</div>
+</div>
+<div class="md:col-span-2 flex justify-end mt-2">
+<button type="button" onclick="saveSleep()" class="w-full md:w-auto px-6 py-3 rounded-xl bg-secondary text-on-secondary font-label-md text-label-md shadow-md hover:bg-opacity-90 hover:shadow-lg active:scale-95 transition-all duration-200">
+                                Guardar Siesta
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<!-- ===== Formularios para niños mayores (Maternal / Preescolar) ===== -->
+<div id="olderFormsWrap" style="display:none">
+<!-- A. Alimentación (niños mayores) -->
+<section class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined icon-fill">restaurant</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Alimentación</h2>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Comida</label>
+<div class="flex gap-2 flex-wrap" id="mealTypeGroup">
+<button type="button" onclick="selectChip(this,'mealTypeGroup')" data-value="Desayuno" class="chip-btn px-4 py-2 rounded-full border-2 border-primary bg-primary-container text-on-primary-container font-label-md text-label-md transition-all">Desayuno</button>
+<button type="button" onclick="selectChip(this,'mealTypeGroup')" data-value="Comida" class="chip-btn px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Comida</button>
+<button type="button" onclick="selectChip(this,'mealTypeGroup')" data-value="Colación" class="chip-btn px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Colación</button>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">¿Qué comió?</label>
+<input id="mealDesc" class="w-full p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none" placeholder="Ej: Pollo con verduras y arroz" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">¿Cuánto comió?</label>
+<div class="flex gap-2 flex-wrap" id="mealAmountGroup">
+<button type="button" onclick="selectChip(this,'mealAmountGroup')" data-value="Todo" class="chip-btn px-4 py-2 rounded-full border-2 border-primary bg-primary-container text-on-primary-container font-label-md text-label-md transition-all">Todo</button>
+<button type="button" onclick="selectChip(this,'mealAmountGroup')" data-value="La mitad" class="chip-btn px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">La mitad</button>
+<button type="button" onclick="selectChip(this,'mealAmountGroup')" data-value="Poco" class="chip-btn px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Poco</button>
+<button type="button" onclick="selectChip(this,'mealAmountGroup')" data-value="Nada" class="chip-btn px-4 py-2 rounded-full border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">Nada</button>
+</div>
+</div>
+<button type="button" onclick="saveMealOlder()" class="w-full py-4 mt-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-md hover:bg-surface-tint hover:shadow-lg active:scale-95 transition-all duration-200 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+                        Guardar Registro
+                    </button>
+</div>
+</section>
+
+<!-- B. Baño / Independencia -->
+<section class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low flex flex-col">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined icon-fill">wc</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Baño / Independencia</h2>
+</div>
+<div class="space-y-4 flex-1 flex flex-col">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm">¿Cómo le fue?</label>
+<div class="grid grid-cols-3 gap-2" id="bathroomGroup">
+<button type="button" onclick="selectChip(this,'bathroomGroup')" data-value="Fue solo" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-primary bg-primary-container transition-all group">
+<span class="material-symbols-outlined text-primary mb-1">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface">Fue solo</span>
+</button>
+<button type="button" onclick="selectChip(this,'bathroomGroup')" data-value="Con ayuda" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant mb-1 group-hover:scale-110 transition-transform">support_agent</span>
+<span class="font-label-sm text-label-sm text-on-surface">Con ayuda</span>
+</button>
+<button type="button" onclick="selectChip(this,'bathroomGroup')" data-value="Accidente" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-error mb-1 group-hover:scale-110 transition-transform">warning</span>
+<span class="font-label-sm text-label-sm text-on-surface">Accidente</span>
+</button>
+</div>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Notas</label>
+<textarea id="bathroomNotes" class="w-full p-3 rounded-xl bg-surface-container border-2 border-transparent text-on-surface font-body-md text-body-md focus:border-primary focus:ring-0 outline-none resize-none" placeholder="Opcional..." rows="2"></textarea>
+</div>
+<button type="button" onclick="saveBathroom()" class="w-full py-4 mt-auto rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-variant active:scale-95 transition-all duration-200">
+                        Registrar
+                    </button>
+</div>
+</section>
+
+<!-- C. Actividades y Talleres -->
+<section class="col-span-1 md:col-span-7 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined icon-fill">palette</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Actividades y Talleres</h2>
+</div>
+<div class="space-y-2" id="activityList">
+<div class="flex items-center justify-between bg-surface-container rounded-xl p-sm" data-activity="Taller de Arte">
+<span class="font-label-md text-label-md text-on-surface">🎨 Taller de Arte</span>
+<button type="button" onclick="toggleActivity(this)" class="activity-toggle px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant transition-colors">Marcar Completado</button>
+</div>
+<div class="flex items-center justify-between bg-surface-container rounded-xl p-sm" data-activity="Inglés Avanzado">
+<span class="font-label-md text-label-md text-on-surface">🌎 Inglés Avanzado</span>
+<button type="button" onclick="toggleActivity(this)" class="activity-toggle px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant transition-colors">Marcar Completado</button>
+</div>
+<div class="flex items-center justify-between bg-surface-container rounded-xl p-sm" data-activity="Música">
+<span class="font-label-md text-label-md text-on-surface">🎵 Música</span>
+<button type="button" onclick="toggleActivity(this)" class="activity-toggle px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant transition-colors">Marcar Completado</button>
+</div>
+</div>
+</section>
+
+<!-- D. Estado de Ánimo -->
+<section class="col-span-1 md:col-span-5 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low flex flex-col">
+<div class="flex items-center gap-sm mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined icon-fill">mood</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Estado de Ánimo</h2>
+</div>
+<div class="grid grid-cols-2 gap-2 flex-1" id="moodGroup">
+<button type="button" onclick="selectChip(this,'moodGroup')" data-value="Feliz" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-primary bg-primary-container transition-all">
+<span class="text-2xl mb-1">😄</span>
+<span class="font-label-sm text-label-sm text-on-surface">Feliz</span>
+</button>
+<button type="button" onclick="selectChip(this,'moodGroup')" data-value="Tranquilo" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all">
+<span class="text-2xl mb-1">🙂</span>
+<span class="font-label-sm text-label-sm text-on-surface">Tranquilo</span>
+</button>
+<button type="button" onclick="selectChip(this,'moodGroup')" data-value="Inquieto" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all">
+<span class="text-2xl mb-1">😅</span>
+<span class="font-label-sm text-label-sm text-on-surface">Inquieto</span>
+</button>
+<button type="button" onclick="selectChip(this,'moodGroup')" data-value="Llorando" class="chip-btn flex flex-col items-center justify-center py-3 rounded-xl border-2 border-surface-container-high bg-surface hover:bg-surface-container transition-all">
+<span class="text-2xl mb-1">😢</span>
+<span class="font-label-sm text-label-sm text-on-surface">Llorando</span>
+</button>
+</div>
+<button type="button" onclick="saveMood()" class="w-full py-3 mt-3 rounded-xl bg-secondary text-on-secondary font-label-md text-label-md shadow-md hover:bg-opacity-90 active:scale-95 transition-all duration-200">
+                        Guardar Estado de Ánimo
+                    </button>
+</section>
+</div>
+
+<!-- Historial de Hoy -->
+<section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-2">
+<span class="material-symbols-outlined">history</span> Historial de Hoy · <span id="babyHistoryName" class="text-primary">Leo</span>
+</h2>
+<div id="babyHistory" class="space-y-2">
+<p id="babyHistoryEmpty" class="text-on-surface-variant font-body-md text-body-md">Aún no hay registros — usa los formularios de arriba.</p>
+</div>
+</section>
+</div>
+</main>
+<script>
+const BABIES = {
+  leo: { name: 'Leo Miller', short: 'Leo', group: 'lactante', history: [] },
+  sofia: { name: 'Sofía García', short: 'Sofía', group: 'mayor', history: [] },
+  mateo: { name: 'Mateo López', short: 'Mateo', group: 'mayor', history: [] },
+  emma: { name: 'Emma Davis', short: 'Emma', group: 'mayor', history: [] },
+};
+let currentBaby = 'leo';
+
+function switchBaby(key){
+  currentBaby = key;
+  document.getElementById('babyHistoryName').textContent = BABIES[key].short;
+  const isBaby = BABIES[key].group === 'lactante';
+  document.getElementById('babyFormsWrap').style.display = isBaby ? 'contents' : 'none';
+  document.getElementById('olderFormsWrap').style.display = isBaby ? 'none' : 'contents';
+  const label = document.querySelector('#babyChildSelect').closest('.flex').querySelector('span.font-body-md');
+  if(label) label.textContent = isBaby ? 'Bebé:' : 'Alumno:';
+  resetActivityToggles();
+  renderHistory();
+}
+
+function resetActivityToggles(){
+  document.querySelectorAll('.activity-toggle').forEach(btn => {
+    btn.textContent = 'Marcar Completado';
+    btn.classList.remove('bg-primary-container', 'text-on-primary-container');
+    btn.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+  });
+}
+
+function renderHistory(){
+  const container = document.getElementById('babyHistory');
+  const entries = BABIES[currentBaby].history;
+  if(entries.length === 0){
+    container.innerHTML = '<p id="babyHistoryEmpty" class="text-on-surface-variant font-body-md text-body-md">Aún no hay registros para ' + BABIES[currentBaby].short + ' hoy — usa los formularios de arriba.</p>';
+    return;
+  }
+  container.innerHTML = entries.map(e => `
+    <div class="flex items-center gap-sm bg-surface-container rounded-xl p-sm">
+      <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-[18px]">${e.icon}</span>
+      </div>
+      <div class="flex-1">
+        <p class="font-label-md text-label-md text-on-surface">${e.title}</p>
+        <p class="font-body-md text-body-md text-on-surface-variant text-[13px]">${e.detail}</p>
+      </div>
+      <span class="font-label-sm text-label-sm text-outline shrink-0">${e.time}</span>
+    </div>`).join('');
+}
+
+function selectChip(btn, groupId){
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.chip-btn').forEach(b => {
+    b.classList.remove('border-primary','bg-primary-container','text-on-primary-container','border-tertiary','bg-tertiary-container/30','bg-surface','text-on-surface','shadow-sm');
+    b.classList.add('border-surface-container-high','bg-surface','text-on-surface-variant');
+  });
+  btn.classList.remove('border-surface-container-high','bg-surface','text-on-surface-variant');
+  btn.classList.add('border-primary','bg-primary-container','text-on-primary-container');
+}
+function getSelectedChip(groupId){
+  const group = document.getElementById(groupId);
+  const active = group.querySelector('.chip-btn.border-primary, .chip-btn.border-tertiary');
+  return active ? active.dataset.value : null;
+}
+function addHistoryEntry(icon, title, detail){
+  const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  BABIES[currentBaby].history.unshift({ icon, title, detail, time });
+  renderHistory();
+}
+function saveFeeding(){
+  const time = document.getElementById('feedTime').value || '—';
+  const amount = document.getElementById('feedAmount').value || '0';
+  const unit = getSelectedChip('feedUnitGroup') || 'ml';
+  const type = getSelectedChip('feedTypeGroup') || 'Leche Materna';
+  addHistoryEntry('water_drop', 'Alimentación · ' + type, `${amount} ${unit} a las ${time}`);
+  showToast(`Alimentación de ${BABIES[currentBaby].short} guardada`, 'check_circle');
+  document.getElementById('feedAmount').value = '';
+}
+function saveDiaper(){
+  const type = getSelectedChip('diaperTypeGroup') || 'Popó';
+  const notes = document.getElementById('diaperNotes').value.trim();
+  addHistoryEntry('baby_changing_station', 'Cambio de pañal · ' + type, notes || 'Sin notas adicionales');
+  showToast(`Cambio de pañal de ${BABIES[currentBaby].short} registrado`, 'check_circle');
+  document.getElementById('diaperNotes').value = '';
+}
+function saveSleep(){
+  const start = document.getElementById('sleepStart').value || '—';
+  const end = document.getElementById('sleepEnd').value || '—';
+  const quality = document.querySelector('input[name="sleep_quality"]:checked')?.value || 'Tranquilo';
+  addHistoryEntry('bedtime', 'Siesta · ' + quality, `${start} a ${end}`);
+  showToast(`Registro de sueño de ${BABIES[currentBaby].short} guardado`, 'check_circle');
+}
+
+function saveMealOlder(){
+  const type = getSelectedChip('mealTypeGroup') || 'Comida';
+  const desc = document.getElementById('mealDesc').value.trim();
+  const amount = getSelectedChip('mealAmountGroup') || 'Todo';
+  addHistoryEntry('restaurant', type + ' · ' + amount, desc || 'Sin descripción');
+  showToast(`Alimentación de ${BABIES[currentBaby].short} guardada`, 'check_circle');
+  document.getElementById('mealDesc').value = '';
+}
+
+function saveBathroom(){
+  const result = getSelectedChip('bathroomGroup') || 'Fue solo';
+  const notes = document.getElementById('bathroomNotes').value.trim();
+  addHistoryEntry('wc', 'Baño · ' + result, notes || 'Sin notas adicionales');
+  showToast(`Registro de baño de ${BABIES[currentBaby].short} guardado`, 'check_circle');
+  document.getElementById('bathroomNotes').value = '';
+}
+
+function toggleActivity(btn){
+  const row = btn.closest('[data-activity]');
+  const name = row.dataset.activity;
+  const done = btn.textContent.trim() === 'Marcar Completado';
+  btn.textContent = done ? 'Completado ✓' : 'Marcar Completado';
+  btn.classList.toggle('bg-primary-container', done);
+  btn.classList.toggle('text-on-primary-container', done);
+  btn.classList.toggle('bg-surface-container-high', !done);
+  btn.classList.toggle('text-on-surface-variant', !done);
+  if(done){
+    addHistoryEntry('task_alt', 'Actividad completada', name);
+    showToast(`${name} marcado como completado para ${BABIES[currentBaby].short}`, 'check_circle');
+  }
+}
+
+function saveMood(){
+  const mood = getSelectedChip('moodGroup') || 'Tranquilo';
+  addHistoryEntry('mood', 'Estado de ánimo', mood);
+  showToast(`Ánimo de ${BABIES[currentBaby].short} registrado: ${mood}`, 'check_circle');
+}
+</script>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="listado_de_ni_os.html"><span class="material-symbols-outlined mb-1">groups</span><span class="font-label-sm text-[10px] text-center w-full truncate">Alumnos</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="registro_diario_beb_s.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">edit_note</span><span class="font-label-sm text-[10px] text-center w-full truncate">Registro</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Fichas</span></a></nav>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>

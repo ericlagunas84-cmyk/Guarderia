@@ -1,0 +1,33 @@
+{
+  "name": "Gael Guardería y Estancia",
+  "short_name": "Gael",
+  "description": "Plataforma para Guardería y Estancia Infantil Gael — app de padres y app de staff/administración.",
+  "id": "/inicio_de_sesi_n.html",
+  "start_url": "./inicio_de_sesi_n.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F8FAFA",
+  "theme_color": "#1B6B4A",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "categories": ["education", "lifestyle", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard de Padres",
+      "url": "./dashboard_principal.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard de Staff",
+      "url": "./dashboard_de_administraci_n.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
