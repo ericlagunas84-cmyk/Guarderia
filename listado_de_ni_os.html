@@ -164,6 +164,7 @@
 <button onclick="filterRoom(this,'salón sol')" data-room-filter="salón sol" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Sol</button>
 <button onclick="filterRoom(this,'salón luna')" data-room-filter="salón luna" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Luna</button>
 <button onclick="filterRoom(this,'bebés')" data-room-filter="bebés" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Bebés</button>
+<button onclick="filterRoom(this,'estancia')" data-room-filter="estancia" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Estancia</button>
 </div>
 <!-- Acceso Rápido / Emergencia -->
 <div class="px-margin-mobile mb-base">
@@ -277,6 +278,30 @@
 </div>
 </div>
 <div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-emma"></div>
+</div>
+<!-- Card 5: Diego Ramírez (Estancia / After-School) -->
+<div onclick="handleCardClick(event, this, 'Diego Ramírez · Estancia · Presente', 'backpack')" data-name="diego ramírez" data-room="estancia" data-child-id="diego" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div class="flex items-center w-full">
+<div class="selection-checkbox hidden shrink-0 mr-3">
+<span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
+<span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
+</div>
+<div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-tertiary-container relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality, brightly lit portrait photo of a cheerful 8-year-old boy with short dark hair, wearing a backpack, ready for after-school activities. The background is a soft, blurred bright school hallway, conveying an energetic and secure mood typical of premium childcare apps." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5dGLneeEF-63j3VrCwypHfesp9NQu4zRViDqq_OLeNbGhnoWEL4YVLSYDMwWvoSr7qiB4C__zhXT4Fzv2uAh3GGmZaM1hTorwZnjkHkdX_PV9d8e_ZYAgBm0Doc7AwM5dG9NWQOFpJc-GEyJpOvh96aq4edUL-s4LePNM4x5LpjAuym4JLZrpJA9dY6vB8IqTSIpJ4kgln8La2ujW6_rgb6smGIfTXQmUXer-h5UiwAWtcLOqp8eR"/>
+<!-- Status Indicator Dot -->
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="ml-4 flex-grow">
+<h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface group-hover:text-primary transition-colors">Diego Ramírez</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px]">Estancia · 8 años</p>
+</div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Presente
+                    </span>
+</div>
+</div>
+<div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-diego"></div>
 </div>
 <p id="noResults" class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
 </div>
@@ -405,7 +430,7 @@
 </div>
 
 <!-- Higiene / Pañal -->
-<div>
+<div id="qpHygieneSection">
 <h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Higiene</h4>
 <div class="grid grid-cols-3 gap-2">
 <button onclick="logDiaper('Pipí')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
@@ -419,6 +444,27 @@
 </button>
 </div>
 <p id="qpDiaperStatus" class="font-body-md text-[12px] text-on-surface-variant mt-2"></p>
+</div>
+
+<!-- Estancia / After-School (6-10 años) -->
+<div id="qpEstanciaSection" class="hidden">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Estancia / After-School</h4>
+<div class="grid grid-cols-3 gap-2 mb-2">
+<button onclick="logEstanciaAction('📚', 'Tarea realizada')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">📚</span><span class="font-label-sm text-label-sm text-on-surface text-center leading-tight">Tarea Realizada</span>
+</button>
+<button onclick="logEstanciaAction('🍎', 'Snack / Comida')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">🍎</span><span class="font-label-sm text-label-sm text-on-surface text-center leading-tight">Snack / Comida</span>
+</button>
+<button onclick="toggleWorkshopChips()" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">🎨</span><span class="font-label-sm text-label-sm text-on-surface text-center leading-tight">Taller de la Tarde</span>
+</button>
+</div>
+<div id="qpWorkshopChips" class="hidden flex flex-wrap gap-2">
+<button onclick="logEstanciaAction('🎨', 'Taller de Arte')" class="px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🎨 Arte</button>
+<button onclick="logEstanciaAction('🌎', 'Inglés Avanzado')" class="px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🌎 Inglés</button>
+<button onclick="logEstanciaAction('🎵', 'Música')" class="px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🎵 Música</button>
+</div>
 </div>
 
 <!-- Foto rápida -->
@@ -621,10 +667,11 @@ function sendGroupComment(){
 /* ===== Panel de Acción Rápida por Alumno ===== */
 const NOW = Date.now();
 const STUDENT_QUICK = {
-  leo: { diaperTime: NOW - 60*60000, diaperType: 'Pipí', medication: null, suppliesLow: null, napStart: null, history: [] },
-  sofia: { diaperTime: NOW - 150*60000, diaperType: 'Popó', medication: { time: '12:00 PM', dose: 'Paracetamol infantil 5ml si hay fiebre', applied: false }, suppliesLow: null, napStart: NOW - 45*60000, history: [] },
-  mateo: { diaperTime: null, diaperType: null, medication: null, suppliesLow: { type: 'Pañales', active: true }, napStart: null, history: [] },
-  emma: { diaperTime: NOW - 30*60000, diaperType: 'Cambio de ropa', medication: null, suppliesLow: null, napStart: null, history: [] },
+  leo: { diaperTime: NOW - 60*60000, diaperType: 'Pipí', medication: null, suppliesLow: null, napStart: null, history: [], group: 'maternal' },
+  sofia: { diaperTime: NOW - 150*60000, diaperType: 'Popó', medication: { time: '12:00 PM', dose: 'Paracetamol infantil 5ml si hay fiebre', applied: false }, suppliesLow: null, napStart: NOW - 45*60000, history: [], group: 'maternal' },
+  mateo: { diaperTime: null, diaperType: null, medication: null, suppliesLow: { type: 'Pañales', active: true }, napStart: null, history: [], group: 'maternal' },
+  emma: { diaperTime: NOW - 30*60000, diaperType: 'Cambio de ropa', medication: null, suppliesLow: null, napStart: null, history: [], group: 'maternal' },
+  diego: { diaperTime: null, diaperType: null, medication: null, suppliesLow: null, napStart: null, history: [], group: 'estancia' },
 };
 let currentQuickChild = null;
 
@@ -674,6 +721,13 @@ function openQuickPanel(id){
   document.getElementById('qpDiaperStatus').textContent = s.diaperTime
     ? `Último cambio: ${s.diaperType} · ${timeAgo(s.diaperTime)}`
     : 'Sin registros de higiene hoy.';
+
+  // Adaptar el panel según el grupo de edad: Higiene solo aplica a bebés/maternal,
+  // el módulo de Estancia solo aplica a niños de 6-10 años.
+  const isEstancia = s.group === 'estancia';
+  document.getElementById('qpHygieneSection').classList.toggle('hidden', isEstancia);
+  document.getElementById('qpEstanciaSection').classList.toggle('hidden', !isEstancia);
+  document.getElementById('qpWorkshopChips').classList.add('hidden');
 
   // Insumos
   renderQuickSupplies();
@@ -730,6 +784,16 @@ function logDiaper(type){
   pushHistory('🧷', 'Higiene registrada: ' + type);
   renderCardExtraBadges(currentQuickChild);
   showToast(type + ' registrado', 'check_circle');
+}
+
+function toggleWorkshopChips(){
+  document.getElementById('qpWorkshopChips').classList.toggle('hidden');
+}
+function logEstanciaAction(icon, text){
+  pushHistory(icon, text);
+  document.getElementById('qpWorkshopChips').classList.add('hidden');
+  const name = document.getElementById('qpName').textContent;
+  showToast(`${text} registrado para ${name}`, 'check_circle');
 }
 
 function applyQuickMedication(){
@@ -825,6 +889,7 @@ const EMERGENCY_DATA = [
   { name: 'Leo Miller', room: 'Salón Sol', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
   { name: 'Sofía García', room: 'Salón Luna', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
   { name: 'Mateo López', room: 'Salón Sol', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
+  { name: 'Diego Ramírez', room: 'Estancia', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
 ];
 
 function openEmergencyMode(){
