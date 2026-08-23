@@ -199,7 +199,7 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>
                 Ajustes
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="inicio_de_sesi_n.html" onclick="handleLogout(event)"><span class="material-symbols-outlined" data-icon="logout">logout</span>
                 Cerrar sesión
             </a>
 </ul>
@@ -520,6 +520,19 @@ function closeSidebar(){
   nav.classList.add('-translate-x-full');
   nav.classList.remove('translate-x-0');
   backdrop.classList.add('hidden');
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function handleLogout(event){
+  event.preventDefault();
+  await sb.auth.signOut();
+  window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
 </body></html>

@@ -131,9 +131,12 @@
 <h1 class="font-display-lg text-display-lg text-primary">Gael</h1>
 <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Guardería y Estancia</p>
 </div>
+
+<!-- ============ VISTA 1: Elección inicial ============ -->
+<div id="choiceView" class="w-full flex flex-col items-center space-y-lg">
 <!-- Illustration -->
 <div class="w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg relative group">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A warm, inviting digital illustration of diverse toddlers playing joyfully with colorful wooden building blocks in a sunlit, modern childcare classroom. The style is modern, approachable, and vector-like, using a soft palette of mint greens, warm yellows, and light blues. The lighting is bright and cheerful, evoking a sense of safety, growth, and happiness, perfectly aligned with a premium digital calm aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9gWYBsb2wn8XX4-TjVRaOpe0mVEnoiLzToH3yrAnNz0cWZ9517JHmi08ReGNf92UALzotisjjOtOgMz7RzxPKQXiG1Sm9qS3Vlh1hGoHRFirktoTgNDsSLzB-NjRWVookisjaMbF7p8CfHZ7kAupjU1yINht-EOng0eJjUB9FyANPqInxDtfZUXEMPTGBASFz1JAjM5B8VSIlXQJ6yMFkyP5A2Kz0DbllLRmU7LtZge70ht8-yMZ4"/>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A warm, inviting digital illustration of diverse toddlers playing joyfully with colorful wooden building blocks in a sunlit, modern childcare classroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9gWYBsb2wn8XX4-TjVRaOpe0mVEnoiLzToH3yrAnNz0cWZ9517JHmi08ReGNf92UALzotisjjOtOgMz7RzxPKQXiG1Sm9qS3Vlh1hGoHRFirktoTgNDsSLzB-NjRWVookisjaMbF7p8CfHZ7kAupjU1yINht-EOng0eJjUB9FyANPqInxDtfZUXEMPTGBASFz1JAjM5B8VSIlXQJ6yMFkyP5A2Kz0DbllLRmU7LtZge70ht8-yMZ4"/>
 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 </div>
 <!-- Welcome Text -->
@@ -143,7 +146,7 @@
 </div>
 <!-- Actions -->
 <div class="w-full space-y-sm">
-<button class="w-full flex items-center justify-center space-x-sm bg-surface-container-lowest border-2 border-outline-variant hover:bg-surface-container-low text-on-surface font-label-md text-label-md rounded-full py-3 px-6 shadow-sm transition-all duration-200 active:scale-95 group">
+<button onclick="showToast('Conectando con Google...', 'g_translate')" class="w-full flex items-center justify-center space-x-sm bg-surface-container-lowest border-2 border-outline-variant hover:bg-surface-container-low text-on-surface font-label-md text-label-md rounded-full py-3 px-6 shadow-sm transition-all duration-200 active:scale-95 group">
 <svg class="w-5 h-5 group-hover:scale-110 transition-transform" viewbox="0 0 24 24">
 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
@@ -158,14 +161,15 @@
 </svg>
 <span>Continuar con Apple</span>
 </button>
-<button class="w-full flex items-center justify-center space-x-sm bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 group">
+<p class="text-center font-label-sm text-label-sm text-outline py-1">— o con tu correo —</p>
+<button onclick="showView('login')" class="w-full flex items-center justify-center space-x-sm bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 group">
 <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">mail</span>
 <span>Iniciar sesión con correo electrónico</span>
 </button>
 </div>
 <!-- Accesos de demostración por rol -->
 <div class="w-full pt-2">
-<p class="text-center font-label-sm text-label-sm text-outline uppercase tracking-wider mb-sm">Prototipo — entrar como</p>
+<p class="text-center font-label-sm text-label-sm text-outline uppercase tracking-wider mb-sm">Acceso rápido de prueba (sin cuenta)</p>
 <div class="grid grid-cols-2 gap-sm">
 <a class="flex flex-col items-center gap-xs bg-surface-container-lowest border-2 border-outline-variant hover:border-primary hover:bg-primary-container/20 rounded-xl py-4 px-2 transition-colors" href="dashboard_principal.html">
 <span class="material-symbols-outlined text-primary text-[26px]">family_restroom</span>
@@ -180,14 +184,100 @@
 <!-- Links -->
 <div class="text-center space-y-md w-full pt-4">
 <p class="font-body-md text-body-md text-on-surface-variant">
-                ¿No tienes una cuenta? 
-                <a class="font-bold text-primary hover:text-primary-fixed-dim transition-colors hover:underline underline-offset-4" href="#">Regístrate</a>
+                ¿No tienes una cuenta?
+                <a onclick="showView('signup')" class="font-bold text-primary hover:text-primary-fixed-dim transition-colors hover:underline underline-offset-4 cursor-pointer">Regístrate</a>
 </p>
 <div class="font-label-sm text-label-sm text-outline px-4">
-                Al continuar, aceptas nuestros 
-                <a class="underline hover:text-on-surface transition-colors" href="#">Términos y condiciones</a> y 
+                Al continuar, aceptas nuestros
+                <a class="underline hover:text-on-surface transition-colors" href="#">Términos y condiciones</a> y
                 <a class="underline hover:text-on-surface transition-colors" href="#">Política de privacidad</a>.
             </div>
+</div>
+</div>
+
+<!-- ============ VISTA 2: Iniciar sesión (real) ============ -->
+<div id="loginView" class="hidden w-full flex flex-col space-y-md">
+<button onclick="showView('choice')" class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md self-start">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span> Volver
+</button>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Inicia sesión</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Entra con el correo de tu cuenta Gael.</p>
+</div>
+<form id="loginForm" onsubmit="return handleLogin(event)" class="space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo electrónico</label>
+<input id="loginEmail" type="email" required autocomplete="email" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Contraseña</label>
+<input id="loginPassword" type="password" required autocomplete="current-password" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<p id="loginError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+<button id="loginSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+<span>Entrar</span>
+</button>
+</form>
+<p class="text-center font-body-md text-body-md text-on-surface-variant">
+            ¿No tienes cuenta?
+            <a onclick="showView('signup')" class="font-bold text-primary hover:underline underline-offset-4 cursor-pointer">Regístrate</a>
+        </p>
+</div>
+
+<!-- ============ VISTA 3: Registro (real) ============ -->
+<div id="signupView" class="hidden w-full flex flex-col space-y-md">
+<button onclick="showView('choice')" class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md self-start">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span> Volver
+</button>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Crea tu cuenta</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Regístrate como padre de familia o como parte del staff.</p>
+</div>
+<form id="signupForm" onsubmit="return handleSignup(event)" class="space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">¿Quién eres? *</label>
+<div class="grid grid-cols-2 gap-sm" id="signupRoleGroup">
+<button type="button" onclick="selectRole(this,'padre')" data-value="padre" class="role-chip px-3 py-3 rounded-xl border-2 border-primary bg-primary-container text-on-primary-container font-label-md text-label-md transition-all flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">family_restroom</span> Padre de familia
+</button>
+<button type="button" onclick="selectRole(this,'staff')" data-value="staff" class="role-chip px-3 py-3 rounded-xl border-2 border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-all flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">badge</span> Staff / Maestra
+</button>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre completo *</label>
+<input id="signupName" type="text" required class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div id="childNameWrap">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre de tu hijo(a) (opcional)</label>
+<input id="signupChildName" type="text" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Teléfono (opcional)</label>
+<input id="signupPhone" type="tel" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo electrónico *</label>
+<input id="signupEmail" type="email" required autocomplete="email" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Contraseña * (mínimo 6 caracteres)</label>
+<input id="signupPassword" type="password" required minlength="6" autocomplete="new-password" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<p id="signupError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+<button id="signupSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+<span>Crear mi cuenta</span>
+</button>
+</form>
+</div>
+
+<!-- ============ VISTA 4: Confirma tu correo ============ -->
+<div id="confirmEmailView" class="hidden w-full flex flex-col items-center text-center space-y-md py-lg">
+<span class="material-symbols-outlined text-6xl text-primary">mark_email_read</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Revisa tu correo</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Te enviamos un enlace de confirmación a <span id="confirmEmailAddress" class="font-bold text-on-surface"></span>. Ábrelo para activar tu cuenta y luego inicia sesión.</p>
+<button onclick="showView('login')" class="text-primary font-bold hover:underline underline-offset-4">Ir a iniciar sesión</button>
 </div>
 </main>
 
@@ -208,6 +298,141 @@ function showToast(msg, icon){
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
 }
+</script>
+
+<!-- ============ Supabase: autenticación real ============ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function goTo(url){ window.location.href = url; }
+
+const VIEWS = ['choiceView', 'loginView', 'signupView', 'confirmEmailView'];
+function showView(name){
+  VIEWS.forEach(v => document.getElementById(v).classList.add('hidden'));
+  const map = { choice: 'choiceView', login: 'loginView', signup: 'signupView', confirmEmail: 'confirmEmailView' };
+  document.getElementById(map[name]).classList.remove('hidden');
+  document.getElementById('loginError')?.classList.add('hidden');
+  document.getElementById('signupError')?.classList.add('hidden');
+}
+
+let selectedRole = 'padre';
+function selectRole(btn, role){
+  selectedRole = role;
+  document.querySelectorAll('.role-chip').forEach(b => {
+    b.classList.remove('border-primary', 'bg-primary-container', 'text-on-primary-container');
+    b.classList.add('border-outline-variant', 'bg-surface-container-lowest', 'text-on-surface-variant');
+  });
+  btn.classList.remove('border-outline-variant', 'bg-surface-container-lowest', 'text-on-surface-variant');
+  btn.classList.add('border-primary', 'bg-primary-container', 'text-on-primary-container');
+  document.getElementById('childNameWrap').classList.toggle('hidden', role !== 'padre');
+}
+
+function setLoading(btnId, loading, label){
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.classList.toggle('opacity-60', loading);
+  btn.innerHTML = loading
+    ? '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Un momento…</span>'
+    : `<span>${label}</span>`;
+}
+
+function friendlyAuthError(message){
+  const map = {
+    'Invalid login credentials': 'Correo o contraseña incorrectos.',
+    'Email not confirmed': 'Tu correo aún no ha sido confirmado. Revisa tu bandeja de entrada.',
+    'User already registered': 'Ya existe una cuenta con ese correo. Intenta iniciar sesión.',
+  };
+  return map[message] || message || 'Ocurrió un error inesperado. Intenta de nuevo.';
+}
+
+async function handleLogin(e){
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.classList.add('hidden');
+  setLoading('loginSubmitBtn', true);
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+  if(error){
+    errorEl.textContent = friendlyAuthError(error.message);
+    errorEl.classList.remove('hidden');
+    setLoading('loginSubmitBtn', false, 'Entrar');
+    return false;
+  }
+
+  const { data: profile } = await sb.from('profiles').select('role, full_name').eq('id', data.user.id).single();
+  showToast(`¡Bienvenido${profile?.full_name ? ', ' + profile.full_name.split(' ')[0] : ''}!`, 'check_circle');
+  setTimeout(() => {
+    goTo((profile?.role === 'staff' || profile?.role === 'admin') ? 'dashboard_de_administraci_n.html' : 'dashboard_principal.html');
+  }, 600);
+  return false;
+}
+
+async function handleSignup(e){
+  e.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const childName = document.getElementById('signupChildName').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const errorEl = document.getElementById('signupError');
+  errorEl.classList.add('hidden');
+
+  if(!name || !email || password.length < 6){
+    errorEl.textContent = 'Completa los campos obligatorios (*). La contraseña debe tener al menos 6 caracteres.';
+    errorEl.classList.remove('hidden');
+    return false;
+  }
+
+  setLoading('signupSubmitBtn', true);
+
+  const { data, error } = await sb.auth.signUp({
+    email, password,
+    options: {
+      data: {
+        full_name: name,
+        role: selectedRole,
+        child_name: selectedRole === 'padre' ? (childName || null) : null,
+        phone: phone || null,
+      },
+    },
+  });
+
+  if(error){
+    errorEl.textContent = friendlyAuthError(error.message);
+    errorEl.classList.remove('hidden');
+    setLoading('signupSubmitBtn', false, 'Crear mi cuenta');
+    return false;
+  }
+
+  setLoading('signupSubmitBtn', false, 'Crear mi cuenta');
+
+  if(data.session){
+    // confirmación de correo desactivada en el proyecto: entra directo
+    showToast('¡Cuenta creada! Bienvenido a Gael.', 'check_circle');
+    setTimeout(() => {
+      goTo(selectedRole === 'staff' ? 'dashboard_de_administraci_n.html' : 'dashboard_principal.html');
+    }, 600);
+  } else {
+    document.getElementById('confirmEmailAddress').textContent = email;
+    showView('confirmEmail');
+  }
+  return false;
+}
+
+async function checkExistingSession(){
+  const { data } = await sb.auth.getSession();
+  if(data.session){
+    const { data: profile } = await sb.from('profiles').select('role').eq('id', data.session.user.id).single();
+    goTo((profile?.role === 'staff' || profile?.role === 'admin') ? 'dashboard_de_administraci_n.html' : 'dashboard_principal.html');
+  }
+}
+checkExistingSession();
 </script>
 
 <script>
