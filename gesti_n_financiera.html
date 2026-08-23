@@ -205,10 +205,16 @@
 <h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-primary">Gestión de Cobros y Finanzas</h2>
 <p class="font-body-md text-body-md text-on-surface-variant mt-xs">Monitoreo de ingresos, facturación y estado de cuentas.</p>
 </div>
+<div class="flex flex-col sm:flex-row gap-sm w-full md:w-auto">
+<button onclick="openPaymentModal()" class="flex items-center justify-center gap-xs bg-error text-on-error font-label-md text-label-md px-md py-sm rounded-xl shadow-[0_4px_12px_rgba(186,26,26,0.2)] hover:shadow-[0_8px_20px_rgba(186,26,26,0.25)] hover:bg-error/90 transition-all active:scale-95 h-12 w-full md:w-auto">
+<span class="material-symbols-outlined">add_circle</span>
+                    Registrar Pago Presencial
+                </button>
 <button class="flex items-center justify-center gap-xs bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-xl shadow-[0_4px_12px_rgba(27,107,74,0.2)] hover:shadow-[0_8px_20px_rgba(27,107,74,0.25)] hover:bg-on-primary-container transition-all active:scale-95 h-12 w-full md:w-auto" onclick="showToast('Facturas de octubre generadas para todas las familias', 'receipt_long')">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
                     Emitir Factura Masiva
                 </button>
+</div>
 </div>
 <!-- Financial Summary Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-sm md:gap-md">
@@ -353,7 +359,7 @@ Cerrar Caja del Día
 <th class="py-sm px-md font-bold text-right">Acciones</th>
 </tr>
 </thead>
-<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/20">
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/20" id="paymentsTableBody">
 <!-- Row 1: Pagado -->
 <tr class="table-row-hover transition-colors group" data-status="pagado">
 <td class="py-sm px-md">
@@ -494,6 +500,122 @@ Cerrar Caja del Día
 </div>
 </div>
 </main>
+
+<!-- Modal: Registrar Pago Presencial -->
+<div id="paymentModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[200] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-lg max-h-[90vh] overflow-y-auto">
+
+<!-- Vista: Formulario -->
+<div id="paymentFormView">
+<div class="sticky top-0 bg-error text-on-error px-lg py-md flex items-center gap-sm rounded-t-3xl md:rounded-t-2xl z-10">
+<span class="material-symbols-outlined text-[26px]">payments</span>
+<h3 class="font-headline-md text-headline-md flex-1">Registrar Pago Presencial</h3>
+<button onclick="closePaymentModal()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-lg space-y-md">
+
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Alumno *</label>
+<select id="payStudent" onchange="onStudentChange()" class="w-full px-sm py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md">
+<option value="">Selecciona un alumno…</option>
+<option value="mateo">Mateo Rodríguez (Sala Cuna)</option>
+<option value="sofia">Sofía García (Pre-K)</option>
+<option value="lucas">Lucas López (Jardín)</option>
+<option value="emma">Emma Martínez (Sala Cuna)</option>
+</select>
+</div>
+
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Concepto *</label>
+<select id="payConcepto" onchange="onConceptoChange()" class="w-full px-sm py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md">
+<option value="semanal">Colegiatura Semanal ($1,000/semana)</option>
+<option value="inscripcion">Inscripción ($1,500)</option>
+<option value="estancia">Estancia por Hora ($50/hora)</option>
+<option value="materiales">Materiales ($150)</option>
+</select>
+</div>
+
+<!-- Sub-sección: Colegiatura Semanal -->
+<div id="payWeeklySection" class="bg-surface-container-low rounded-xl p-sm space-y-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant">Semana(s) a cobrar</label>
+<p id="payWeeklyStatus" class="font-body-md text-body-md text-sm text-on-surface"></p>
+<div id="payWeeklyBreakdown" class="space-y-1 text-sm font-body-md text-on-surface-variant border-t border-outline-variant/30 pt-2"></div>
+<div id="payCondonarWrap" class="hidden pt-2 border-t border-outline-variant/30">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" id="payCondonar" onchange="toggleCondonar()" class="w-4 h-4 accent-error"/>
+<span class="font-label-sm text-label-sm text-on-surface">Condonar $100 de recargo <span class="text-on-surface-variant">(solo Directora/Admin)</span></span>
+</label>
+<textarea id="payCondonarReason" class="hidden mt-2 w-full px-3 py-2 rounded-lg bg-surface border-2 border-outline-variant focus:border-primary focus:outline-none text-sm font-body-md resize-none" rows="2" placeholder="Motivo de la condonación (obligatorio)…"></textarea>
+</div>
+</div>
+
+<!-- Sub-sección: Estancia por hora -->
+<div id="payHoursSection" class="hidden">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Horas de estancia</label>
+<input id="payHours" type="number" min="1" value="1" oninput="updateTotals()" class="w-full px-sm py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md"/>
+</div>
+
+<div class="flex items-center justify-between bg-primary-container/20 rounded-xl p-sm">
+<span class="font-label-md text-label-md text-on-surface">Total a Cobrar</span>
+<span class="font-headline-md text-[22px] text-primary" id="payTotalDisplay">$0.00</span>
+</div>
+
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Método de pago *</label>
+<div class="grid grid-cols-3 gap-2" id="payMethodGroup">
+<button type="button" onclick="selectMethod(this,'efectivo')" data-value="efectivo" class="method-chip flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-primary bg-primary-container text-on-primary-container transition-all">
+<span class="material-symbols-outlined">payments</span><span class="font-label-sm text-label-sm">Efectivo</span>
+</button>
+<button type="button" onclick="selectMethod(this,'tarjeta')" data-value="tarjeta" class="method-chip flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">credit_card</span><span class="font-label-sm text-label-sm">Tarjeta</span>
+</button>
+<button type="button" onclick="selectMethod(this,'transferencia')" data-value="transferencia" class="method-chip flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">account_balance</span><span class="font-label-sm text-label-sm">Transferencia</span>
+</button>
+</div>
+</div>
+
+<!-- Calculadora de cambio (solo efectivo) -->
+<div id="payChangeCalc" class="bg-surface-container-low rounded-xl p-sm space-y-2">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Efectivo recibido</label>
+<input id="payReceived" type="number" min="0" step="0.01" oninput="calcChange()" placeholder="0.00" class="w-32 px-2 py-1.5 text-right bg-surface border-2 border-outline-variant rounded-lg focus:border-primary focus:outline-none text-sm font-body-md"/>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant/30 pt-2">
+<span class="font-label-md text-label-md text-on-surface">Cambio a entregar</span>
+<span class="font-headline-md text-[18px] text-secondary" id="payChangeDisplay">$0.00</span>
+</div>
+</div>
+
+<p id="payError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+<button onclick="submitPayment()" class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span> Registrar Pago
+</button>
+</div>
+</div>
+
+<!-- Vista: Ticket Digital -->
+<div id="paymentTicketView" class="hidden p-lg">
+<div class="text-center mb-md">
+<span class="material-symbols-outlined text-6xl text-primary">task_alt</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-2">Pago Registrado</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl p-md font-body-md text-sm space-y-1.5" id="ticketContent"></div>
+<div class="grid grid-cols-2 gap-sm mt-md">
+<button onclick="sendWhatsAppReceipt()" class="flex items-center justify-center gap-2 bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chat</span> Enviar WhatsApp
+</button>
+<button onclick="printTicket()" class="flex items-center justify-center gap-2 bg-surface-container-high text-on-surface rounded-xl py-sm font-label-md text-label-md hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">print</span> Imprimir / PDF
+</button>
+</div>
+<button onclick="closePaymentModal()" class="w-full mt-sm text-on-surface-variant font-label-md text-label-md py-sm hover:underline">Cerrar</button>
+</div>
+
+</div>
+</div>
 <script>
 const FAMILY_NAMES = { Garcia: 'Familia García', Martinez: 'Familia Martínez' };
 function markPaid(key){
@@ -607,6 +729,241 @@ function closeCashRegister(){
 }
 
 setCashCutDate();
+
+/* ===== Registrar Pago Presencial ===== */
+const STUDENTS = {
+  mateo: { name: 'Mateo Rodríguez', room: 'Sala Cuna', weeksOverdue: 0 },
+  sofia: { name: 'Sofía García', room: 'Pre-K', weeksOverdue: 1 },
+  lucas: { name: 'Lucas López', room: 'Jardín', weeksOverdue: 2 },
+  emma: { name: 'Emma Martínez', room: 'Sala Cuna', weeksOverdue: 0 },
+};
+const WEEK_PRICE = 1000;
+const LATE_FEE = 100;
+const CONCEPTO_PRICES = { inscripcion: 1500, materiales: 150 };
+const CONCEPTO_LABELS = { semanal: 'Colegiatura Semanal', inscripcion: 'Inscripción', estancia: 'Estancia por Hora', materiales: 'Materiales' };
+
+let selectedMethod = 'efectivo';
+let condonarRecargo = false;
+let paymentCounter = 4200;
+
+function openPaymentModal(){
+  document.getElementById('payStudent').value = '';
+  document.getElementById('payConcepto').value = 'semanal';
+  document.getElementById('payHours').value = 1;
+  document.getElementById('payReceived').value = '';
+  document.getElementById('payCondonar').checked = false;
+  document.getElementById('payCondonarReason').value = '';
+  document.getElementById('payCondonarReason').classList.add('hidden');
+  condonarRecargo = false;
+  document.getElementById('payError').classList.add('hidden');
+  selectMethod(document.querySelector('.method-chip[data-value="efectivo"]'), 'efectivo');
+  onConceptoChange();
+  document.getElementById('paymentFormView').classList.remove('hidden');
+  document.getElementById('paymentTicketView').classList.add('hidden');
+  document.getElementById('paymentModal').classList.remove('hidden');
+}
+function closePaymentModal(){
+  document.getElementById('paymentModal').classList.add('hidden');
+}
+
+function onStudentChange(){
+  updateWeeklyBreakdown();
+  updateTotals();
+}
+
+function onConceptoChange(){
+  const concepto = document.getElementById('payConcepto').value;
+  document.getElementById('payWeeklySection').classList.toggle('hidden', concepto !== 'semanal');
+  document.getElementById('payHoursSection').classList.toggle('hidden', concepto !== 'estancia');
+  updateWeeklyBreakdown();
+  updateTotals();
+}
+
+function updateWeeklyBreakdown(){
+  const key = document.getElementById('payStudent').value;
+  const statusEl = document.getElementById('payWeeklyStatus');
+  const breakdownEl = document.getElementById('payWeeklyBreakdown');
+  const condonarWrap = document.getElementById('payCondonarWrap');
+  if(!key){
+    statusEl.textContent = 'Selecciona un alumno para ver su estatus de semanas.';
+    breakdownEl.innerHTML = '';
+    condonarWrap.classList.add('hidden');
+    return;
+  }
+  const s = STUDENTS[key];
+  const weeksToCharge = s.weeksOverdue + 1; // semanas vencidas + la semana actual
+  const lateWeeks = s.weeksOverdue;
+  statusEl.textContent = lateWeeks > 0
+    ? `${s.name} tiene ${lateWeeks} semana(s) vencida(s) además de la semana actual.`
+    : `${s.name} está al corriente — se cobrará la semana actual.`;
+
+  const lines = [];
+  lines.push(`<div class="flex justify-between"><span>Semana(s) ordinaria(s) (${weeksToCharge} × $${WEEK_PRICE.toFixed(2)})</span><span>$${(weeksToCharge * WEEK_PRICE).toFixed(2)}</span></div>`);
+  if(lateWeeks > 0){
+    lines.push(`<div class="flex justify-between text-error" id="payLateFeeLine"><span>Recargo (${lateWeeks} × $${LATE_FEE.toFixed(2)})</span><span>$${(lateWeeks * LATE_FEE).toFixed(2)}</span></div>`);
+  }
+  breakdownEl.innerHTML = lines.join('');
+  condonarWrap.classList.toggle('hidden', lateWeeks === 0);
+}
+
+function toggleCondonar(){
+  condonarRecargo = document.getElementById('payCondonar').checked;
+  document.getElementById('payCondonarReason').classList.toggle('hidden', !condonarRecargo);
+  updateTotals();
+}
+
+function computeTotal(){
+  const concepto = document.getElementById('payConcepto').value;
+  const key = document.getElementById('payStudent').value;
+
+  if(concepto === 'semanal'){
+    if(!key) return 0;
+    const s = STUDENTS[key];
+    const weeksToCharge = s.weeksOverdue + 1;
+    let total = weeksToCharge * WEEK_PRICE;
+    if(!condonarRecargo) total += s.weeksOverdue * LATE_FEE;
+    return total;
+  }
+  if(concepto === 'estancia'){
+    const hours = parseFloat(document.getElementById('payHours').value) || 0;
+    return hours * 50;
+  }
+  return CONCEPTO_PRICES[concepto] || 0;
+}
+
+function updateTotals(){
+  const total = computeTotal();
+  document.getElementById('payTotalDisplay').textContent = '$' + total.toFixed(2);
+  calcChange();
+}
+
+function selectMethod(btn, method){
+  selectedMethod = method;
+  document.querySelectorAll('.method-chip').forEach(b => {
+    b.classList.remove('border-primary', 'bg-primary-container', 'text-on-primary-container');
+    b.classList.add('border-surface-container-high', 'bg-surface', 'text-on-surface-variant');
+  });
+  btn.classList.remove('border-surface-container-high', 'bg-surface', 'text-on-surface-variant');
+  btn.classList.add('border-primary', 'bg-primary-container', 'text-on-primary-container');
+  document.getElementById('payChangeCalc').classList.toggle('hidden', method !== 'efectivo');
+}
+
+function calcChange(){
+  const total = computeTotal();
+  const received = parseFloat(document.getElementById('payReceived').value) || 0;
+  const change = Math.max(0, received - total);
+  document.getElementById('payChangeDisplay').textContent = '$' + change.toFixed(2);
+}
+
+function submitPayment(){
+  const key = document.getElementById('payStudent').value;
+  const concepto = document.getElementById('payConcepto').value;
+  const errorEl = document.getElementById('payError');
+
+  if(!key){
+    errorEl.textContent = 'Selecciona un alumno antes de continuar.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+  if(condonarRecargo && !document.getElementById('payCondonarReason').value.trim()){
+    errorEl.textContent = 'Escribe el motivo para condonar el recargo.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+  const total = computeTotal();
+  let received = total, change = 0;
+  if(selectedMethod === 'efectivo'){
+    received = parseFloat(document.getElementById('payReceived').value) || 0;
+    if(received < total){
+      errorEl.textContent = 'El efectivo recibido es menor al total a cobrar.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    change = received - total;
+  }
+  errorEl.classList.add('hidden');
+
+  const s = STUDENTS[key];
+  paymentCounter++;
+  const folio = 'PAG-' + paymentCounter;
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  const methodLabels = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia' };
+
+  // Si condonó recargo, se resetea la mora del alumno; si pagó completo, también.
+  if(concepto === 'semanal') s.weeksOverdue = 0;
+
+  window.__lastTicket = {
+    folio, fecha, student: s.name, room: s.room,
+    concepto: CONCEPTO_LABELS[concepto], total, method: methodLabels[selectedMethod],
+    received, change, condonado: condonarRecargo,
+  };
+
+  renderTicket(window.__lastTicket);
+  prependPaymentRow(window.__lastTicket);
+
+  document.getElementById('paymentFormView').classList.add('hidden');
+  document.getElementById('paymentTicketView').classList.remove('hidden');
+}
+
+function renderTicket(t){
+  document.getElementById('ticketContent').innerHTML = `
+    <div class="flex justify-between"><span class="text-on-surface-variant">Folio</span><span class="font-label-md">${t.folio}</span></div>
+    <div class="flex justify-between"><span class="text-on-surface-variant">Fecha</span><span>${t.fecha}</span></div>
+    <div class="flex justify-between"><span class="text-on-surface-variant">Alumno</span><span>${t.student} (${t.room})</span></div>
+    <div class="flex justify-between"><span class="text-on-surface-variant">Concepto</span><span>${t.concepto}</span></div>
+    <div class="flex justify-between"><span class="text-on-surface-variant">Método</span><span>${t.method}</span></div>
+    ${t.condonado ? '<div class="flex justify-between text-primary"><span>Recargo condonado</span><span>Sí</span></div>' : ''}
+    <div class="flex justify-between border-t border-outline-variant/30 pt-1.5 mt-1.5"><span class="font-label-md">Total Pagado</span><span class="font-headline-md text-[18px] text-primary">$${t.total.toFixed(2)}</span></div>
+    ${t.method === 'Efectivo' ? `
+    <div class="flex justify-between"><span class="text-on-surface-variant">Efectivo recibido</span><span>$${t.received.toFixed(2)}</span></div>
+    <div class="flex justify-between"><span class="text-on-surface-variant">Cambio entregado</span><span>$${t.change.toFixed(2)}</span></div>` : ''}
+  `;
+}
+
+function prependPaymentRow(t){
+  const tbody = document.getElementById('paymentsTableBody');
+  const tr = document.createElement('tr');
+  tr.className = 'table-row-hover transition-colors group';
+  tr.dataset.status = 'pagado';
+  const initial = t.student.charAt(0);
+  tr.innerHTML = `
+    <td class="py-sm px-md">
+      <div class="flex items-center gap-sm">
+        <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-sm">${initial}</div>
+        <div><p class="font-label-md text-label-md">${t.student}</p><p class="font-label-sm text-label-sm text-on-surface-variant">${t.room}</p></div>
+      </div>
+    </td>
+    <td class="py-sm px-md text-on-surface-variant">${t.concepto}</td>
+    <td class="py-sm px-md font-label-md">$${t.total.toFixed(2)}</td>
+    <td class="py-sm px-md text-on-surface-variant">${t.fecha.split(' ')[0]}</td>
+    <td class="py-sm px-md">
+      <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Pagado
+      </span>
+    </td>
+    <td class="py-sm px-md text-right">
+      <div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+        <button onclick="showToast('Mostrando recibo de ${t.student}', 'visibility')" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" title="Ver Recibo">
+          <span class="material-symbols-outlined text-sm">visibility</span>
+        </button>
+        <button class="px-2 py-1 bg-tertiary-container text-on-tertiary-container font-label-sm rounded-md flex items-center gap-xs opacity-60 cursor-default" title="Ya facturado">
+          <span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
+          <span class="hidden md:inline">${t.folio}</span>
+        </button>
+      </div>
+    </td>`;
+  tbody.insertBefore(tr, tbody.firstChild);
+  filterInvoices();
+}
+
+function sendWhatsAppReceipt(){
+  const t = window.__lastTicket;
+  showToast(`Ticket ${t.folio} enviado por WhatsApp a la familia de ${t.student}`, 'chat');
+}
+function printTicket(){
+  showToast('Generando PDF del ticket…', 'print');
+}
 </script>
 </div>
 <!-- Shared Toast Component -->
