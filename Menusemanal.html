@@ -281,6 +281,26 @@
                     </span>
 </div>
 </div>
+<!-- Dinner Card -->
+<div class="glass-card rounded-xl p-md ambient-shadow border-t-4 border-t-tertiary-container relative overflow-hidden group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary-container opacity-20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">dinner_dining</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cena</h3>
+<span class="ml-auto font-label-md text-label-md text-on-surface-variant">07:30 PM</span>
+</div>
+<div class="mb-4">
+<p id="ceTitle" class="font-body-lg text-body-lg text-on-surface mb-1">Sopa de verduras con quesadilla</p>
+<p id="ceDesc" class="font-body-md text-body-md text-on-surface-variant">Sopa ligera de verduras de temporada con una quesadilla de queso panela.</p>
+</div>
+<div class="flex flex-wrap gap-2 mt-auto">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">eco</span> Ligero
+                    </span>
+</div>
+</div>
 <!-- Nutrition Summary Mini Card -->
 <div class="glass-card rounded-xl p-md ambient-shadow bg-primary text-on-primary flex flex-col justify-center items-center text-center relative overflow-hidden">
 <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 16px 16px;"></div>
@@ -294,19 +314,24 @@
 const MENU_DATA = {
   lun: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
          lu:['Pescado empanizado con puré','Filete de pescado horneado, puré de papa casero y ejotes al vapor.'],
-         sn:['Palitos de zanahoria y hummus','Zanahoria cruda en bastones con hummus casero de garbanzo.'] },
+         sn:['Palitos de zanahoria y hummus','Zanahoria cruda en bastones con hummus casero de garbanzo.'],
+         ce:['Sopa de verduras con quesadilla','Sopa ligera de verduras de temporada con una quesadilla de queso panela.'] },
   mar: { bf:['Hot cakes integrales','Hot cakes de harina integral con fruta picada y un hilo de miel.'],
          lu:['Albóndigas en salsa de tomate','Albóndigas de res con arroz blanco y verduras salteadas.'],
-         sn:['Gelatina de fruta natural','Gelatina sin azúcar añadida con trozos de durazno.'] },
+         sn:['Gelatina de fruta natural','Gelatina sin azúcar añadida con trozos de durazno.'],
+         ce:['Sándwich integral de pavo','Pan integral con pavo, lechuga y jitomate, acompañado de fruta picada.'] },
   mie: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
          lu:['Pollo con verduras y arroz','Pechuga de pollo a la plancha troceada, acompañada de brócoli y zanahorias al vapor sobre una cama de arroz integral.'],
-         sn:['Yogurt natural','Yogurt natural sin azúcar con un toque de miel y arándanos frescos.'] },
+         sn:['Yogurt natural','Yogurt natural sin azúcar con un toque de miel y arándanos frescos.'],
+         ce:['Crema de zanahoria con pan tostado','Crema suave de zanahoria con un pan tostado integral.'] },
   jue: { bf:['Quesadillas de queso panela','Tortilla de maíz con queso panela derretido y salsa suave al gusto.'],
          lu:['Guisado de res con verduras','Cubos de res guisados con papa, zanahoria y chícharo, con tortilla.'],
-         sn:['Manzana en rebanadas con canela','Manzana fresca en gajos espolvoreada con canela.'] },
+         sn:['Manzana en rebanadas con canela','Manzana fresca en gajos espolvoreada con canela.'],
+         ce:['Ensalada tibia de pasta','Pasta integral con verduras salteadas y un toque de aceite de oliva.'] },
   vie: { bf:['Pan francés integral','Pan integral capeado en huevo, con fruta de temporada.'],
          lu:['Pasta con verduras y pollo','Pasta integral con trozos de pollo, calabaza y jitomate.'],
-         sn:['Paleta de yogurt casera','Paleta helada de yogurt con puré de fresa natural.'] },
+         sn:['Paleta de yogurt casera','Paleta helada de yogurt con puré de fresa natural.'],
+         ce:['Tostadas de frijol','Tostadas horneadas con frijol refrito, lechuga y queso fresco.'] },
 };
 function selectDay(btn, day){
   document.querySelectorAll('.day-btn').forEach(b => {
@@ -323,6 +348,8 @@ function selectDay(btn, day){
   document.getElementById('luDesc').textContent = d.lu[1];
   document.getElementById('snTitle').textContent = d.sn[0];
   document.getElementById('snDesc').textContent = d.sn[1];
+  document.getElementById('ceTitle').textContent = d.ce[0];
+  document.getElementById('ceDesc').textContent = d.ce[1];
   showToast('Mostrando el menú del ' + btn.textContent.trim().split('\n')[0], 'restaurant_menu');
 }
 </script>

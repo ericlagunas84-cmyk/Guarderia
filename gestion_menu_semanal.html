@@ -3,7 +3,7 @@
 <html class="h-full" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Permisos - Gael</title>
+<title>Menú Semanal - Gael</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -190,13 +190,13 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
                 Personal
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined fill" data-icon="admin_panel_settings">admin_panel_settings</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
                 Permisos
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
                 Usuarios
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gestion_menu_semanal.html"><span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="gestion_menu_semanal.html"><span class="material-symbols-outlined fill" data-icon="restaurant_menu">restaurant_menu</span>
                 Menú Semanal
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
@@ -231,118 +231,161 @@
 </header>
 <!-- Canvas -->
 <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
-<div class="max-w-5xl mx-auto">
-<div class="mb-lg">
-<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Permisos de Acceso</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-1">Decide qué puede ver y usar cada persona del equipo dentro de la plataforma.</p>
+<div class="max-w-6xl mx-auto">
+<div class="mb-lg flex flex-wrap items-start justify-between gap-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Menú Semanal</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Sube o edita el desayuno, comida y cena de lunes a viernes. Los padres lo ven al instante en su app.</p>
+</div>
+<div class="flex items-center gap-2">
+<button onclick="copyMondayToAll()" class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-xl px-4 py-2 font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span> Copiar Lunes a toda la semana
+</button>
+</div>
 </div>
 
 <div class="bg-primary-container/20 border border-primary/20 rounded-xl p-sm mb-lg flex items-start gap-sm">
 <span class="material-symbols-outlined text-primary shrink-0">info</span>
-<p class="font-body-md text-body-md text-sm text-on-surface">Los permisos se asignan de forma individual — cada persona puede tener una combinación distinta. Usa las plantillas rápidas como punto de partida y ajusta lo que necesites después.</p>
+<p class="font-body-md text-body-md text-sm text-on-surface">Toca "Editar" en cualquier comida para actualizar el platillo y la descripción. Los cambios se reflejan de inmediato en la app de los padres.</p>
 </div>
 
-<div id="permissionsGrid" class="space-y-md"></div>
-
-<div class="mt-lg flex flex-col sm:flex-row justify-end gap-sm">
-<button onclick="saveAllPermissions()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">save</span>
-Guardar todos los cambios
-</button>
+<!-- Tabs de días -->
+<div class="flex gap-2 mb-md overflow-x-auto scrollbar-hide" id="dayTabs">
+<button onclick="selectDay('lun')" data-day="lun" class="day-tab-btn whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md transition-all shrink-0">Lunes</button>
+<button onclick="selectDay('mar')" data-day="mar" class="day-tab-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all shrink-0 border border-outline-variant">Martes</button>
+<button onclick="selectDay('mie')" data-day="mie" class="day-tab-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all shrink-0 border border-outline-variant">Miércoles</button>
+<button onclick="selectDay('jue')" data-day="jue" class="day-tab-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all shrink-0 border border-outline-variant">Jueves</button>
+<button onclick="selectDay('vie')" data-day="vie" class="day-tab-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all shrink-0 border border-outline-variant">Viernes</button>
 </div>
+
+<!-- Tarjetas de comidas del día seleccionado -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-md" id="mealCardsGrid"></div>
+
 </div>
 </main>
-</div>
 
 <script>
-const MODULES = [
-  { key: 'alumnos', label: 'Alumnos', icon: 'groups' },
-  { key: 'registro', label: 'Registro Diario', icon: 'edit_note' },
-  { key: 'fichas', label: 'Fichas Médicas', icon: 'medical_services' },
-  { key: 'altaDeNinos', label: 'Dar de Alta', icon: 'person_add' },
-  { key: 'finanzas', label: 'Finanzas', icon: 'payments' },
-  { key: 'personal', label: 'Personal', icon: 'badge' },
-  { key: 'reportes', label: 'Reportes', icon: 'assessment' },
+const MEAL_TYPES = [
+  { key: 'bf', label: 'Desayuno / Almuerzo', icon: 'free_breakfast', color: 'bg-amber-100 text-amber-800' },
+  { key: 'lu', label: 'Comida', icon: 'lunch_dining', color: 'bg-primary-container/40 text-on-primary-container' },
+  { key: 'sn', label: 'Merienda', icon: 'icecream', color: 'bg-secondary-container/40 text-on-secondary-container' },
+  { key: 'ce', label: 'Cena', icon: 'dinner_dining', color: 'bg-tertiary-container/40 text-on-tertiary-container' },
 ];
+const DAY_LABELS = { lun: 'Lunes', mar: 'Martes', mie: 'Miércoles', jue: 'Jueves', vie: 'Viernes' };
 
-const STAFF_PERMISSIONS = {
-  ana: { name: 'Maestra Ana López', role: 'Educadora · Salón Bebés', initials: 'AL',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  carlos: { name: 'Maestro Carlos Ruíz', role: 'Educador · Salón Maternal', initials: 'CR',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  sofia: { name: 'Maestra Sofia M.', role: 'Educadora · Preescolar 1', initials: 'SM',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  elena: { name: 'Maestra Elena G.', role: 'Asistente General', initials: 'EG',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: false, personal: true, reportes: false } },
+const MENU_DATA = {
+  lun: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
+         lu:['Pescado empanizado con puré','Filete de pescado horneado, puré de papa casero y ejotes al vapor.'],
+         sn:['Palitos de zanahoria y hummus','Zanahoria cruda en bastones con hummus casero de garbanzo.'],
+         ce:['Sopa de verduras con quesadilla','Sopa ligera de verduras de temporada con una quesadilla de queso panela.'] },
+  mar: { bf:['Hot cakes integrales','Hot cakes de harina integral con fruta picada y un hilo de miel.'],
+         lu:['Albóndigas en salsa de tomate','Albóndigas de res con arroz blanco y verduras salteadas.'],
+         sn:['Gelatina de fruta natural','Gelatina sin azúcar añadida con trozos de durazno.'],
+         ce:['Sándwich integral de pavo','Pan integral con pavo, lechuga y jitomate, acompañado de fruta picada.'] },
+  mie: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
+         lu:['Pollo con verduras y arroz','Pechuga de pollo a la plancha troceada, acompañada de brócoli y zanahorias al vapor sobre una cama de arroz integral.'],
+         sn:['Yogurt natural','Yogurt natural sin azúcar con un toque de miel y arándanos frescos.'],
+         ce:['Crema de zanahoria con pan tostado','Crema suave de zanahoria con un pan tostado integral.'] },
+  jue: { bf:['Quesadillas de queso panela','Tortilla de maíz con queso panela derretido y salsa suave al gusto.'],
+         lu:['Guisado de res con verduras','Cubos de res guisados con papa, zanahoria y chícharo, con tortilla.'],
+         sn:['Manzana en rebanadas con canela','Manzana fresca en gajos espolvoreada con canela.'],
+         ce:['Ensalada tibia de pasta','Pasta integral con verduras salteadas y un toque de aceite de oliva.'] },
+  vie: { bf:['Pan francés integral','Pan integral capeado en huevo, con fruta de temporada.'],
+         lu:['Pasta con verduras y pollo','Pasta integral con trozos de pollo, calabaza y jitomate.'],
+         sn:['Paleta de yogurt casera','Paleta helada de yogurt con puré de fresa natural.'],
+         ce:['Tostadas de frijol','Tostadas horneadas con frijol refrito, lechuga y queso fresco.'] },
 };
 
-const TEMPLATES = {
-  admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
-  maestra: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-  ninguno: { alumnos: false, registro: false, fichas: false, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-};
+let currentDay = 'lun';
+let editingKey = null;
 
-function countActive(perms){
-  return Object.values(perms).filter(Boolean).length;
+function selectDay(day){
+  currentDay = day;
+  document.querySelectorAll('.day-tab-btn').forEach(btn => {
+    const active = btn.dataset.day === day;
+    btn.classList.toggle('bg-primary', active);
+    btn.classList.toggle('text-on-primary', active);
+    btn.classList.toggle('bg-surface-container', !active);
+    btn.classList.toggle('text-on-surface-variant', !active);
+    btn.classList.toggle('border', !active);
+    btn.classList.toggle('border-outline-variant', !active);
+  });
+  editingKey = null;
+  renderMealCards();
 }
 
-function renderPermissions(){
-  const grid = document.getElementById('permissionsGrid');
-  grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
-    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
-      <div class="flex flex-wrap items-center justify-between gap-sm mb-sm">
-        <div class="flex items-center gap-sm">
-          <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${staff.initials}</div>
-          <div>
-            <p class="font-label-md text-label-md text-on-surface">${staff.name}</p>
-            <p class="font-body-md text-[13px] text-on-surface-variant">${staff.role}</p>
-          </div>
+function renderMealCards(){
+  const grid = document.getElementById('mealCardsGrid');
+  const dayData = MENU_DATA[currentDay];
+  grid.innerHTML = MEAL_TYPES.map(meal => {
+    const [titulo, descripcion] = dayData[meal.key];
+    const isEditing = editingKey === meal.key;
+    return `
+    <div class="bg-surface rounded-2xl border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] p-md flex flex-col" data-meal="${meal.key}">
+      <div class="flex items-center gap-2 mb-sm">
+        <div class="w-10 h-10 rounded-full ${meal.color} flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined">${meal.icon}</span>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full" id="permCount-${key}">${countActive(staff.perms)}/${MODULES.length} módulos</span>
-          <div class="relative">
-            <select onchange="applyTemplate('${key}', this.value); this.selectedIndex=0;" class="text-xs font-label-sm border border-outline-variant rounded-lg px-2 py-1.5 bg-surface-container-low text-on-surface-variant appearance-none pr-6 cursor-pointer">
-              <option value="">Plantilla rápida…</option>
-              <option value="admin">Administrador (todo)</option>
-              <option value="maestra">Maestra (básico)</option>
-              <option value="ninguno">Ninguno</option>
-            </select>
-          </div>
+        <h3 class="font-label-md text-label-md text-on-surface">${meal.label}</h3>
+      </div>
+      ${isEditing ? `
+        <div class="space-y-2 flex-1">
+          <input id="editTitulo" type="text" value="${titulo.replace(/"/g,'&quot;')}" class="w-full px-3 py-2 rounded-lg bg-surface-container-low border-2 border-primary focus:outline-none text-sm font-label-md" placeholder="Nombre del platillo"/>
+          <textarea id="editDescripcion" rows="3" class="w-full px-3 py-2 rounded-lg bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md resize-none" placeholder="Descripción breve">${descripcion}</textarea>
         </div>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        ${MODULES.map(m => `
-          <label class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2 cursor-pointer hover:bg-surface-container transition-colors">
-            <input type="checkbox" ${staff.perms[m.key] ? 'checked' : ''} onchange="togglePermission('${key}', '${m.key}', this.checked)" class="w-4 h-4 accent-[#1b6b4a] shrink-0"/>
-            <span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">${m.icon}</span>
-            <span class="font-label-sm text-label-sm text-on-surface truncate">${m.label}</span>
-          </label>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
+        <div class="flex gap-2 mt-sm">
+          <button onclick="cancelEdit()" class="flex-1 border border-outline-variant text-on-surface rounded-lg py-2 font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">Cancelar</button>
+          <button onclick="saveMeal('${meal.key}')" class="flex-1 bg-primary text-on-primary rounded-lg py-2 font-label-sm text-label-sm hover:bg-primary/90 transition-colors">Guardar</button>
+        </div>
+      ` : `
+        <div class="flex-1">
+          <p class="font-headline-md text-[16px] text-on-surface mb-1">${titulo}</p>
+          <p class="font-body-md text-[13px] text-on-surface-variant">${descripcion}</p>
+        </div>
+        <button onclick="startEdit('${meal.key}')" class="mt-sm flex items-center justify-center gap-2 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg py-2 font-label-sm text-label-sm transition-colors">
+          <span class="material-symbols-outlined text-[18px]">edit</span> Editar
+        </button>
+      `}
+    </div>`;
+  }).join('');
 }
 
-function togglePermission(staffKey, moduleKey, value){
-  STAFF_PERMISSIONS[staffKey].perms[moduleKey] = value;
-  document.getElementById('permCount-' + staffKey).textContent = countActive(STAFF_PERMISSIONS[staffKey].perms) + '/' + MODULES.length + ' módulos';
-  const moduleLabel = MODULES.find(m => m.key === moduleKey).label;
-  showToast(`${value ? 'Acceso otorgado' : 'Acceso quitado'}: ${moduleLabel} para ${STAFF_PERMISSIONS[staffKey].name}`, value ? 'check_circle' : 'block');
+function startEdit(mealKey){
+  editingKey = mealKey;
+  renderMealCards();
+}
+function cancelEdit(){
+  editingKey = null;
+  renderMealCards();
+}
+function saveMeal(mealKey){
+  const titulo = document.getElementById('editTitulo').value.trim();
+  const descripcion = document.getElementById('editDescripcion').value.trim();
+  if(!titulo){
+    showToast('El platillo necesita un nombre', 'error');
+    return;
+  }
+  MENU_DATA[currentDay][mealKey] = [titulo, descripcion];
+  editingKey = null;
+  renderMealCards();
+  const mealLabel = MEAL_TYPES.find(m => m.key === mealKey).label;
+  showToast(`${mealLabel} de ${DAY_LABELS[currentDay]} actualizado`, 'check_circle');
 }
 
-function applyTemplate(staffKey, templateKey){
-  if(!templateKey) return;
-  STAFF_PERMISSIONS[staffKey].perms = { ...TEMPLATES[templateKey] };
-  renderPermissions();
-  const templateNames = { admin: 'Administrador', maestra: 'Maestra', ninguno: 'Ninguno' };
-  showToast(`Plantilla "${templateNames[templateKey]}" aplicada a ${STAFF_PERMISSIONS[staffKey].name}`, 'auto_fix_high');
+function copyMondayToAll(){
+  ['mar','mie','jue','vie'].forEach(day => {
+    MENU_DATA[day] = {
+      bf: [...MENU_DATA.lun.bf],
+      lu: [...MENU_DATA.lun.lu],
+      sn: [...MENU_DATA.lun.sn],
+      ce: [...MENU_DATA.lun.ce],
+    };
+  });
+  renderMealCards();
+  showToast('El menú del Lunes se copió a toda la semana', 'content_copy');
 }
 
-function saveAllPermissions(){
-  showToast('Permisos guardados para todo el equipo', 'save');
-}
-
-renderPermissions();
+selectDay('lun');
 </script>
 
 <!-- Shared Toast Component -->
@@ -377,8 +420,17 @@ function closeSidebar(){
   nav.classList.remove('translate-x-0');
   backdrop.classList.add('hidden');
 }
+async function handleLogout(event){
+  event.preventDefault();
+  if(window.supabase){
+    const sb = window.supabase.createClient('https://esntdthzqbdujzkjtehx.supabase.co', 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV');
+    await sb.auth.signOut();
+  }
+  window.location.href = 'inicio_de_sesi_n.html';
+}
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -386,17 +438,5 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function handleLogout(event){
-  event.preventDefault();
-  await sb.auth.signOut();
-  window.location.href = 'inicio_de_sesi_n.html';
-}
-</script>
 </body></html>
+
