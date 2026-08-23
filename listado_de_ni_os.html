@@ -179,7 +179,8 @@
 <!-- Child List (Soft Cards) -->
 <div class="px-margin-mobile flex flex-col gap-sm" id="childList">
 <!-- Card 1: Leo Miller (Present) -->
-<div onclick="handleCardClick(event, this, 'Leo Miller · Salón Sol · Presente desde las 8:12 AM', 'child_care')" data-name="leo miller" data-room="salón sol" data-child-id="leo" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div onclick="handleCardClick(event, this, 'Leo Miller · Salón Sol · Presente desde las 8:12 AM', 'child_care')" data-name="leo miller" data-room="salón sol" data-child-id="leo" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div class="flex items-center w-full">
 <div class="selection-checkbox hidden shrink-0 mr-3">
 <span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
 <span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
@@ -199,8 +200,11 @@
                     </span>
 </div>
 </div>
+<div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-leo"></div>
+</div>
 <!-- Card 2: Sofía García (Napping) -->
-<div onclick="handleCardClick(event, this, 'Sofía García · Salón Luna · En siesta desde hace 45 min', 'bedtime')" data-name="sofía garcía" data-room="salón luna" data-child-id="sofia" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div onclick="handleCardClick(event, this, 'Sofía García · Salón Luna · En siesta desde hace 45 min', 'bedtime')" data-name="sofía garcía" data-room="salón luna" data-child-id="sofia" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-surface-container-highest cursor-pointer group">
+<div class="flex items-center w-full">
 <div class="selection-checkbox hidden shrink-0 mr-3">
 <span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
 <span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
@@ -219,11 +223,14 @@
 <span class="material-symbols-outlined text-[14px]">bedtime</span> En siesta
                     </span>
 <!-- Time in state -->
-<span class="font-label-sm text-[10px] text-on-surface-variant">hace 45m</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant" id="napTimer-sofia">hace 45m</span>
 </div>
+</div>
+<div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-sofia"></div>
 </div>
 <!-- Card 3: Mateo López (Picked Up) -->
-<div onclick="handleCardClick(event, this, 'Mateo López · Salón Sol · Recogido a las 14:30', 'home')" data-name="mateo lópez" data-room="salón sol" data-child-id="mateo" class="child-card flex items-center p-4 rounded-xl bg-surface-container-low shadow-sm border border-transparent opacity-80 cursor-pointer group">
+<div onclick="handleCardClick(event, this, 'Mateo López · Salón Sol · Recogido a las 14:30', 'home')" data-name="mateo lópez" data-room="salón sol" data-child-id="mateo" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-low shadow-sm border border-transparent opacity-80 cursor-pointer group">
+<div class="flex items-center w-full">
 <div class="selection-checkbox hidden shrink-0 mr-3">
 <span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
 <span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
@@ -242,8 +249,11 @@
 <span class="font-label-sm text-[10px] text-outline">a las 14:30</span>
 </div>
 </div>
+<div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-mateo"></div>
+</div>
 <!-- Card 4: Emma Davis (Present - with Alert) -->
-<div onclick="handleCardClick(event, this, 'Emma Davis · Salón Sol · Presente · Alergia severa a mariscos', 'medical_information')" data-name="emma davis" data-room="salón sol" data-child-id="emma" class="child-card flex items-center p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border-l-4 border-l-error-container cursor-pointer group">
+<div onclick="handleCardClick(event, this, 'Emma Davis · Salón Sol · Presente · Alergia severa a mariscos', 'medical_information')" data-name="emma davis" data-room="salón sol" data-child-id="emma" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border-l-4 border-l-error-container cursor-pointer group">
+<div class="flex items-center w-full">
 <div class="selection-checkbox hidden shrink-0 mr-3">
 <span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
 <span class="material-symbols-outlined text-primary checkbox-checked text-[26px] hidden">check_circle</span>
@@ -265,6 +275,8 @@
 <span class="material-symbols-outlined text-[12px]">medical_information</span> Alergia
                     </span>
 </div>
+</div>
+<div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-[68px]" id="extraBadges-emma"></div>
 </div>
 <p id="noResults" class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
 </div>
@@ -300,6 +312,127 @@
 </button>
 </div>
 <div class="p-md space-y-sm" id="emergencyList"></div>
+</div>
+</div>
+
+<!-- Modal: Panel de Acción Rápida por Alumno -->
+<div id="quickPanelModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[200] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-lg max-h-[90vh] overflow-y-auto">
+<!-- Header -->
+<div class="sticky top-0 bg-surface-container-lowest border-b border-surface-container-high px-lg py-md flex items-center gap-sm z-10">
+<img id="qpAvatar" class="w-12 h-12 rounded-full object-cover shrink-0" src=""/>
+<div class="flex-1 min-w-0">
+<h3 id="qpName" class="font-headline-md text-[18px] text-on-surface truncate"></h3>
+<p id="qpMeta" class="font-body-md text-[13px] text-on-surface-variant truncate"></p>
+</div>
+<button onclick="closeQuickPanel()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors shrink-0">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+
+<div class="p-md space-y-md">
+
+<!-- Medicamento pendiente -->
+<div id="qpMedSection" class="hidden bg-amber-50 border-2 border-amber-300 rounded-xl p-sm">
+<div class="flex items-center justify-between gap-sm">
+<div class="flex items-center gap-2">
+<span class="text-xl">💊</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface" id="qpMedText">Medicamento 12:00 PM</p>
+<p class="font-body-md text-[12px] text-on-surface-variant" id="qpMedDose">Dosis indicada por el padre</p>
+</div>
+</div>
+<button id="qpMedBtn" onclick="applyQuickMedication()" class="shrink-0 bg-amber-400 hover:bg-amber-500 text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full transition-colors">Aplicado</button>
+</div>
+</div>
+
+<!-- Cronómetro de estado -->
+<div id="qpTimerSection" class="hidden bg-secondary-container/30 rounded-xl p-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">timer</span>
+<p class="font-label-md text-label-md text-on-surface" id="qpTimerText"></p>
+</div>
+
+<!-- Comentarios rápidos -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Comentarios Rápidos</h4>
+<div class="flex flex-wrap gap-2 mb-2">
+<button onclick="addQuickComment('🟢 Muy alegre hoy')" class="chip-comment px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🟢 Muy alegre hoy</button>
+<button onclick="addQuickComment('🟢 Comió todo')" class="chip-comment px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🟢 Comió todo</button>
+<button onclick="addQuickComment('🟢 Jugó excelente en grupo')" class="chip-comment px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🟢 Jugó excelente en grupo</button>
+<button onclick="addQuickComment('🟡 Un poco cansado')" class="chip-comment px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-label-sm hover:bg-amber-200 transition-colors">🟡 Un poco cansado</button>
+<button onclick="addQuickComment('🟡 Poco apetito')" class="chip-comment px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-label-sm hover:bg-amber-200 transition-colors">🟡 Poco apetito</button>
+<button onclick="addQuickComment('🟡 Ropa extra utilizada')" class="chip-comment px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-label-sm hover:bg-amber-200 transition-colors">🟡 Ropa extra utilizada</button>
+<button onclick="addQuickComment('🔴 Lloró al llegar')" class="chip-comment px-3 py-1.5 rounded-full bg-error-container/60 text-on-error-container font-label-sm text-label-sm hover:bg-error-container transition-colors">🔴 Lloró al llegar</button>
+<button onclick="addQuickComment('🔴 Leve congestión nasal')" class="chip-comment px-3 py-1.5 rounded-full bg-error-container/60 text-on-error-container font-label-sm text-label-sm hover:bg-error-container transition-colors">🔴 Leve congestión nasal</button>
+</div>
+<div class="flex gap-2">
+<input id="qpFreeNote" type="text" placeholder="Nota libre corta…" class="flex-1 px-3 py-2 rounded-lg bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md"/>
+<button onclick="addFreeNote()" class="bg-primary text-on-primary rounded-lg px-3 font-label-sm text-label-sm hover:bg-primary/90 transition-colors">Enviar</button>
+</div>
+</div>
+
+<!-- Higiene / Pañal -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Higiene</h4>
+<div class="grid grid-cols-3 gap-2">
+<button onclick="logDiaper('Pipí')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">💧</span><span class="font-label-sm text-label-sm text-on-surface">Pipí</span>
+</button>
+<button onclick="logDiaper('Popó')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">🧷</span><span class="font-label-sm text-label-sm text-on-surface">Popó</span>
+</button>
+<button onclick="logDiaper('Cambio de ropa')" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">👕</span><span class="font-label-sm text-label-sm text-on-surface text-center leading-tight">Cambio de ropa</span>
+</button>
+</div>
+<p id="qpDiaperStatus" class="font-body-md text-[12px] text-on-surface-variant mt-2"></p>
+</div>
+
+<!-- Foto rápida -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Foto para el Muro</h4>
+<label class="flex items-center justify-center gap-2 bg-surface-container-low hover:bg-surface-container transition-colors rounded-xl py-3 cursor-pointer">
+<span class="material-symbols-outlined text-primary">photo_camera</span>
+<span class="font-label-md text-label-md text-on-surface">Tomar / Subir Foto</span>
+<input id="qpPhotoInput" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleQuickPhoto(event)"/>
+</label>
+</div>
+
+<!-- Insumos -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Insumos</h4>
+<div id="qpSuppliesOk" class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<p class="font-body-md text-body-md text-sm">Sin alertas de insumos</p>
+</div>
+<div id="qpSuppliesLow" class="hidden flex items-center justify-between gap-sm bg-error-container/40 rounded-xl p-sm">
+<div class="flex items-center gap-2">
+<span class="text-lg">⚠️</span>
+<p class="font-label-md text-label-md text-on-error-container" id="qpSuppliesText">Sin pañales</p>
+</div>
+<button onclick="notifyParentSupplies()" class="shrink-0 bg-error text-on-error font-label-sm text-label-sm px-3 py-1.5 rounded-full hover:bg-error/90 transition-colors">Notificar al papá</button>
+</div>
+<button onclick="toggleSuppliesLow()" class="mt-2 text-primary font-label-sm text-label-sm hover:underline" id="qpSuppliesToggleBtn">Marcar insumo agotado</button>
+</div>
+
+<!-- Incidente rápido -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2 flex items-center gap-1">🩹 Reportar Incidente</h4>
+<div class="grid grid-cols-3 gap-2">
+<button onclick="logQuickIncident('Raspón')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Raspón</button>
+<button onclick="logQuickIncident('Golpe')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Golpe</button>
+<button onclick="logQuickIncident('Caída')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Caída</button>
+</div>
+<a href="fichas_m_dicas_y_salud.html" class="block text-center mt-2 text-primary font-label-sm text-label-sm hover:underline">Reporte detallado con silueta corporal →</a>
+</div>
+
+<!-- Historial de hoy -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Historial de Hoy</h4>
+<div id="qpHistory" class="space-y-1"></div>
+</div>
+
+</div>
 </div>
 </div>
 <script>
@@ -371,7 +504,7 @@ function handleCardClick(event, card, msg, icon){
     card.querySelector('.checkbox-unchecked').classList.toggle('hidden', !isSelected);
     updateBulkBar();
   } else {
-    showToast(msg, icon);
+    openQuickPanel(card.dataset.childId);
   }
 }
 
@@ -410,6 +543,208 @@ function applyBulkAction(kind){
 }
 
 /* ===== Modo de Emergencia ===== */
+/* ===== Panel de Acción Rápida por Alumno ===== */
+const NOW = Date.now();
+const STUDENT_QUICK = {
+  leo: { diaperTime: NOW - 60*60000, diaperType: 'Pipí', medication: null, suppliesLow: null, napStart: null, history: [] },
+  sofia: { diaperTime: NOW - 150*60000, diaperType: 'Popó', medication: { time: '12:00 PM', dose: 'Paracetamol infantil 5ml si hay fiebre', applied: false }, suppliesLow: null, napStart: NOW - 45*60000, history: [] },
+  mateo: { diaperTime: null, diaperType: null, medication: null, suppliesLow: { type: 'Pañales', active: true }, napStart: null, history: [] },
+  emma: { diaperTime: NOW - 30*60000, diaperType: 'Cambio de ropa', medication: null, suppliesLow: null, napStart: null, history: [] },
+};
+let currentQuickChild = null;
+
+function timeAgo(ts){
+  if(!ts) return '';
+  const mins = Math.max(0, Math.round((Date.now() - ts) / 60000));
+  if(mins < 60) return `hace ${mins}m`;
+  const h = Math.floor(mins / 60), m = mins % 60;
+  return `hace ${h}h ${m}m`;
+}
+
+function openQuickPanel(id){
+  currentQuickChild = id;
+  const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
+  const name = card.querySelector('h3').textContent.trim();
+  const room = card.querySelector('.ml-4 p').textContent.trim();
+  const avatarSrc = card.querySelector('img').src;
+
+  document.getElementById('qpAvatar').src = avatarSrc;
+  document.getElementById('qpName').textContent = name;
+  document.getElementById('qpMeta').textContent = room;
+
+  const s = STUDENT_QUICK[id];
+
+  // Medicamento
+  const medSection = document.getElementById('qpMedSection');
+  if(s.medication && !s.medication.applied){
+    medSection.classList.remove('hidden');
+    document.getElementById('qpMedText').textContent = 'Medicamento ' + s.medication.time;
+    document.getElementById('qpMedDose').textContent = s.medication.dose;
+    document.getElementById('qpMedBtn').disabled = false;
+    document.getElementById('qpMedBtn').textContent = 'Aplicado';
+  } else {
+    medSection.classList.add('hidden');
+  }
+
+  // Cronómetro (siesta)
+  const timerSection = document.getElementById('qpTimerSection');
+  if(s.napStart){
+    timerSection.classList.remove('hidden');
+    document.getElementById('qpTimerText').textContent = `😴 En siesta (${timeAgo(s.napStart).replace('hace ', '')})`;
+  } else {
+    timerSection.classList.add('hidden');
+  }
+
+  // Pañal
+  document.getElementById('qpDiaperStatus').textContent = s.diaperTime
+    ? `Último cambio: ${s.diaperType} · ${timeAgo(s.diaperTime)}`
+    : 'Sin registros de higiene hoy.';
+
+  // Insumos
+  renderQuickSupplies();
+
+  document.getElementById('qpFreeNote').value = '';
+  renderQuickHistory();
+
+  document.getElementById('quickPanelModal').classList.remove('hidden');
+}
+function closeQuickPanel(){
+  document.getElementById('quickPanelModal').classList.add('hidden');
+  currentQuickChild = null;
+}
+
+function pushHistory(icon, text){
+  const s = STUDENT_QUICK[currentQuickChild];
+  s.history.unshift({ icon, text, time: new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) });
+  renderQuickHistory();
+}
+function renderQuickHistory(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const el = document.getElementById('qpHistory');
+  if(!s.history.length){
+    el.innerHTML = '<p class="font-body-md text-[13px] text-on-surface-variant">Sin eventos registrados todavía.</p>';
+    return;
+  }
+  el.innerHTML = s.history.map(h => `
+    <div class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2">
+      <span class="text-base shrink-0">${h.icon}</span>
+      <span class="font-body-md text-[13px] text-on-surface flex-1">${h.text}</span>
+      <span class="font-label-sm text-[11px] text-on-surface-variant shrink-0">${h.time}</span>
+    </div>`).join('');
+}
+
+function addQuickComment(text){
+  pushHistory('💬', text);
+  const name = document.getElementById('qpName').textContent;
+  showToast(`Comentario agregado para ${name}`, 'chat');
+}
+function addFreeNote(){
+  const input = document.getElementById('qpFreeNote');
+  const text = input.value.trim();
+  if(!text) return;
+  pushHistory('📝', text);
+  input.value = '';
+  showToast('Nota agregada', 'check_circle');
+}
+
+function logDiaper(type){
+  const s = STUDENT_QUICK[currentQuickChild];
+  s.diaperTime = Date.now();
+  s.diaperType = type;
+  document.getElementById('qpDiaperStatus').textContent = `Último cambio: ${type} · hace 0m`;
+  pushHistory('🧷', 'Higiene registrada: ' + type);
+  renderCardExtraBadges(currentQuickChild);
+  showToast(type + ' registrado', 'check_circle');
+}
+
+function applyQuickMedication(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  s.medication.applied = true;
+  document.getElementById('qpMedSection').classList.add('hidden');
+  pushHistory('💊', 'Medicamento aplicado (' + s.medication.time + ')');
+  renderCardExtraBadges(currentQuickChild);
+  const name = document.getElementById('qpName').textContent;
+  showToast(`Medicamento marcado como aplicado a ${name}`, 'check_circle');
+}
+
+function handleQuickPhoto(event){
+  if(!event.target.files || event.target.files.length === 0) return;
+  const name = document.getElementById('qpName').textContent;
+  pushHistory('📷', 'Foto agregada al muro');
+  showToast(`Foto subida al muro de ${name}`, 'photo_camera');
+  event.target.value = '';
+}
+
+function renderQuickSupplies(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const ok = document.getElementById('qpSuppliesOk');
+  const low = document.getElementById('qpSuppliesLow');
+  const toggleBtn = document.getElementById('qpSuppliesToggleBtn');
+  if(s.suppliesLow && s.suppliesLow.active){
+    ok.classList.add('hidden');
+    low.classList.remove('hidden');
+    document.getElementById('qpSuppliesText').textContent = 'Sin ' + s.suppliesLow.type.toLowerCase();
+    toggleBtn.textContent = 'Quitar alerta de insumo';
+  } else {
+    ok.classList.remove('hidden');
+    low.classList.add('hidden');
+    toggleBtn.textContent = 'Marcar insumo agotado';
+  }
+}
+function toggleSuppliesLow(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  if(s.suppliesLow && s.suppliesLow.active){
+    s.suppliesLow.active = false;
+  } else {
+    s.suppliesLow = { type: 'Pañales', active: true };
+  }
+  renderQuickSupplies();
+  renderCardExtraBadges(currentQuickChild);
+}
+function notifyParentSupplies(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const name = document.getElementById('qpName').textContent;
+  pushHistory('🎒', 'Se notificó al papá: faltan ' + s.suppliesLow.type.toLowerCase());
+  showToast(`Notificación enviada al papá de ${name}`, 'notifications_active');
+}
+
+function logQuickIncident(type){
+  pushHistory('🩹', type + ' registrado — pendiente de firma');
+  const name = document.getElementById('qpName').textContent;
+  showToast(`${type} registrado para ${name} — pendiente de firma`, 'assignment_turned_in');
+}
+
+function renderCardExtraBadges(id){
+  const s = STUDENT_QUICK[id];
+  const container = document.getElementById('extraBadges-' + id);
+  const badges = [];
+  if(s.medication && !s.medication.applied){
+    badges.push(`<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-[10px] flex items-center gap-1">💊 ${s.medication.time}</span>`);
+  }
+  if(s.suppliesLow && s.suppliesLow.active){
+    badges.push(`<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-[10px] flex items-center gap-1">⚠️ Sin ${s.suppliesLow.type.toLowerCase()}</span>`);
+  }
+  if(s.diaperTime){
+    badges.push(`<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[10px] flex items-center gap-1">🧷 ${timeAgo(s.diaperTime)}</span>`);
+  }
+  container.innerHTML = badges.join('');
+  container.classList.toggle('hidden', badges.length === 0);
+  container.classList.toggle('flex', badges.length > 0);
+}
+
+function updateAllQuickTimers(){
+  Object.keys(STUDENT_QUICK).forEach(renderCardExtraBadges);
+  const napTimer = document.getElementById('napTimer-sofia');
+  if(napTimer && STUDENT_QUICK.sofia.napStart) napTimer.textContent = timeAgo(STUDENT_QUICK.sofia.napStart);
+  if(currentQuickChild){
+    const s = STUDENT_QUICK[currentQuickChild];
+    if(s.napStart) document.getElementById('qpTimerText').textContent = `😴 En siesta (${timeAgo(s.napStart).replace('hace ', '')})`;
+    if(s.diaperTime) document.getElementById('qpDiaperStatus').textContent = `Último cambio: ${s.diaperType} · ${timeAgo(s.diaperTime)}`;
+  }
+}
+Object.keys(STUDENT_QUICK).forEach(renderCardExtraBadges);
+setInterval(updateAllQuickTimers, 30000);
+
 const EMERGENCY_DATA = [
   { name: 'Emma Davis', room: 'Salón Sol', level: 'critico', detail: 'Alergia severa a mariscos. Requiere antihistamínico (en botiquín). Contactar a los padres de inmediato ante exposición.' },
   { name: 'Leo Miller', room: 'Salón Sol', level: 'ok', detail: 'Sin alergias ni condiciones médicas registradas.' },
