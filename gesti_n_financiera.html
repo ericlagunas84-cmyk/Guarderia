@@ -281,7 +281,7 @@
 <span class="material-symbols-outlined">point_of_sale</span>
 </div>
 <div>
-<h3 class="font-headline-md text-[18px] text-on-surface">Corte de Caja Diario</h3>
+<h3 class="font-headline-md text-[18px] text-on-surface">Corte de Caja por Turno</h3>
 <p class="font-label-sm text-label-sm text-on-surface-variant" id="cashCutDate"></p>
 </div>
 </div>
@@ -289,18 +289,31 @@
 <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Caja abierta
 </span>
 </div>
+
+<!-- Selector de Turno -->
+<div class="grid grid-cols-2 gap-2 mb-md" id="turnoSelector">
+<button type="button" onclick="switchTurno('matutino')" data-turno="matutino" class="turno-chip flex flex-col items-center py-2.5 rounded-xl border-2 border-primary bg-primary-container text-on-primary-container transition-all">
+<span class="font-label-md text-label-md">☀️ Turno Matutino</span>
+<span class="font-label-sm text-[11px] opacity-80">6:00 AM – 3:00 PM</span>
+</button>
+<button type="button" onclick="switchTurno('vespertino')" data-turno="vespertino" class="turno-chip flex flex-col items-center py-2.5 rounded-xl border-2 border-surface-container-high bg-surface text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="font-label-md text-label-md">🌙 Turno Vespertino</span>
+<span class="font-label-sm text-[11px] opacity-80">3:00 PM – 9:00 PM</span>
+</button>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-3 gap-sm mb-md">
 <div class="bg-surface-container-low rounded-lg p-sm">
 <p class="font-label-sm text-label-sm text-on-surface-variant">Efectivo (sistema)</p>
-<p class="font-label-md text-label-md text-on-surface text-lg">$1,850.00</p>
+<p class="font-label-md text-label-md text-on-surface text-lg" id="turnoEfectivoSistema">$0.00</p>
 </div>
 <div class="bg-surface-container-low rounded-lg p-sm">
 <p class="font-label-sm text-label-sm text-on-surface-variant">Tarjeta</p>
-<p class="font-label-md text-label-md text-on-surface text-lg">$3,120.00</p>
+<p class="font-label-md text-label-md text-on-surface text-lg" id="turnoTarjeta">$0.00</p>
 </div>
 <div class="bg-surface-container-low rounded-lg p-sm">
 <p class="font-label-sm text-label-sm text-on-surface-variant">Transferencia</p>
-<p class="font-label-md text-label-md text-on-surface text-lg">$920.00</p>
+<p class="font-label-md text-label-md text-on-surface text-lg" id="turnoTransferencia">$0.00</p>
 </div>
 </div>
 <div class="flex flex-col md:flex-row gap-sm items-start md:items-end mb-md">
@@ -314,14 +327,20 @@
 </div>
 </div>
 <div class="flex items-center justify-between bg-surface-container-low rounded-lg p-sm mb-md">
-<span class="font-label-md text-label-md text-on-surface">Total del día (efectivo + tarjeta + transferencia)</span>
-<span class="font-headline-md text-[20px] text-primary">$5,890.00</span>
+<span class="font-label-md text-label-md text-on-surface">Total del turno (efectivo + tarjeta + transferencia)</span>
+<span class="font-headline-md text-[20px] text-primary" id="turnoTotal">$0.00</span>
 </div>
 <button id="closeCashBtn" onclick="closeCashRegister()" class="w-full md:w-auto bg-primary text-on-primary rounded-xl px-lg py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-[20px]">lock</span>
-Cerrar Caja del Día
+<span id="closeCashBtnLabel">Realizar Corte de Caja</span>
 </button>
 <p id="cashCutSummary" class="hidden mt-md p-sm bg-primary-container/20 rounded-lg font-body-md text-body-md text-sm text-on-surface"></p>
+
+<!-- Historial de turnos del día -->
+<div class="mt-md pt-md border-t border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Turnos de hoy</p>
+<div class="space-y-2" id="turnoHistory"></div>
+</div>
 </div>
 <!-- Table Controls & Filters -->
 <div class="bg-surface rounded-t-xl p-sm md:p-md border border-outline-variant/30 border-b-0 shadow-[0_4px_12px_rgba(26,43,60,0.02)] flex flex-col md:flex-row gap-sm justify-between items-center">
@@ -669,26 +688,95 @@ function generateInvoice(family, amount, btn){
   }
 }
 
-/* ===== Corte de Caja Diario ===== */
-const CASH_SYSTEM_TOTAL = 1850.00;
-let cashRegisterClosed = false;
+/* ===== Corte de Caja por Turno ===== */
+const TURNOS = {
+  matutino: { label: 'Turno Matutino', efectivo: 1850.00, tarjeta: 3120.00, transferencia: 920.00, counted: null, closed: false, closedAt: null },
+  vespertino: { label: 'Turno Vespertino', efectivo: 980.00, tarjeta: 1640.00, transferencia: 310.00, counted: null, closed: false, closedAt: null },
+};
+let currentTurno = 'matutino';
 
 function setCashCutDate(){
   const el = document.getElementById('cashCutDate');
   if(el) el.textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
-function updateCashDiff(){
+function turnoTotal(t){
+  return t.efectivo + t.tarjeta + t.transferencia;
+}
+
+function switchTurno(key){
+  currentTurno = key;
+  document.querySelectorAll('.turno-chip').forEach(chip => {
+    const active = chip.dataset.turno === key;
+    chip.classList.toggle('border-primary', active);
+    chip.classList.toggle('bg-primary-container', active);
+    chip.classList.toggle('text-on-primary-container', active);
+    chip.classList.toggle('border-surface-container-high', !active);
+    chip.classList.toggle('bg-surface', !active);
+    chip.classList.toggle('text-on-surface-variant', !active);
+  });
+  renderTurno();
+}
+
+function renderTurno(){
+  const t = TURNOS[currentTurno];
+  document.getElementById('turnoEfectivoSistema').textContent = '$' + t.efectivo.toFixed(2);
+  document.getElementById('turnoTarjeta').textContent = '$' + t.tarjeta.toFixed(2);
+  document.getElementById('turnoTransferencia').textContent = '$' + t.transferencia.toFixed(2);
+  document.getElementById('turnoTotal').textContent = '$' + turnoTotal(t).toFixed(2);
+
   const input = document.getElementById('cashCounted');
+  input.value = t.counted === null ? '' : t.counted;
+  input.disabled = t.closed;
+
+  const btn = document.getElementById('closeCashBtn');
+  btn.disabled = t.closed;
+  btn.classList.toggle('opacity-50', t.closed);
+  btn.classList.toggle('cursor-not-allowed', t.closed);
+  document.getElementById('closeCashBtnLabel').textContent = t.closed ? 'Turno ya cerrado' : 'Realizar Corte de Caja';
+
+  const statusEl = document.getElementById('cashCutStatus');
+  statusEl.innerHTML = t.closed
+    ? '<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Caja cerrada'
+    : '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Caja abierta';
+  statusEl.classList.toggle('bg-primary-container', t.closed);
+  statusEl.classList.toggle('text-on-primary-container', t.closed);
+  statusEl.classList.toggle('bg-secondary-container', !t.closed);
+  statusEl.classList.toggle('text-on-secondary-container', !t.closed);
+
+  updateCashDiff();
+
+  const summary = document.getElementById('cashCutSummary');
+  if(t.closed){
+    const diffText = diffLabel(t);
+    summary.textContent = `${t.label} cerrado a las ${t.closedAt} por Ana G. · Total: $${turnoTotal(t).toFixed(2)} · Efectivo contado: $${t.counted.toFixed(2)} (${diffText})`;
+    summary.classList.remove('hidden');
+  } else {
+    summary.classList.add('hidden');
+  }
+
+  renderTurnoHistory();
+}
+
+function diffLabel(t){
+  if(t.counted === null) return '';
+  const diff = t.counted - t.efectivo;
+  if(Math.abs(diff) < 0.01) return 'Cuadra exacto ✓';
+  return diff > 0 ? `+$${diff.toFixed(2)} sobrante` : `-$${Math.abs(diff).toFixed(2)} faltante`;
+}
+
+function updateCashDiff(){
+  const t = TURNOS[currentTurno];
   const diffEl = document.getElementById('cashDiff');
-  const raw = input.value.trim();
+  const raw = document.getElementById('cashCounted').value.trim();
   if(raw === ''){
     diffEl.textContent = 'Ingresa el conteo para comparar';
     diffEl.className = 'font-label-md text-label-md text-on-surface-variant';
     return;
   }
   const counted = parseFloat(raw) || 0;
-  const diff = counted - CASH_SYSTEM_TOTAL;
+  t.counted = counted;
+  const diff = counted - t.efectivo;
   if(Math.abs(diff) < 0.01){
     diffEl.textContent = '$0.00 · Cuadra exacto ✓';
     diffEl.className = 'font-label-md text-label-md text-primary font-bold';
@@ -702,31 +790,33 @@ function updateCashDiff(){
 }
 
 function closeCashRegister(){
-  if(cashRegisterClosed) return;
+  const t = TURNOS[currentTurno];
+  if(t.closed) return;
   const input = document.getElementById('cashCounted');
   if(input.value.trim() === ''){
     showToast('Ingresa el efectivo contado antes de cerrar la caja', 'error');
     return;
   }
-  cashRegisterClosed = true;
-  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
-  const statusEl = document.getElementById('cashCutStatus');
-  statusEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Caja cerrada';
-  statusEl.classList.remove('bg-secondary-container', 'text-on-secondary-container');
-  statusEl.classList.add('bg-primary-container', 'text-on-primary-container');
+  t.counted = parseFloat(input.value) || 0;
+  t.closed = true;
+  t.closedAt = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
 
-  const btn = document.getElementById('closeCashBtn');
-  btn.disabled = true;
-  btn.classList.add('opacity-50', 'cursor-not-allowed');
-  input.disabled = true;
-
-  const diffText = document.getElementById('cashDiff').textContent;
-  const summary = document.getElementById('cashCutSummary');
-  summary.textContent = `Caja cerrada a las ${time} por Ana G. · Total del día: $5,890.00 · Efectivo contado: $${parseFloat(input.value).toFixed(2)} (${diffText})`;
-  summary.classList.remove('hidden');
-
-  showToast('Corte de caja del día cerrado correctamente', 'lock');
+  renderTurno();
+  showToast(`${t.label} cerrado correctamente`, 'lock');
 }
+
+function renderTurnoHistory(){
+  const container = document.getElementById('turnoHistory');
+  container.innerHTML = Object.values(TURNOS).map(t => `
+    <div class="flex items-center justify-between bg-surface-container-low rounded-lg px-3 py-2">
+      <span class="font-label-md text-label-md text-on-surface">${t.label}</span>
+      ${t.closed
+        ? `<span class="inline-flex items-center gap-xs px-2 py-0.5 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-[11px]"><span class="material-symbols-outlined text-[12px]">lock</span> Cerrado ${t.closedAt}</span>`
+        : `<span class="inline-flex items-center gap-xs px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[11px]"><span class="material-symbols-outlined text-[12px]">lock_open</span> Pendiente</span>`}
+    </div>`).join('');
+}
+
+renderTurno();
 
 setCashCutDate();
 
