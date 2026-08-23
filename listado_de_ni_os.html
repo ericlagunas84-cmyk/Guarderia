@@ -284,17 +284,50 @@
 
 <!-- Barra de Acciones Masivas (aparece en modo selección) -->
 <div id="bulkActionBar" class="hidden fixed bottom-20 left-0 w-full z-40 px-margin-mobile pb-2">
-<div class="max-w-[600px] mx-auto bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-xl p-3 flex items-center gap-2">
-<span class="font-label-md text-label-md pl-2 flex-1" id="selectionCount">0 seleccionados</span>
-<button onclick="applyBulkAction('siesta')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors">
-<span class="material-symbols-outlined text-[18px]">bedtime</span> Siesta
-</button>
-<button onclick="applyBulkAction('comida')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors">
-<span class="material-symbols-outlined text-[18px]">restaurant</span> Comida
-</button>
-<button onclick="toggleSelectionMode()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0" aria-label="Cancelar selección">
+<div class="max-w-[600px] mx-auto bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-xl p-3">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md" id="selectionCount">0 seleccionados</span>
+<button onclick="toggleSelectionMode()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0" aria-label="Cancelar selección">
 <span class="material-symbols-outlined text-[20px]">close</span>
 </button>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+<button onclick="applyBulkAction('siesta')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">bedtime</span> Siesta
+</button>
+<button onclick="applyBulkAction('comida')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">restaurant</span> Comida
+</button>
+<button onclick="applyBulkAction('panal')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
+<span class="text-[16px]">🧷</span> Pañal
+</button>
+<button onclick="openGroupCommentModal()" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">chat</span> Comentario Grupal
+</button>
+</div>
+</div>
+</div>
+
+<!-- Modal: Comentario Grupal -->
+<div id="groupCommentModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[210] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-md max-h-[85vh] overflow-y-auto p-lg">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">chat</span> Comentario Grupal
+</h3>
+<button onclick="closeGroupCommentModal()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm" id="groupCommentTarget"></p>
+<div class="flex flex-wrap gap-2 mb-sm">
+<button onclick="setGroupComment('🟢 Muy alegre hoy')" class="chip-comment px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🟢 Muy alegre hoy</button>
+<button onclick="setGroupComment('🟢 Jugó excelente en grupo')" class="chip-comment px-3 py-1.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm hover:bg-primary-container transition-colors">🟢 Jugó excelente en grupo</button>
+<button onclick="setGroupComment('🟡 Un poco cansados')" class="chip-comment px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-label-sm hover:bg-amber-200 transition-colors">🟡 Un poco cansados</button>
+<button onclick="setGroupComment('🎨 Completaron el taller de arte')" class="chip-comment px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-label-sm hover:bg-amber-200 transition-colors">🎨 Completaron el taller</button>
+</div>
+<textarea id="groupCommentText" rows="3" placeholder="Escribe el comentario para todo el grupo seleccionado…" class="w-full px-3 py-2 rounded-lg bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md resize-none mb-sm"></textarea>
+<button onclick="sendGroupComment()" class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">Enviar a todos los seleccionados</button>
 </div>
 </div>
 
@@ -521,8 +554,9 @@ function applyBulkAction(kind){
     showToast('Selecciona al menos un alumno', 'info');
     return;
   }
-  const label = kind === 'siesta' ? 'Siesta' : 'Comida';
-  const icon = kind === 'siesta' ? 'bedtime' : 'restaurant';
+  const LABELS = { siesta: 'Siesta', comida: 'Comida', panal: 'Pañal' };
+  const ICONS = { siesta: 'bedtime', comida: 'restaurant' };
+  const label = LABELS[kind];
   const total = selectedChildren.size;
   selectedChildren.forEach(id => {
     const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
@@ -533,12 +567,53 @@ function applyBulkAction(kind){
       if(!badge){
         badge = document.createElement('span');
         badge.className = 'batch-badge-' + kind + ' px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px] flex items-center gap-1 mt-1';
-        badge.innerHTML = `<span class="material-symbols-outlined text-[12px]">${icon}</span> ${label} ✓`;
+        const iconHtml = kind === 'panal' ? '🧷' : `<span class="material-symbols-outlined text-[12px]">${ICONS[kind]}</span>`;
+        badge.innerHTML = `${iconHtml} ${label} ✓`;
         statusCol.appendChild(badge);
       }
     }
+    if(kind === 'panal' && STUDENT_QUICK[id]){
+      STUDENT_QUICK[id].diaperTime = Date.now();
+      STUDENT_QUICK[id].diaperType = 'Registrado (grupal)';
+      STUDENT_QUICK[id].history.unshift({ icon: '🧷', text: 'Higiene registrada (acción grupal)', time: new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) });
+      renderCardExtraBadges(id);
+    }
   });
   showToast(`${label} registrada para ${total} alumno(s)`, 'check_circle');
+  toggleSelectionMode();
+}
+
+/* ===== Comentario Grupal ===== */
+function openGroupCommentModal(){
+  if(selectedChildren.size === 0){
+    showToast('Selecciona al menos un alumno', 'info');
+    return;
+  }
+  document.getElementById('groupCommentTarget').textContent = `Se enviará a ${selectedChildren.size} alumno(s) seleccionado(s).`;
+  document.getElementById('groupCommentText').value = '';
+  document.getElementById('groupCommentModal').classList.remove('hidden');
+}
+function closeGroupCommentModal(){
+  document.getElementById('groupCommentModal').classList.add('hidden');
+}
+function setGroupComment(text){
+  document.getElementById('groupCommentText').value = text;
+}
+function sendGroupComment(){
+  const text = document.getElementById('groupCommentText').value.trim();
+  if(!text){
+    showToast('Escribe o elige un comentario antes de enviar', 'info');
+    return;
+  }
+  const total = selectedChildren.size;
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  selectedChildren.forEach(id => {
+    if(STUDENT_QUICK[id]){
+      STUDENT_QUICK[id].history.unshift({ icon: '💬', text, time });
+    }
+  });
+  closeGroupCommentModal();
+  showToast(`Comentario enviado a ${total} alumno(s)`, 'check_circle');
   toggleSelectionMode();
 }
 
