@@ -3,7 +3,7 @@
 <html class="h-full" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Gestión de Usuarios - Gael</title>
+<title>Encuestas - Gael</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -193,13 +193,13 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
                 Permisos
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined fill" data-icon="manage_accounts">manage_accounts</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
                 Usuarios
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gestion_menu_semanal.html"><span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
                 Menú Semanal
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gestion_encuestas.html"><span class="material-symbols-outlined" data-icon="rate_review">rate_review</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="gestion_encuestas.html"><span class="material-symbols-outlined fill" data-icon="rate_review">rate_review</span>
                 Encuestas
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
@@ -234,116 +234,264 @@
 </header>
 <!-- Canvas -->
 <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
-<div class="max-w-5xl mx-auto">
+<div class="max-w-4xl mx-auto">
+
+<!-- ===== Vista: Lista de Encuestas ===== -->
+<div id="surveyListView">
 <div class="mb-lg flex flex-wrap items-start justify-between gap-sm">
 <div>
-<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Gestión de Usuarios</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-1">Todas las cuentas registradas en Gael. Aquí decides quién es staff o admin.</p>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Encuestas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Crea encuestas para los padres. La que esté "Activa" es la que aparece en su app.</p>
 </div>
-<button onclick="loadUsers()" class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-xl px-4 py-2 font-label-md text-label-md hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined text-[18px]">refresh</span> Actualizar
+<button onclick="openBuilder()" class="flex items-center justify-center gap-xs bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-xl shadow-[0_4px_12px_rgba(27,107,74,0.2)] hover:shadow-[0_8px_20px_rgba(27,107,74,0.25)] transition-all active:scale-95 h-12">
+<span class="material-symbols-outlined">add_circle</span> Nueva Encuesta
 </button>
 </div>
 
 <div class="bg-primary-container/20 border border-primary/20 rounded-xl p-sm mb-lg flex items-start gap-sm">
 <span class="material-symbols-outlined text-primary shrink-0">info</span>
-<p class="font-body-md text-body-md text-sm text-on-surface">Todo registro público entra como <strong>padre</strong>. Cámbiale el rol aquí a quien deba tener acceso de staff o administración.</p>
+<p class="font-body-md text-body-md text-sm text-on-surface">Solo puede haber <strong>una encuesta activa</strong> a la vez — es la que ven todos los padres en la pestaña "Encuestas" de su app.</p>
 </div>
 
-<div id="usersLoading" class="text-center py-xl text-on-surface-variant">
-<span class="material-symbols-outlined text-4xl animate-spin">progress_activity</span>
-<p class="font-body-md text-body-md mt-2">Cargando usuarios…</p>
+<div class="space-y-sm" id="surveyList"></div>
 </div>
-<p id="usersError" class="hidden bg-error-container text-on-error-container rounded-xl p-md font-body-md text-body-md"></p>
-<div id="usersList" class="space-y-sm"></div>
+
+<!-- ===== Vista: Constructor de Encuesta ===== -->
+<div id="surveyBuilderView" class="hidden">
+<button onclick="closeBuilder()" class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md mb-md">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span> Volver a Encuestas
+</button>
+
+<div class="bg-surface rounded-2xl border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] p-lg">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Título de la encuesta *</label>
+<input id="builderTitle" type="text" placeholder="Ej. Encuesta de Satisfacción — Noviembre" class="w-full px-4 py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md"/>
+</div>
+
+<div class="mt-md space-y-sm" id="builderQuestions"></div>
+
+<div class="flex gap-2 mt-md">
+<button onclick="addQuestion('rating')" class="flex-1 flex items-center justify-center gap-2 border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl py-sm font-label-sm text-label-sm hover:bg-surface-container-low hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">mood</span> Agregar pregunta de Calificación
+</button>
+<button onclick="addQuestion('choice')" class="flex-1 flex items-center justify-center gap-2 border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl py-sm font-label-sm text-label-sm hover:bg-surface-container-low hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">checklist</span> Agregar Opción Múltiple
+</button>
+</div>
+
+<p id="builderError" class="hidden mt-sm text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+
+<div class="flex gap-2 mt-lg pt-md border-t border-outline-variant/30">
+<button onclick="saveDraft()" class="flex-1 border-2 border-outline-variant text-on-surface rounded-xl py-sm font-label-md text-label-md hover:bg-surface-container-low transition-colors">Guardar Borrador</button>
+<button onclick="publishSurvey()" class="flex-1 bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">publish</span> Publicar a Padres
+</button>
+</div>
+</div>
+</div>
+
 </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let SURVEYS = [
+  {
+    id: 'seed-1',
+    title: 'Encuesta de Satisfacción — Octubre',
+    status: 'activa',
+    responses: 18,
+    questions: [
+      { type: 'rating', text: '¿Cómo calificarías la comunicación de la maestra esta semana?' },
+      { type: 'choice', text: '¿Qué actividad extra te gustaría que ofreciéramos?', options: ['Manualidades', 'Música', 'Cuentacuentos', 'Merienda saludable'] },
+    ],
+  },
+];
+let editingSurveyId = null;
+let builderQuestions = [];
+let questionCounter = 0;
 
-const ROLE_LABELS = { padre: 'Padre de familia', staff: 'Staff', admin: 'Administrador' };
-const ROLE_STYLES = {
-  padre: 'bg-secondary-container text-on-secondary-container',
-  staff: 'bg-tertiary-container text-on-tertiary-container',
-  admin: 'bg-primary text-on-primary',
-};
-
-function initials(name){
-  if(!name) return '?';
-  const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase();
-}
-
-function userRow(user){
-  return `
-    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-wrap items-center justify-between gap-sm" data-user-id="${user.id}">
-      <div class="flex items-center gap-sm min-w-0">
-        <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${initials(user.full_name)}</div>
-        <div class="min-w-0">
-          <p class="font-label-md text-label-md text-on-surface truncate">${user.full_name || '(sin nombre)'}</p>
-          <p class="font-body-md text-[13px] text-on-surface-variant truncate">${user.email || ''}</p>
-          ${user.child_name ? `<p class="font-body-md text-[12px] text-on-surface-variant">Hijo(a): ${user.child_name}</p>` : ''}
+function renderSurveyList(){
+  const list = document.getElementById('surveyList');
+  if(SURVEYS.length === 0){
+    list.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no has creado ninguna encuesta.</p>';
+    return;
+  }
+  list.innerHTML = SURVEYS.map(s => `
+    <div class="bg-surface rounded-xl border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] p-md flex flex-wrap items-center justify-between gap-sm">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <h3 class="font-label-md text-label-md text-on-surface truncate">${s.title}</h3>
+          ${s.status === 'activa'
+            ? '<span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[11px] shrink-0">● Activa</span>'
+            : '<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[11px] shrink-0">Borrador</span>'}
         </div>
+        <p class="font-body-md text-[13px] text-on-surface-variant">${s.questions.length} pregunta(s) · ${s.responses} respuesta(s) de padres</p>
       </div>
       <div class="flex items-center gap-2 shrink-0">
-        <span class="px-2 py-1 rounded-full font-label-sm text-label-sm ${ROLE_STYLES[user.role] || ROLE_STYLES.padre}">${ROLE_LABELS[user.role] || user.role}</span>
-        <select onchange="changeUserRole('${user.id}', this.value, this)" class="text-sm font-label-sm border border-outline-variant rounded-lg px-2 py-2 bg-surface-container-low text-on-surface cursor-pointer">
-          <option value="padre" ${user.role === 'padre' ? 'selected' : ''}>Padre de familia</option>
-          <option value="staff" ${user.role === 'staff' ? 'selected' : ''}>Staff</option>
-          <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Administrador</option>
-        </select>
+        <button onclick="editSurvey('${s.id}')" class="px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">Editar</button>
+        ${s.status !== 'activa' ? `<button onclick="activateSurvey('${s.id}')" class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm hover:bg-primary/90 transition-colors">Publicar</button>` : ''}
       </div>
-    </div>`;
+    </div>`).join('');
 }
 
-async function loadUsers(){
-  document.getElementById('usersLoading').classList.remove('hidden');
-  document.getElementById('usersError').classList.add('hidden');
-  document.getElementById('usersList').innerHTML = '';
+function openBuilder(){
+  editingSurveyId = null;
+  builderQuestions = [];
+  document.getElementById('builderTitle').value = '';
+  document.getElementById('builderError').classList.add('hidden');
+  renderBuilderQuestions();
+  document.getElementById('surveyListView').classList.add('hidden');
+  document.getElementById('surveyBuilderView').classList.remove('hidden');
+}
+function closeBuilder(){
+  document.getElementById('surveyBuilderView').classList.add('hidden');
+  document.getElementById('surveyListView').classList.remove('hidden');
+}
+function editSurvey(id){
+  const s = SURVEYS.find(x => x.id === id);
+  editingSurveyId = id;
+  document.getElementById('builderTitle').value = s.title;
+  builderQuestions = s.questions.map(q => ({ ...q, _key: 'q' + (++questionCounter), options: q.options ? [...q.options] : undefined }));
+  document.getElementById('builderError').classList.add('hidden');
+  renderBuilderQuestions();
+  document.getElementById('surveyListView').classList.add('hidden');
+  document.getElementById('surveyBuilderView').classList.remove('hidden');
+}
 
-  const { data: { session } } = await sb.auth.getSession();
-  if(!session){
-    document.getElementById('usersLoading').classList.add('hidden');
-    document.getElementById('usersError').textContent = 'Necesitas iniciar sesión como administrador para ver esta pantalla.';
-    document.getElementById('usersError').classList.remove('hidden');
+function addQuestion(type){
+  questionCounter++;
+  builderQuestions.push({
+    _key: 'q' + questionCounter,
+    type,
+    text: '',
+    options: type === 'choice' ? ['', ''] : undefined,
+  });
+  renderBuilderQuestions();
+}
+function removeQuestion(key){
+  builderQuestions = builderQuestions.filter(q => q._key !== key);
+  renderBuilderQuestions();
+}
+function updateQuestionText(key, value){
+  const q = builderQuestions.find(x => x._key === key);
+  if(q) q.text = value;
+}
+function addOption(key){
+  const q = builderQuestions.find(x => x._key === key);
+  q.options.push('');
+  renderBuilderQuestions();
+}
+function removeOption(key, idx){
+  const q = builderQuestions.find(x => x._key === key);
+  q.options.splice(idx, 1);
+  renderBuilderQuestions();
+}
+function updateOption(key, idx, value){
+  const q = builderQuestions.find(x => x._key === key);
+  q.options[idx] = value;
+}
+
+function renderBuilderQuestions(){
+  const container = document.getElementById('builderQuestions');
+  if(builderQuestions.length === 0){
+    container.innerHTML = '<p class="text-center text-on-surface-variant font-body-md text-sm py-md">Agrega al menos una pregunta con los botones de abajo.</p>';
     return;
   }
+  container.innerHTML = builderQuestions.map((q, i) => `
+    <div class="bg-surface-container-low rounded-xl p-sm" data-question="${q._key}">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Pregunta ${i + 1} · ${q.type === 'rating' ? 'Calificación (1-5)' : 'Opción múltiple'}</span>
+        <button onclick="removeQuestion('${q._key}')" class="text-error hover:bg-error-container/40 rounded-full p-1 transition-colors">
+          <span class="material-symbols-outlined text-[18px]">delete</span>
+        </button>
+      </div>
+      <input type="text" value="${(q.text || '').replace(/"/g,'&quot;')}" oninput="updateQuestionText('${q._key}', this.value)" placeholder="Escribe la pregunta…" class="w-full px-3 py-2 rounded-lg bg-surface border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md mb-2"/>
+      ${q.type === 'rating' ? `
+        <div class="flex gap-2 text-2xl">😞 🙁 😐 🙂 😄</div>
+      ` : `
+        <div class="space-y-1.5">
+          ${q.options.map((opt, idx) => `
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-on-surface-variant">radio_button_unchecked</span>
+              <input type="text" value="${opt.replace(/"/g,'&quot;')}" oninput="updateOption('${q._key}', ${idx}, this.value)" placeholder="Opción ${idx + 1}" class="flex-1 px-3 py-1.5 rounded-lg bg-surface border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md"/>
+              ${q.options.length > 2 ? `<button onclick="removeOption('${q._key}', ${idx})" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">close</span></button>` : ''}
+            </div>`).join('')}
+          <button onclick="addOption('${q._key}')" class="text-primary font-label-sm text-label-sm hover:underline mt-1">+ Agregar opción</button>
+        </div>
+      `}
+    </div>`).join('');
+}
 
-  const { data, error } = await sb.from('profiles').select('id, full_name, email, role, child_name, created_at').order('created_at', { ascending: false });
+function validateBuilder(){
+  const title = document.getElementById('builderTitle').value.trim();
+  if(!title) return 'Escribe un título para la encuesta.';
+  if(builderQuestions.length === 0) return 'Agrega al menos una pregunta.';
+  for(const q of builderQuestions){
+    if(!q.text.trim()) return 'Todas las preguntas necesitan texto.';
+    if(q.type === 'choice' && q.options.some(o => !o.trim())) return 'Completa todas las opciones o quítalas.';
+  }
+  return null;
+}
 
-  document.getElementById('usersLoading').classList.add('hidden');
+function buildSurveyObject(status){
+  const title = document.getElementById('builderTitle').value.trim();
+  return {
+    id: editingSurveyId || 'survey-' + Date.now(),
+    title,
+    status,
+    responses: editingSurveyId ? (SURVEYS.find(s => s.id === editingSurveyId)?.responses || 0) : 0,
+    questions: builderQuestions.map(q => ({ type: q.type, text: q.text.trim(), options: q.options ? q.options.map(o => o.trim()) : undefined })),
+  };
+}
 
+function saveDraft(){
+  const error = validateBuilder();
+  const errorEl = document.getElementById('builderError');
   if(error){
-    document.getElementById('usersError').textContent = 'No se pudo cargar la lista. Es probable que tu cuenta todavía no tenga permisos de administrador. (' + error.message + ')';
-    document.getElementById('usersError').classList.remove('hidden');
+    errorEl.textContent = error;
+    errorEl.classList.remove('hidden');
     return;
   }
-
-  if(!data || data.length === 0){
-    document.getElementById('usersList').innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay usuarios registrados.</p>';
-    return;
-  }
-
-  document.getElementById('usersList').innerHTML = data.map(userRow).join('');
+  errorEl.classList.add('hidden');
+  const survey = buildSurveyObject(editingSurveyId ? (SURVEYS.find(s=>s.id===editingSurveyId).status) : 'borrador');
+  upsertSurvey(survey);
+  closeBuilder();
+  renderSurveyList();
+  showToast('Encuesta guardada como borrador', 'save');
 }
 
-async function changeUserRole(userId, newRole, selectEl){
-  selectEl.disabled = true;
-  const { error } = await sb.from('profiles').update({ role: newRole }).eq('id', userId);
-  selectEl.disabled = false;
+function publishSurvey(){
+  const error = validateBuilder();
+  const errorEl = document.getElementById('builderError');
   if(error){
-    showToast('No se pudo actualizar: ' + error.message, 'error');
+    errorEl.textContent = error;
+    errorEl.classList.remove('hidden');
     return;
   }
-  showToast('Rol actualizado a ' + ROLE_LABELS[newRole], 'check_circle');
-  loadUsers();
+  errorEl.classList.add('hidden');
+  // Solo puede haber una encuesta activa a la vez
+  SURVEYS.forEach(s => { if(s.status === 'activa') s.status = 'borrador'; });
+  const survey = buildSurveyObject('activa');
+  upsertSurvey(survey);
+  closeBuilder();
+  renderSurveyList();
+  showToast('Encuesta publicada — ya la pueden ver los padres en su app', 'publish');
 }
 
-loadUsers();
+function activateSurvey(id){
+  SURVEYS.forEach(s => { s.status = (s.id === id) ? 'activa' : 'borrador'; });
+  renderSurveyList();
+  const s = SURVEYS.find(x => x.id === id);
+  showToast(`"${s.title}" ahora es la encuesta activa`, 'publish');
+}
+
+function upsertSurvey(survey){
+  const idx = SURVEYS.findIndex(s => s.id === survey.id);
+  if(idx >= 0) SURVEYS[idx] = survey;
+  else SURVEYS.unshift(survey);
+}
+
+renderSurveyList();
 </script>
 
 <!-- Shared Toast Component -->
@@ -380,11 +528,15 @@ function closeSidebar(){
 }
 async function handleLogout(event){
   event.preventDefault();
-  await sb.auth.signOut();
+  if(window.supabase){
+    const sb = window.supabase.createClient('https://esntdthzqbdujzkjtehx.supabase.co', 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV');
+    await sb.auth.signOut();
+  }
   window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -393,3 +545,4 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 </body></html>
+
