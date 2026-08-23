@@ -234,16 +234,9 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Regístrate como padre de familia o como parte del staff.</p>
 </div>
 <form id="signupForm" onsubmit="return handleSignup(event)" class="space-y-sm">
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">¿Quién eres? *</label>
-<div class="grid grid-cols-2 gap-sm" id="signupRoleGroup">
-<button type="button" onclick="selectRole(this,'padre')" data-value="padre" class="role-chip px-3 py-3 rounded-xl border-2 border-primary bg-primary-container text-on-primary-container font-label-md text-label-md transition-all flex flex-col items-center gap-1">
-<span class="material-symbols-outlined">family_restroom</span> Padre de familia
-</button>
-<button type="button" onclick="selectRole(this,'staff')" data-value="staff" class="role-chip px-3 py-3 rounded-xl border-2 border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-all flex flex-col items-center gap-1">
-<span class="material-symbols-outlined">badge</span> Staff / Maestra
-</button>
-</div>
+<div class="bg-primary-container/20 border border-primary/20 rounded-lg px-3 py-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">info</span>
+<p class="font-body-md text-[13px] text-on-surface">Este registro es para <strong>padres de familia</strong>. Si eres parte del staff, pide a tu administrador que te dé de alta.</p>
 </div>
 <div>
 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre completo *</label>
@@ -331,17 +324,9 @@ function showView(name){
   document.getElementById('signupError')?.classList.add('hidden');
 }
 
-let selectedRole = 'padre';
-function selectRole(btn, role){
-  selectedRole = role;
-  document.querySelectorAll('.role-chip').forEach(b => {
-    b.classList.remove('border-primary', 'bg-primary-container', 'text-on-primary-container');
-    b.classList.add('border-outline-variant', 'bg-surface-container-lowest', 'text-on-surface-variant');
-  });
-  btn.classList.remove('border-outline-variant', 'bg-surface-container-lowest', 'text-on-surface-variant');
-  btn.classList.add('border-primary', 'bg-primary-container', 'text-on-primary-container');
-  document.getElementById('childNameWrap').classList.toggle('hidden', role !== 'padre');
-}
+// El registro público siempre crea cuentas de "padre".
+// El staff/admin se da de alta desde la pantalla de Gestión de Usuarios (solo accesible para admins).
+const selectedRole = 'padre';
 
 function setLoading(btnId, loading, label){
   const btn = document.getElementById(btnId);

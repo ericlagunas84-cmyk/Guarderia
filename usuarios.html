@@ -3,7 +3,7 @@
 <html class="h-full" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Permisos - Gael</title>
+<title>Gestión de Usuarios - Gael</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -190,10 +190,10 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
                 Personal
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined fill" data-icon="admin_panel_settings">admin_panel_settings</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
                 Permisos
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined fill" data-icon="manage_accounts">manage_accounts</span>
                 Usuarios
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
@@ -229,117 +229,115 @@
 <!-- Canvas -->
 <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
 <div class="max-w-5xl mx-auto">
-<div class="mb-lg">
-<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Permisos de Acceso</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-1">Decide qué puede ver y usar cada persona del equipo dentro de la plataforma.</p>
+<div class="mb-lg flex flex-wrap items-start justify-between gap-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Gestión de Usuarios</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Todas las cuentas registradas en Gael. Aquí decides quién es staff o admin.</p>
+</div>
+<button onclick="loadUsers()" class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-xl px-4 py-2 font-label-md text-label-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">refresh</span> Actualizar
+</button>
 </div>
 
 <div class="bg-primary-container/20 border border-primary/20 rounded-xl p-sm mb-lg flex items-start gap-sm">
 <span class="material-symbols-outlined text-primary shrink-0">info</span>
-<p class="font-body-md text-body-md text-sm text-on-surface">Los permisos se asignan de forma individual — cada persona puede tener una combinación distinta. Usa las plantillas rápidas como punto de partida y ajusta lo que necesites después.</p>
+<p class="font-body-md text-body-md text-sm text-on-surface">Todo registro público entra como <strong>padre</strong>. Cámbiale el rol aquí a quien deba tener acceso de staff o administración.</p>
 </div>
 
-<div id="permissionsGrid" class="space-y-md"></div>
-
-<div class="mt-lg flex flex-col sm:flex-row justify-end gap-sm">
-<button onclick="saveAllPermissions()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">save</span>
-Guardar todos los cambios
-</button>
+<div id="usersLoading" class="text-center py-xl text-on-surface-variant">
+<span class="material-symbols-outlined text-4xl animate-spin">progress_activity</span>
+<p class="font-body-md text-body-md mt-2">Cargando usuarios…</p>
 </div>
+<p id="usersError" class="hidden bg-error-container text-on-error-container rounded-xl p-md font-body-md text-body-md"></p>
+<div id="usersList" class="space-y-sm"></div>
 </div>
 </main>
-</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const MODULES = [
-  { key: 'alumnos', label: 'Alumnos', icon: 'groups' },
-  { key: 'registro', label: 'Registro Diario', icon: 'edit_note' },
-  { key: 'fichas', label: 'Fichas Médicas', icon: 'medical_services' },
-  { key: 'altaDeNinos', label: 'Dar de Alta', icon: 'person_add' },
-  { key: 'finanzas', label: 'Finanzas', icon: 'payments' },
-  { key: 'personal', label: 'Personal', icon: 'badge' },
-  { key: 'reportes', label: 'Reportes', icon: 'assessment' },
-];
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const STAFF_PERMISSIONS = {
-  ana: { name: 'Maestra Ana López', role: 'Educadora · Salón Bebés', initials: 'AL',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  carlos: { name: 'Maestro Carlos Ruíz', role: 'Educador · Salón Maternal', initials: 'CR',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  sofia: { name: 'Maestra Sofia M.', role: 'Educadora · Preescolar 1', initials: 'SM',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  elena: { name: 'Maestra Elena G.', role: 'Asistente General', initials: 'EG',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: false, personal: true, reportes: false } },
+const ROLE_LABELS = { padre: 'Padre de familia', staff: 'Staff', admin: 'Administrador' };
+const ROLE_STYLES = {
+  padre: 'bg-secondary-container text-on-secondary-container',
+  staff: 'bg-tertiary-container text-on-tertiary-container',
+  admin: 'bg-primary text-on-primary',
 };
 
-const TEMPLATES = {
-  admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
-  maestra: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-  ninguno: { alumnos: false, registro: false, fichas: false, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-};
-
-function countActive(perms){
-  return Object.values(perms).filter(Boolean).length;
+function initials(name){
+  if(!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase();
 }
 
-function renderPermissions(){
-  const grid = document.getElementById('permissionsGrid');
-  grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
-    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
-      <div class="flex flex-wrap items-center justify-between gap-sm mb-sm">
-        <div class="flex items-center gap-sm">
-          <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${staff.initials}</div>
-          <div>
-            <p class="font-label-md text-label-md text-on-surface">${staff.name}</p>
-            <p class="font-body-md text-[13px] text-on-surface-variant">${staff.role}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full" id="permCount-${key}">${countActive(staff.perms)}/${MODULES.length} módulos</span>
-          <div class="relative">
-            <select onchange="applyTemplate('${key}', this.value); this.selectedIndex=0;" class="text-xs font-label-sm border border-outline-variant rounded-lg px-2 py-1.5 bg-surface-container-low text-on-surface-variant appearance-none pr-6 cursor-pointer">
-              <option value="">Plantilla rápida…</option>
-              <option value="admin">Administrador (todo)</option>
-              <option value="maestra">Maestra (básico)</option>
-              <option value="ninguno">Ninguno</option>
-            </select>
-          </div>
+function userRow(user){
+  return `
+    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-wrap items-center justify-between gap-sm" data-user-id="${user.id}">
+      <div class="flex items-center gap-sm min-w-0">
+        <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${initials(user.full_name)}</div>
+        <div class="min-w-0">
+          <p class="font-label-md text-label-md text-on-surface truncate">${user.full_name || '(sin nombre)'}</p>
+          <p class="font-body-md text-[13px] text-on-surface-variant truncate">${user.email || ''}</p>
+          ${user.child_name ? `<p class="font-body-md text-[12px] text-on-surface-variant">Hijo(a): ${user.child_name}</p>` : ''}
         </div>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        ${MODULES.map(m => `
-          <label class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2 cursor-pointer hover:bg-surface-container transition-colors">
-            <input type="checkbox" ${staff.perms[m.key] ? 'checked' : ''} onchange="togglePermission('${key}', '${m.key}', this.checked)" class="w-4 h-4 accent-[#1b6b4a] shrink-0"/>
-            <span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">${m.icon}</span>
-            <span class="font-label-sm text-label-sm text-on-surface truncate">${m.label}</span>
-          </label>
-        `).join('')}
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="px-2 py-1 rounded-full font-label-sm text-label-sm ${ROLE_STYLES[user.role] || ROLE_STYLES.padre}">${ROLE_LABELS[user.role] || user.role}</span>
+        <select onchange="changeUserRole('${user.id}', this.value, this)" class="text-sm font-label-sm border border-outline-variant rounded-lg px-2 py-2 bg-surface-container-low text-on-surface cursor-pointer">
+          <option value="padre" ${user.role === 'padre' ? 'selected' : ''}>Padre de familia</option>
+          <option value="staff" ${user.role === 'staff' ? 'selected' : ''}>Staff</option>
+          <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Administrador</option>
+        </select>
       </div>
-    </div>
-  `).join('');
+    </div>`;
 }
 
-function togglePermission(staffKey, moduleKey, value){
-  STAFF_PERMISSIONS[staffKey].perms[moduleKey] = value;
-  document.getElementById('permCount-' + staffKey).textContent = countActive(STAFF_PERMISSIONS[staffKey].perms) + '/' + MODULES.length + ' módulos';
-  const moduleLabel = MODULES.find(m => m.key === moduleKey).label;
-  showToast(`${value ? 'Acceso otorgado' : 'Acceso quitado'}: ${moduleLabel} para ${STAFF_PERMISSIONS[staffKey].name}`, value ? 'check_circle' : 'block');
+async function loadUsers(){
+  document.getElementById('usersLoading').classList.remove('hidden');
+  document.getElementById('usersError').classList.add('hidden');
+  document.getElementById('usersList').innerHTML = '';
+
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    document.getElementById('usersLoading').classList.add('hidden');
+    document.getElementById('usersError').textContent = 'Necesitas iniciar sesión como administrador para ver esta pantalla.';
+    document.getElementById('usersError').classList.remove('hidden');
+    return;
+  }
+
+  const { data, error } = await sb.from('profiles').select('id, full_name, email, role, child_name, created_at').order('created_at', { ascending: false });
+
+  document.getElementById('usersLoading').classList.add('hidden');
+
+  if(error){
+    document.getElementById('usersError').textContent = 'No se pudo cargar la lista. Es probable que tu cuenta todavía no tenga permisos de administrador. (' + error.message + ')';
+    document.getElementById('usersError').classList.remove('hidden');
+    return;
+  }
+
+  if(!data || data.length === 0){
+    document.getElementById('usersList').innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay usuarios registrados.</p>';
+    return;
+  }
+
+  document.getElementById('usersList').innerHTML = data.map(userRow).join('');
 }
 
-function applyTemplate(staffKey, templateKey){
-  if(!templateKey) return;
-  STAFF_PERMISSIONS[staffKey].perms = { ...TEMPLATES[templateKey] };
-  renderPermissions();
-  const templateNames = { admin: 'Administrador', maestra: 'Maestra', ninguno: 'Ninguno' };
-  showToast(`Plantilla "${templateNames[templateKey]}" aplicada a ${STAFF_PERMISSIONS[staffKey].name}`, 'auto_fix_high');
+async function changeUserRole(userId, newRole, selectEl){
+  selectEl.disabled = true;
+  const { error } = await sb.from('profiles').update({ role: newRole }).eq('id', userId);
+  selectEl.disabled = false;
+  if(error){
+    showToast('No se pudo actualizar: ' + error.message, 'error');
+    return;
+  }
+  showToast('Rol actualizado a ' + ROLE_LABELS[newRole], 'check_circle');
+  loadUsers();
 }
 
-function saveAllPermissions(){
-  showToast('Permisos guardados para todo el equipo', 'save');
-}
-
-renderPermissions();
+loadUsers();
 </script>
 
 <!-- Shared Toast Component -->
@@ -374,6 +372,11 @@ function closeSidebar(){
   nav.classList.remove('translate-x-0');
   backdrop.classList.add('hidden');
 }
+async function handleLogout(event){
+  event.preventDefault();
+  await sb.auth.signOut();
+  window.location.href = 'inicio_de_sesi_n.html';
+}
 </script>
 
 <script>
@@ -381,19 +384,6 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
-}
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function handleLogout(event){
-  event.preventDefault();
-  await sb.auth.signOut();
-  window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
 </body></html>
