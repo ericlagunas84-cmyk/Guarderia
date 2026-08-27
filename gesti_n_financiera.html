@@ -566,10 +566,13 @@
 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Alumno *</label>
 <select id="payStudent" onchange="onStudentChange()" class="w-full px-sm py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md">
 <option value="">Selecciona un alumno…</option>
+<optgroup label="Alumnos de ejemplo">
 <option value="mateo">Mateo Rodríguez (Sala Cuna)</option>
 <option value="sofia">Sofía García (Pre-K)</option>
 <option value="lucas">Lucas López (Jardín)</option>
 <option value="emma">Emma Martínez (Sala Cuna)</option>
+</optgroup>
+<optgroup label="Alumnos reales" id="realStudentsOptGroup"></optgroup>
 </select>
 </div>
 
@@ -662,7 +665,12 @@
 
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 const FAMILY_NAMES = { Garcia: 'Familia García', Martinez: 'Familia Martínez' };
 function markPaid(key){
   const statusCell = document.getElementById('statusCell' + key);
@@ -924,6 +932,24 @@ const STUDENTS = {
   lucas: { name: 'Lucas López', room: 'Jardín', weeksOverdue: 2 },
   emma: { name: 'Emma Martínez', room: 'Sala Cuna', weeksOverdue: 0 },
 };
+let REAL_STUDENTS = {};
+function getStudentInfo(key){
+  return STUDENTS[key] || REAL_STUDENTS[key];
+}
+async function loadRealStudentsForPayment(){
+  if(!sb) return;
+  const { data, error } = await sb.from('students').select('id, full_name, room').eq('status', 'activo');
+  if(error || !data) return;
+  const optGroup = document.getElementById('realStudentsOptGroup');
+  data.forEach(s => {
+    REAL_STUDENTS[s.id] = { name: s.full_name, room: s.room, weeksOverdue: 0 };
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `${s.full_name} (${s.room})`;
+    optGroup.appendChild(opt);
+  });
+}
+loadRealStudentsForPayment();
 const WEEK_PRICE = 1000;
 const LATE_FEE = 100;
 const CONCEPTO_PRICES = { inscripcion: 1500, materiales: 150 };
@@ -977,7 +1003,7 @@ function updateWeeklyBreakdown(){
     condonarWrap.classList.add('hidden');
     return;
   }
-  const s = STUDENTS[key];
+  const s = getStudentInfo(key);
   const weeksToCharge = s.weeksOverdue + 1; // semanas vencidas + la semana actual
   const lateWeeks = s.weeksOverdue;
   statusEl.textContent = lateWeeks > 0
@@ -1005,7 +1031,7 @@ function computeTotal(){
 
   if(concepto === 'semanal'){
     if(!key) return 0;
-    const s = STUDENTS[key];
+    const s = getStudentInfo(key);
     const weeksToCharge = s.weeksOverdue + 1;
     let total = weeksToCharge * WEEK_PRICE;
     if(!condonarRecargo) total += s.weeksOverdue * LATE_FEE;
@@ -1042,7 +1068,7 @@ function calcChange(){
   document.getElementById('payChangeDisplay').textContent = '$' + change.toFixed(2);
 }
 
-function submitPayment(){
+async function submitPayment(){
   const key = document.getElementById('payStudent').value;
   const concepto = document.getElementById('payConcepto').value;
   const errorEl = document.getElementById('payError');
@@ -1068,14 +1094,45 @@ function submitPayment(){
     }
     change = received - total;
   }
+
+  const s = getStudentInfo(key);
+  const isRealStudent = !!REAL_STUDENTS[key];
+
+  let session = null;
+  if(isRealStudent){
+    if(!sb){
+      errorEl.textContent = 'Sin conexión con el servidor. Intenta recargar la página.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    const sessionResult = await sb.auth.getSession();
+    session = sessionResult.data.session;
+    if(!session){
+      errorEl.textContent = 'Necesitas iniciar sesión como staff/admin para registrar pagos de alumnos reales.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+  }
+
   errorEl.classList.add('hidden');
 
-  const s = STUDENTS[key];
   paymentCounter++;
   const folio = 'PAG-' + paymentCounter;
   const now = new Date();
   const fecha = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
   const methodLabels = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia' };
+
+  if(isRealStudent){
+    const { error } = await sb.from('invoices').insert({
+      student_id: key, student_name: s.name, concept: CONCEPTO_LABELS[concepto],
+      amount: total, method: selectedMethod, folio, created_by: session.user.id,
+    });
+    if(error){
+      errorEl.textContent = 'No se pudo guardar el pago: ' + error.message;
+      errorEl.classList.remove('hidden');
+      return;
+    }
+  }
 
   // Si condonó recargo, se resetea la mora del alumno; si pagó completo, también.
   if(concepto === 'semanal') s.weeksOverdue = 0;
@@ -1083,7 +1140,7 @@ function submitPayment(){
   window.__lastTicket = {
     folio, fecha, student: s.name, room: s.room,
     concepto: CONCEPTO_LABELS[concepto], total, method: methodLabels[selectedMethod],
-    received, change, condonado: condonarRecargo,
+    received, change, condonado: condonarRecargo, real: isRealStudent,
   };
 
   renderTicket(window.__lastTicket);
@@ -1105,6 +1162,7 @@ function renderTicket(t){
     ${t.method === 'Efectivo' ? `
     <div class="flex justify-between"><span class="text-on-surface-variant">Efectivo recibido</span><span>$${t.received.toFixed(2)}</span></div>
     <div class="flex justify-between"><span class="text-on-surface-variant">Cambio entregado</span><span>$${t.change.toFixed(2)}</span></div>` : ''}
+    ${t.real ? '<div class="flex items-center gap-1 text-primary text-[12px] mt-2 pt-2 border-t border-outline-variant/20"><span class="material-symbols-outlined text-[14px]">check_circle</span> Guardado — ya lo puede ver el papá en su app</div>' : ''}
   `;
 }
 
@@ -1197,15 +1255,10 @@ function closeSidebar(){
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 async function handleLogout(event){
   event.preventDefault();
-  await sb.auth.signOut();
+  if(sb) await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>

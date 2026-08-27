@@ -267,7 +267,12 @@
 </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 const MEAL_TYPES = [
   { key: 'bf', label: 'Desayuno / Almuerzo', icon: 'free_breakfast', color: 'bg-amber-100 text-amber-800' },
   { key: 'lu', label: 'Comida', icon: 'lunch_dining', color: 'bg-primary-container/40 text-on-primary-container' },
@@ -276,28 +281,8 @@ const MEAL_TYPES = [
 ];
 const DAY_LABELS = { lun: 'Lunes', mar: 'Martes', mie: 'Miércoles', jue: 'Jueves', vie: 'Viernes' };
 
-const MENU_DATA = {
-  lun: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
-         lu:['Pescado empanizado con puré','Filete de pescado horneado, puré de papa casero y ejotes al vapor.'],
-         sn:['Palitos de zanahoria y hummus','Zanahoria cruda en bastones con hummus casero de garbanzo.'],
-         ce:['Sopa de verduras con quesadilla','Sopa ligera de verduras de temporada con una quesadilla de queso panela.'] },
-  mar: { bf:['Hot cakes integrales','Hot cakes de harina integral con fruta picada y un hilo de miel.'],
-         lu:['Albóndigas en salsa de tomate','Albóndigas de res con arroz blanco y verduras salteadas.'],
-         sn:['Gelatina de fruta natural','Gelatina sin azúcar añadida con trozos de durazno.'],
-         ce:['Sándwich integral de pavo','Pan integral con pavo, lechuga y jitomate, acompañado de fruta picada.'] },
-  mie: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
-         lu:['Pollo con verduras y arroz','Pechuga de pollo a la plancha troceada, acompañada de brócoli y zanahorias al vapor sobre una cama de arroz integral.'],
-         sn:['Yogurt natural','Yogurt natural sin azúcar con un toque de miel y arándanos frescos.'],
-         ce:['Crema de zanahoria con pan tostado','Crema suave de zanahoria con un pan tostado integral.'] },
-  jue: { bf:['Quesadillas de queso panela','Tortilla de maíz con queso panela derretido y salsa suave al gusto.'],
-         lu:['Guisado de res con verduras','Cubos de res guisados con papa, zanahoria y chícharo, con tortilla.'],
-         sn:['Manzana en rebanadas con canela','Manzana fresca en gajos espolvoreada con canela.'],
-         ce:['Ensalada tibia de pasta','Pasta integral con verduras salteadas y un toque de aceite de oliva.'] },
-  vie: { bf:['Pan francés integral','Pan integral capeado en huevo, con fruta de temporada.'],
-         lu:['Pasta con verduras y pollo','Pasta integral con trozos de pollo, calabaza y jitomate.'],
-         sn:['Paleta de yogurt casera','Paleta helada de yogurt con puré de fresa natural.'],
-         ce:['Tostadas de frijol','Tostadas horneadas con frijol refrito, lechuga y queso fresco.'] },
-};
+let MENU_DATA = {};
+let menuLoaded = false;
 
 let currentDay = 'lun';
 let editingKey = null;
@@ -319,6 +304,10 @@ function selectDay(day){
 
 function renderMealCards(){
   const grid = document.getElementById('mealCardsGrid');
+  if(!menuLoaded){
+    grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant font-body-md py-lg">Cargando menú…</p>';
+    return;
+  }
   const dayData = MENU_DATA[currentDay];
   grid.innerHTML = MEAL_TYPES.map(meal => {
     const [titulo, descripcion] = dayData[meal.key];
@@ -361,21 +350,64 @@ function cancelEdit(){
   editingKey = null;
   renderMealCards();
 }
-function saveMeal(mealKey){
+async function saveMeal(mealKey){
   const titulo = document.getElementById('editTitulo').value.trim();
   const descripcion = document.getElementById('editDescripcion').value.trim();
   if(!titulo){
     showToast('El platillo necesita un nombre', 'error');
     return;
   }
+  if(!sb){
+    showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para editar el menú', 'error');
+    return;
+  }
+
+  const { error } = await sb.from('weekly_menu').upsert({
+    day: currentDay, meal_type: mealKey, title: titulo, description: descripcion, updated_by: session.user.id,
+  }, { onConflict: 'day,meal_type' });
+
+  if(error){
+    showToast('No se pudo guardar: ' + error.message, 'error');
+    return;
+  }
+
   MENU_DATA[currentDay][mealKey] = [titulo, descripcion];
   editingKey = null;
   renderMealCards();
   const mealLabel = MEAL_TYPES.find(m => m.key === mealKey).label;
-  showToast(`${mealLabel} de ${DAY_LABELS[currentDay]} actualizado`, 'check_circle');
+  showToast(`${mealLabel} de ${DAY_LABELS[currentDay]} actualizado — ya lo ven los padres`, 'check_circle');
 }
 
-function copyMondayToAll(){
+async function copyMondayToAll(){
+  if(!sb) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para editar el menú', 'error');
+    return;
+  }
+
+  const rows = [];
+  ['mar','mie','jue','vie'].forEach(day => {
+    MEAL_TYPES.forEach(m => {
+      rows.push({
+        day, meal_type: m.key,
+        title: MENU_DATA.lun[m.key][0], description: MENU_DATA.lun[m.key][1],
+        updated_by: session.user.id,
+      });
+    });
+  });
+
+  const { error } = await sb.from('weekly_menu').upsert(rows, { onConflict: 'day,meal_type' });
+  if(error){
+    showToast('No se pudo copiar: ' + error.message, 'error');
+    return;
+  }
+
   ['mar','mie','jue','vie'].forEach(day => {
     MENU_DATA[day] = {
       bf: [...MENU_DATA.lun.bf],
@@ -385,10 +417,35 @@ function copyMondayToAll(){
     };
   });
   renderMealCards();
-  showToast('El menú del Lunes se copió a toda la semana', 'content_copy');
+  showToast('El menú del Lunes se copió a toda la semana — ya lo ven los padres', 'content_copy');
 }
 
-selectDay('lun');
+async function loadWeeklyMenu(){
+  if(!sb){
+    showToast('Sin conexión con el servidor.', 'error');
+    return;
+  }
+  const { data, error } = await sb.from('weekly_menu').select('day, meal_type, title, description');
+  if(error){
+    showToast('No se pudo cargar el menú: ' + error.message, 'error');
+    return;
+  }
+
+  MENU_DATA = { lun: {}, mar: {}, mie: {}, jue: {}, vie: {} };
+  (data || []).forEach(row => {
+    MENU_DATA[row.day][row.meal_type] = [row.title, row.description || ''];
+  });
+  // Rellenar cualquier celda faltante para que nunca truene el render
+  Object.keys(MENU_DATA).forEach(day => {
+    MEAL_TYPES.forEach(m => {
+      if(!MENU_DATA[day][m.key]) MENU_DATA[day][m.key] = ['Sin definir', ''];
+    });
+  });
+  menuLoaded = true;
+  selectDay(currentDay);
+}
+
+loadWeeklyMenu();
 </script>
 
 <!-- Shared Toast Component -->
@@ -425,15 +482,10 @@ function closeSidebar(){
 }
 async function handleLogout(event){
   event.preventDefault();
-  if(window.supabase){
-    const sb = window.supabase.createClient('https://esntdthzqbdujzkjtehx.supabase.co', 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV');
-    await sb.auth.signOut();
-  }
+  if(sb) await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

@@ -310,8 +310,13 @@
 </div>
 </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const MENU_DATA = {
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const FALLBACK_MENU_DATA = {
   lun: { bf:['Fruta fresca y avena','Plátano, manzana, avena cocida en agua con un toque de canela.'],
          lu:['Pescado empanizado con puré','Filete de pescado horneado, puré de papa casero y ejotes al vapor.'],
          sn:['Palitos de zanahoria y hummus','Zanahoria cruda en bastones con hummus casero de garbanzo.'],
@@ -333,7 +338,30 @@ const MENU_DATA = {
          sn:['Paleta de yogurt casera','Paleta helada de yogurt con puré de fresa natural.'],
          ce:['Tostadas de frijol','Tostadas horneadas con frijol refrito, lechuga y queso fresco.'] },
 };
-function selectDay(btn, day){
+let MENU_DATA = FALLBACK_MENU_DATA;
+async function loadRealWeeklyMenu(){
+  if(!sb) return; // sin conexión: se queda con el contenido de ejemplo
+  const { data, error } = await sb.from('weekly_menu').select('day, meal_type, title, description');
+  if(error || !data || data.length === 0) return; // se queda con el contenido de ejemplo
+
+  const real = { lun: {}, mar: {}, mie: {}, jue: {}, vie: {} };
+  data.forEach(row => {
+    if(real[row.day]) real[row.day][row.meal_type] = [row.title, row.description || ''];
+  });
+  // Solo reemplazamos si de verdad viene completo; si falta alguna celda, usamos el respaldo para esa celda
+  Object.keys(real).forEach(day => {
+    ['bf','lu','sn','ce'].forEach(meal => {
+      if(!real[day][meal]) real[day][meal] = FALLBACK_MENU_DATA[day][meal];
+    });
+  });
+  MENU_DATA = real;
+
+  // Re-aplicar el día actualmente seleccionado con los datos reales, sin disparar el toast
+  const activeBtn = document.querySelector('.day-btn.bg-primary') || document.querySelector('.day-btn');
+  if(activeBtn) selectDay(activeBtn, activeBtn.dataset.day, true);
+}
+
+function selectDay(btn, day, silent){
   document.querySelectorAll('.day-btn').forEach(b => {
     b.classList.remove('bg-primary','text-on-primary','ring-2','ring-primary','ring-offset-2','ring-offset-background','scale-105');
     b.classList.add('border','border-outline-variant','bg-surface-container-lowest','text-on-surface-variant');
@@ -350,8 +378,10 @@ function selectDay(btn, day){
   document.getElementById('snDesc').textContent = d.sn[1];
   document.getElementById('ceTitle').textContent = d.ce[0];
   document.getElementById('ceDesc').textContent = d.ce[1];
-  showToast('Mostrando el menú del ' + btn.textContent.trim().split('\n')[0], 'restaurant_menu');
+  if(!silent) showToast('Mostrando el menú del ' + btn.textContent.trim().split('\n')[0], 'restaurant_menu');
 }
+
+loadRealWeeklyMenu();
 </script>
 <!-- BottomNavBar (Mobile) -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
@@ -401,12 +431,7 @@ function closeSidebar(){
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
 async function handleParentLogout(event){
   event.preventDefault();
   if(sb) await sb.auth.signOut();

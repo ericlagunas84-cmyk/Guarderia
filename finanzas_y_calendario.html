@@ -171,6 +171,13 @@
 </nav>
 <!-- Main Content Canvas -->
 <main class="max-w-5xl mx-auto p-margin-mobile md:p-margin-desktop space-y-lg">
+<!-- Aviso: cuenta de padre sin hijo vinculado todavía -->
+<div id="noChildLinkedBanner" class="hidden bg-tertiary-container/30 border border-tertiary/30 rounded-xl p-md text-center max-w-md mx-auto">
+<span class="material-symbols-outlined text-tertiary text-3xl">family_restroom</span>
+<p class="font-label-md text-label-md text-on-surface mt-1">Tu cuenta todavía no está vinculada a ningún alumno</p>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-1">Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su información de pagos aquí.</p>
+</div>
+<div id="financePageContent" class="space-y-lg">
 <!-- Header -->
 <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-sm">
 <div>
@@ -183,16 +190,16 @@
 <!-- Finances Section (Left / Top) -->
 <div class="lg:col-span-7 flex flex-col gap-md">
 <!-- Main Balance Card -->
-<div class="bg-gradient-to-br from-primary to-secondary p-md rounded-xl shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] text-on-primary relative overflow-hidden">
+<div id="balanceCard" class="bg-gradient-to-br from-primary to-secondary p-md rounded-xl shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] text-on-primary relative overflow-hidden">
 <div class="absolute -right-10 -top-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
 <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-primary-fixed opacity-20 rounded-full blur-xl"></div>
 <div class="relative z-10 flex flex-col h-full justify-between">
 <div>
-<p class="font-label-md text-label-md text-primary-fixed uppercase tracking-wider mb-xs">Saldo Pendiente</p>
+<p class="font-label-md text-label-md text-primary-fixed uppercase tracking-wider mb-xs" id="balanceLabel">Saldo Pendiente</p>
 <h3 id="balanceAmount" class="font-display-lg text-display-lg font-bold">$3,500<span class="text-headline-md font-normal opacity-80">.00 MXN</span></h3>
 <p id="balanceDue" class="font-body-md text-body-md text-primary-fixed-dim mt-2">Vence en 5 días (20 Oct)</p>
 </div>
-<div class="mt-lg">
+<div class="mt-lg" id="payBtnWrap">
 <button id="payBtn" onclick="payTuition()" class="w-full sm:w-auto bg-surface-container-lowest text-primary font-headline-md text-headline-md py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all squishy-btn flex items-center justify-center gap-sm">
 <span id="payIcon" class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
 <span id="payLabel">Pagar Colegiatura</span>
@@ -282,7 +289,7 @@
 </div>
 
 <!-- Métodos de Pago -->
-<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant">
+<div id="paymentMethodsCard" class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-variant">
 <h4 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-sm">
 <span class="material-symbols-outlined text-primary" data-icon="credit_card">credit_card</span>
                         Métodos de Pago
@@ -397,9 +404,81 @@
 </div>
 </div>
 </div>
+</div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 let paid = false;
+
+/* ===== Conexión real: historial de pagos del hijo vinculado ===== */
+function paymentHistoryRow(inv){
+  const fecha = new Date(inv.paid_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+  return `
+    <div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: ${inv.concept} · $${Number(inv.amount).toFixed(2)} · ${fecha} · Folio ${inv.folio}', 'receipt_long')">
+      <div class="flex items-center gap-sm">
+        <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+        </div>
+        <div>
+          <p class="font-label-md text-label-md text-on-surface">${inv.concept}</p>
+          <p class="font-body-sm text-body-md text-on-surface-variant text-sm">${fecha}</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <p class="font-label-md text-label-md text-on-surface">-$${Number(inv.amount).toFixed(2)}</p>
+        <p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
+      </div>
+    </div>`;
+}
+
+async function loadRealPaymentHistory(){
+  if(!sb) return; // sin conexión: se queda con el contenido de ejemplo
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return; // acceso de demostración: se queda con el contenido de ejemplo
+
+  const { data: links, error } = await sb
+    .from('parent_student_links')
+    .select('student_id, students(id, full_name)');
+
+  if(error || !links || links.length === 0){
+    document.getElementById('financePageContent').classList.add('hidden');
+    document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+    return;
+  }
+
+  const s = links[0].students;
+  if(!s) return;
+
+  const { data: invoices } = await sb
+    .from('invoices')
+    .select('concept, amount, method, folio, paid_at')
+    .eq('student_id', s.id)
+    .order('paid_at', { ascending: false });
+
+  // Adaptar la tarjeta de balance a un mensaje honesto (no hay saldo/adeudo formal para alumnos reales todavía)
+  document.getElementById('balanceLabel').textContent = 'Historial de ' + s.full_name.split(' ')[0];
+  document.getElementById('balanceAmount').textContent = invoices && invoices.length
+    ? `${invoices.length} pago(s) registrado(s)`
+    : 'Sin pagos registrados';
+  document.getElementById('balanceDue').textContent = 'Los pagos se registran directamente en la estancia.';
+  document.getElementById('payBtnWrap').classList.add('hidden');
+  document.getElementById('toggleHistoryBtn')?.classList.add('hidden');
+  document.getElementById('paymentMethodsCard')?.classList.add('hidden');
+
+  const historyList = document.getElementById('historyList');
+  if(!invoices || invoices.length === 0){
+    historyList.innerHTML = '<p class="text-center text-on-surface-variant font-body-md text-sm py-md">Aún no hay pagos registrados para tu hijo(a).</p>';
+    return;
+  }
+  historyList.innerHTML = invoices.map(paymentHistoryRow).join('');
+  document.getElementById('moreHistory')?.remove();
+}
+
+loadRealPaymentHistory();
 function selectedCardLabel(){
   const checked = document.querySelector('input[name="paycard"]:checked');
   if(!checked) return 'tu método de pago';
@@ -531,12 +610,7 @@ function closeSidebar(){
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
 async function handleParentLogout(event){
   event.preventDefault();
   if(sb) await sb.auth.signOut();
