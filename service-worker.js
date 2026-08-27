@@ -1,9 +1,10 @@
 // Gael Guardería y Estancia — Service Worker
-// Estrategia: "app shell" — cachea todas las pantallas al instalar,
-// sirve desde caché primero (rápido y funciona offline) y actualiza
-// en segundo plano cuando hay red disponible.
+// Estrategia: "app shell" — cachea todas las pantallas al instalar.
+// Mientras el proyecto está en desarrollo activo, usa "red primero":
+// siempre intenta traer la versión más reciente, y solo recurre a la
+// copia en caché si no hay conexión a internet.
 
-const CACHE_NAME = 'gael-v2';
+const CACHE_NAME = 'gael-v3';
 
 const PRECACHE_URLS = [
   './',
@@ -26,6 +27,11 @@ const PRECACHE_URLS = [
   './gesti_n_financiera.html',
   './fichas_m_dicas_y_salud.html',
   './gesti_n_de_personal.html',
+  './permisos.html',
+  './usuarios.html',
+  './gestion_menu_semanal.html',
+  './gestion_encuestas.html',
+  './reportes.html',
   './manifest.json',
   './assets/logo-gael-icon.png',
   './assets/logo-gael-full.png',
@@ -64,20 +70,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Network-first: mientras el proyecto sigue cambiando seguido, siempre se busca
+  // la versión más reciente en la red primero. Solo se usa la copia en caché como
+  // respaldo si no hay conexión — así nunca se queda viendo una versión vieja.
   event.respondWith(
-    caches.match(req).then((cached) => {
-      const network = fetch(req)
-        .then((res) => {
-          if (res && res.status === 200) {
-            const resClone = res.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
-          }
-          return res;
-        })
-        .catch(() => cached); // sin red: usa lo cacheado si existe
-
-      // Cache-first: responde rápido con lo cacheado y actualiza en segundo plano.
-      return cached || network;
-    })
+    fetch(req)
+      .then((res) => {
+        if (res && res.status === 200) {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+        }
+        return res;
+      })
+      .catch(() => caches.match(req))
   );
 });
