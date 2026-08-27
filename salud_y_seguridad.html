@@ -391,7 +391,8 @@ async function loadRealHealthData(){
 
   const { data: links, error } = await sb
     .from('parent_student_links')
-    .select('student_id, students(id, full_name, allergies, authorized_names)');
+    .select('student_id, students!inner(id, full_name, allergies, authorized_names)')
+    .eq('students.status', 'activo');
 
   if(error || !links || links.length === 0){
     document.getElementById('healthPageContent').classList.add('hidden');

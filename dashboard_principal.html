@@ -383,7 +383,8 @@ async function loadRealLinkedChildren(){
 
   const { data: links, error } = await sb
     .from('parent_student_links')
-    .select('student_id, students(id, full_name, room)');
+    .select('student_id, students!inner(id, full_name, room)')
+    .eq('students.status', 'activo');
 
   if(error || !links || links.length === 0){
     document.getElementById('dashboardChildContent').classList.add('hidden');
