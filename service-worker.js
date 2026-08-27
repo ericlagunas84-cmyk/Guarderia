@@ -4,13 +4,14 @@
 // siempre intenta traer la versión más reciente, y solo recurre a la
 // copia en caché si no hay conexión a internet.
 
-const CACHE_NAME = 'gael-v6';
+const CACHE_NAME = 'gael-v7';
 
 const PRECACHE_URLS = [
   './',
   './index.html',
   './mapa-del-sitio.html',
   './inicio_de_sesi_n.html',
+  './restablecer_contrasena.html',
   './dashboard_principal.html',
   './jornada_diaria_detallada.html',
   './salud_y_seguridad.html',

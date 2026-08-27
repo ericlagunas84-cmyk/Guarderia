@@ -213,6 +213,9 @@
 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Contraseña</label>
 <input id="loginPassword" type="password" required autocomplete="current-password" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
 </div>
+<div class="text-right">
+<a onclick="showView('forgot')" class="font-body-md text-body-md text-sm text-primary hover:underline underline-offset-4 cursor-pointer">¿Olvidaste tu contraseña?</a>
+</div>
 <p id="loginError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
 <button id="loginSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
 <span>Entrar</span>
@@ -222,6 +225,35 @@
             ¿No tienes cuenta?
             <a onclick="showView('signup')" class="font-bold text-primary hover:underline underline-offset-4 cursor-pointer">Regístrate</a>
         </p>
+</div>
+
+<!-- ============ VISTA: Recuperar Contraseña ============ -->
+<div id="forgotPasswordView" class="hidden w-full flex flex-col space-y-md">
+<button onclick="showView('login')" class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md self-start">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span> Volver
+</button>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Recuperar contraseña</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Escribe el correo de tu cuenta y te enviaremos un enlace para crear una nueva contraseña.</p>
+</div>
+<form id="forgotPasswordForm" onsubmit="return handleForgotPassword(event)" class="space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo electrónico</label>
+<input id="forgotEmail" type="email" required autocomplete="email" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<p id="forgotError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+<button id="forgotSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+<span>Enviar enlace de recuperación</span>
+</button>
+</form>
+</div>
+
+<!-- ============ VISTA: Enlace de recuperación enviado ============ -->
+<div id="forgotSentView" class="hidden w-full flex flex-col items-center text-center space-y-md py-lg">
+<span class="material-symbols-outlined text-6xl text-primary">mark_email_read</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Revisa tu correo</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Si <span id="forgotSentEmail" class="font-bold text-on-surface"></span> tiene una cuenta con nosotros, te llegará un enlace para crear una nueva contraseña. Revisa también la carpeta de spam.</p>
+<button onclick="showView('login')" class="text-primary font-bold hover:underline underline-offset-4">Volver a iniciar sesión</button>
 </div>
 
 <!-- ============ VISTA 3: Registro (real) ============ -->
@@ -315,13 +347,14 @@ async function handleGoogleLogin(){
   // Si no hay error, el navegador redirige a Google automáticamente.
 }
 
-const VIEWS = ['choiceView', 'loginView', 'signupView', 'confirmEmailView'];
+const VIEWS = ['choiceView', 'loginView', 'signupView', 'confirmEmailView', 'forgotPasswordView', 'forgotSentView'];
 function showView(name){
   VIEWS.forEach(v => document.getElementById(v).classList.add('hidden'));
-  const map = { choice: 'choiceView', login: 'loginView', signup: 'signupView', confirmEmail: 'confirmEmailView' };
+  const map = { choice: 'choiceView', login: 'loginView', signup: 'signupView', confirmEmail: 'confirmEmailView', forgot: 'forgotPasswordView', forgotSent: 'forgotSentView' };
   document.getElementById(map[name]).classList.remove('hidden');
   document.getElementById('loginError')?.classList.add('hidden');
   document.getElementById('signupError')?.classList.add('hidden');
+  document.getElementById('forgotError')?.classList.add('hidden');
 }
 
 // El registro público siempre crea cuentas de "padre".
@@ -368,6 +401,30 @@ async function handleLogin(e){
   setTimeout(() => {
     goTo((profile?.role === 'staff' || profile?.role === 'admin') ? 'dashboard_de_administraci_n.html' : 'dashboard_principal.html');
   }, 600);
+  return false;
+}
+
+async function handleForgotPassword(e){
+  e.preventDefault();
+  const email = document.getElementById('forgotEmail').value.trim();
+  const errorEl = document.getElementById('forgotError');
+  errorEl.classList.add('hidden');
+  setLoading('forgotSubmitBtn', true);
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname.replace('inicio_de_sesi_n.html', 'restablecer_contrasena.html'),
+  });
+
+  setLoading('forgotSubmitBtn', false, 'Enviar enlace de recuperación');
+
+  if(error){
+    errorEl.textContent = friendlyAuthError(error.message);
+    errorEl.classList.remove('hidden');
+    return false;
+  }
+
+  document.getElementById('forgotSentEmail').textContent = email;
+  showView('forgotSent');
   return false;
 }
 

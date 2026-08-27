@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Restablecer Contraseña - Gael</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#b5ebff",
+                        "secondary-fixed-dim": "#90d0e7",
+                        "surface-dim": "#d8dada",
+                        "on-background": "#191c1d",
+                        "on-primary-fixed-variant": "#005235",
+                        "inverse-primary": "#8ad6ad",
+                        "surface-container": "#eceeee",
+                        "tertiary": "#6c5e1b",
+                        "outline": "#6f7a72",
+                        "primary-fixed": "#a6f3c8",
+                        "on-secondary-container": "#22697d",
+                        "tertiary-fixed-dim": "#d9c678",
+                        "on-tertiary-container": "#5e500d",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8fafa",
+                        "on-tertiary-fixed": "#211b00",
+                        "surface-container-low": "#f2f4f4",
+                        "background": "#f8fafa",
+                        "surface": "#f8fafa",
+                        "surface-variant": "#e1e3e3",
+                        "inverse-surface": "#2e3131",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#88d4ab",
+                        "primary-fixed-dim": "#8ad6ad",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed-variant": "#004e60",
+                        "outline-variant": "#bfc9c0",
+                        "surface-container-high": "#e6e8e9",
+                        "secondary-container": "#a6e6fe",
+                        "surface-tint": "#1b6b4a",
+                        "on-tertiary-fixed-variant": "#534602",
+                        "on-surface-variant": "#3f4942",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "on-primary-container": "#025d3d",
+                        "tertiary-container": "#d7c476",
+                        "error": "#ba1a1a",
+                        "secondary": "#1f667a",
+                        "tertiary-fixed": "#f6e291",
+                        "primary": "#1b6b4a",
+                        "on-primary-fixed": "#002113",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#001f28",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "md": "24px",
+                        "lg": "40px",
+                        "sm": "12px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "xl": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Quicksand"],
+                        "body-md": ["Nunito Sans"],
+                        "display-lg": ["Quicksand"],
+                        "body-lg": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"],
+                        "label-md": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .glass-card {
+                @apply bg-surface-container-lowest/80 backdrop-blur-md border border-white/20 shadow-[0_4px_12px_0_rgba(26,43,60,0.05)];
+            }
+        }
+    </style>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#1B6B4A"/>
+<link rel="icon" href="icons/favicon-32.png" type="image/png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Gael"/>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop relative overflow-x-hidden">
+<div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-primary-container/30 to-transparent -z-10"></div>
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-secondary-container rounded-full mix-blend-multiply filter blur-3xl opacity-50 -z-10"></div>
+<div class="absolute -bottom-20 -left-20 w-80 h-80 bg-primary-container rounded-full mix-blend-multiply filter blur-3xl opacity-50 -z-10"></div>
+
+<main class="w-full max-w-md mx-auto flex flex-col items-center z-10 space-y-lg">
+<div class="flex flex-col items-center text-center space-y-sm">
+<img alt="Gael" class="w-20 h-20 mb-1" src="assets/logo-gael-icon.png"/>
+<h1 class="font-display-lg text-display-lg text-primary">Gael</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Guardería y Estancia</p>
+</div>
+
+<!-- Vista: cargando / validando enlace -->
+<div id="checkingView" class="w-full flex flex-col items-center text-center space-y-md py-lg">
+<span class="material-symbols-outlined text-5xl text-primary animate-spin">progress_activity</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Validando tu enlace de recuperación…</p>
+</div>
+
+<!-- Vista: enlace inválido o expirado -->
+<div id="invalidLinkView" class="hidden w-full flex flex-col items-center text-center space-y-md py-lg">
+<span class="material-symbols-outlined text-6xl text-error">error</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Enlace inválido o vencido</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Este enlace de recuperación ya no es válido — puede que haya expirado o que ya se haya usado. Solicita uno nuevo desde la pantalla de inicio de sesión.</p>
+<a href="inicio_de_sesi_n.html" class="text-primary font-bold hover:underline underline-offset-4">Volver a Iniciar Sesión</a>
+</div>
+
+<!-- Vista: formulario de nueva contraseña -->
+<div id="resetFormView" class="hidden w-full flex flex-col space-y-md">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Crea una nueva contraseña</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Elige una contraseña segura para tu cuenta.</p>
+</div>
+<form id="resetForm" onsubmit="return handleResetPassword(event)" class="space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nueva contraseña * (mínimo 6 caracteres)</label>
+<input id="newPassword" type="password" required minlength="6" autocomplete="new-password" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Confirmar nueva contraseña *</label>
+<input id="confirmNewPassword" type="password" required minlength="6" autocomplete="new-password" class="w-full px-4 py-3 border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-0 outline-none transition-colors bg-surface-container-lowest"/>
+</div>
+<p id="resetError" class="hidden text-error font-label-sm text-label-sm bg-error-container/40 rounded-lg px-3 py-2"></p>
+<button id="resetSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-md text-label-md rounded-full py-3 px-6 shadow-md shadow-primary/20 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+<span>Guardar Nueva Contraseña</span>
+</button>
+</form>
+</div>
+
+<!-- Vista: contraseña actualizada -->
+<div id="resetSuccessView" class="hidden w-full flex flex-col items-center text-center space-y-md py-lg">
+<span class="material-symbols-outlined text-6xl text-primary">check_circle</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Contraseña actualizada</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tu contraseña se cambió correctamente. Ya puedes iniciar sesión con ella.</p>
+<a href="inicio_de_sesi_n.html" class="text-primary font-bold hover:underline underline-offset-4">Ir a Iniciar Sesión</a>
+</div>
+</main>
+
+<!-- Shared Toast Component -->
+<div id="app-toast" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+  <div class="bg-inverse-surface text-inverse-on-surface px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-label-md text-label-md whitespace-nowrap">
+    <span id="app-toast-icon" class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span id="app-toast-msg">Listo</span>
+  </div>
+</div>
+<script>
+function showToast(msg, icon){
+  const t = document.getElementById('app-toast');
+  if(!t) return;
+  document.getElementById('app-toast-msg').textContent = msg;
+  document.getElementById('app-toast-icon').textContent = icon || 'check_circle';
+  t.classList.remove('hidden');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.add('hidden'), 2600);
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const RESET_VIEWS = ['checkingView', 'invalidLinkView', 'resetFormView', 'resetSuccessView'];
+function showResetView(id){
+  RESET_VIEWS.forEach(v => document.getElementById(v).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function setResetLoading(loading, label){
+  const btn = document.getElementById('resetSubmitBtn');
+  btn.disabled = loading;
+  btn.classList.toggle('opacity-60', loading);
+  btn.innerHTML = loading
+    ? '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Guardando…</span>'
+    : `<span>${label}</span>`;
+}
+
+async function handleResetPassword(e){
+  e.preventDefault();
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmNewPassword').value;
+  const errorEl = document.getElementById('resetError');
+  errorEl.classList.add('hidden');
+
+  if(newPassword.length < 6){
+    errorEl.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+    errorEl.classList.remove('hidden');
+    return false;
+  }
+  if(newPassword !== confirmPassword){
+    errorEl.textContent = 'Las contraseñas no coinciden.';
+    errorEl.classList.remove('hidden');
+    return false;
+  }
+
+  setResetLoading(true);
+  const { error } = await sb.auth.updateUser({ password: newPassword });
+  setResetLoading(false, 'Guardar Nueva Contraseña');
+
+  if(error){
+    errorEl.textContent = 'No se pudo actualizar la contraseña: ' + error.message;
+    errorEl.classList.remove('hidden');
+    return false;
+  }
+
+  await sb.auth.signOut();
+  showResetView('resetSuccessView');
+  return false;
+}
+
+async function initResetPage(){
+  if(!sb){
+    showResetView('invalidLinkView');
+    return;
+  }
+  // El enlace del correo de Supabase deja una sesión temporal de tipo "recovery"
+  // en la URL; el cliente la detecta y crea sesión automáticamente al cargar.
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showResetView('invalidLinkView');
+    return;
+  }
+  showResetView('resetFormView');
+}
+
+initResetPage();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body></html>
