@@ -399,6 +399,23 @@
 </div>
 
 <!-- Modal: Panel de Acción Rápida por Alumno -->
+<!-- Modal: Confirmar Baja de Alumno -->
+<div id="deactivateModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[210] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-md p-lg">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-error text-3xl">person_remove</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Dar de Baja</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface mb-sm">¿Seguro que quieres dar de baja a <strong id="deactivateStudentName"></strong>? Ya no aparecerá en el listado de alumnos activos.</p>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Motivo (opcional)</label>
+<textarea id="deactivateReason" rows="2" placeholder="Ej. Cambio de escuela, mudanza…" class="w-full px-3 py-2 rounded-lg bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md resize-none mb-md"></textarea>
+<div class="flex gap-2">
+<button onclick="closeDeactivateModal()" class="flex-1 border border-outline-variant text-on-surface rounded-xl py-sm font-label-md text-label-md hover:bg-surface-container-low transition-colors">Cancelar</button>
+<button onclick="confirmDeactivate()" class="flex-1 bg-error text-on-error rounded-xl py-sm font-label-md text-label-md hover:bg-error/90 transition-colors">Sí, dar de baja</button>
+</div>
+</div>
+</div>
+
 <div id="quickPanelModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[200] flex items-end md:items-center justify-center">
 <div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-lg max-h-[90vh] overflow-y-auto">
 <!-- Header -->
@@ -1086,13 +1103,61 @@ function realStudentCardHTML(student){
     <p class="font-body-md text-body-md text-on-surface-variant text-[14px]">${student.room}</p>
     </div>
     <div class="flex flex-col items-end gap-1 shrink-0">
+    <button onclick="event.stopPropagation(); openQuickPanel('${student.id}')" class="mb-0.5 flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container-low hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm text-[10px] transition-colors" title="Ver perfil y personalizar">
+    <span class="material-symbols-outlined text-[14px]">person</span> Ver perfil
+    </button>
     <span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
     <span class="material-symbols-outlined text-[14px]">new_releases</span> Nuevo Ingreso
     </span>
+    <button onclick="event.stopPropagation(); openDeactivateModal('${student.id}', '${student.full_name.replace(/'/g,"\\'")}')" class="mt-0.5 flex items-center gap-1 px-2 py-1 rounded-full bg-error-container/40 hover:bg-error-container text-on-error-container font-label-sm text-[10px] transition-colors" title="Dar de baja">
+    <span class="material-symbols-outlined text-[14px]">person_remove</span> Dar de Baja
+    </button>
     </div>
     </div>
     <div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-2 sm:pl-[68px]" id="extraBadges-${student.id}"></div>
     </div>`;
+}
+
+/* ===== Dar de Baja a un Alumno ===== */
+let deactivateTargetId = null;
+function openDeactivateModal(id, name){
+  deactivateTargetId = id;
+  document.getElementById('deactivateStudentName').textContent = name;
+  document.getElementById('deactivateReason').value = '';
+  document.getElementById('deactivateModal').classList.remove('hidden');
+}
+function closeDeactivateModal(){
+  document.getElementById('deactivateModal').classList.add('hidden');
+  deactivateTargetId = null;
+}
+async function confirmDeactivate(){
+  if(!deactivateTargetId) return;
+  if(!sb){
+    showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para dar de baja a un alumno', 'error');
+    return;
+  }
+
+  const { error } = await sb.from('students').update({ status: 'inactivo' }).eq('id', deactivateTargetId);
+  if(error){
+    showToast('No se pudo dar de baja: ' + error.message, 'error');
+    return;
+  }
+
+  const name = document.getElementById('deactivateStudentName').textContent;
+  const card = document.querySelector(`.child-card[data-child-id="${deactivateTargetId}"]`);
+  if(card) card.remove();
+  delete STUDENT_QUICK[deactivateTargetId];
+  delete ATTENDANCE_TODAY[deactivateTargetId];
+  ALL_STUDENT_KEYS = ALL_STUDENT_KEYS.filter(k => k !== deactivateTargetId);
+  renderAttendanceSummary();
+
+  closeDeactivateModal();
+  showToast(`${name} fue dado de baja correctamente`, 'person_remove');
 }
 
 async function loadRealStudents(){
