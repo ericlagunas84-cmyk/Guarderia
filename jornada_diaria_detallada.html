@@ -345,7 +345,7 @@ function addComment(){
 <a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="finanzas_y_calendario.html"><span class="material-symbols-outlined">payments</span><span class="font-label-md text-label-md">Pagos y Calendario</span></a><a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="mensajer_a.html"><span class="material-symbols-outlined">mail</span><span class="font-label-md text-label-md">Mensajes</span></a>
 
 <a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="encuestas.html"><span class="material-symbols-outlined">rate_review</span><span class="font-label-md text-label-md">Encuestas</span></a>
-<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="contacto.html"><span class="material-symbols-outlined">support_agent</span><span class="font-label-md text-label-md">Contacto</span></a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 rounded-full hover:bg-surface-container-highest transition-colors flex items-center gap-4" href="contacto.html"><span class="material-symbols-outlined">support_agent</span><span class="font-label-md text-label-md">Contacto</span></a><a onclick="handleParentLogout(event)" class="text-error mx-2 px-4 py-3 rounded-full hover:bg-error-container/30 transition-colors flex items-center gap-4 cursor-pointer mt-2 border-t border-outline-variant/30 pt-4" href="inicio_de_sesi_n.html"><span class="material-symbols-outlined">logout</span><span class="font-label-md text-label-md">Cerrar sesión</span></a>
 
 
 
@@ -396,6 +396,19 @@ function closeSidebar(){
   nav.classList.add('-translate-x-full');
   nav.classList.remove('translate-x-0');
   backdrop.classList.add('hidden');
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+async function handleParentLogout(event){
+  event.preventDefault();
+  if(sb) await sb.auth.signOut();
+  window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
 </body></html>

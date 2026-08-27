@@ -88,6 +88,9 @@
 <a class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary-container/20 transition-colors shrink-0" href="contacto.html" title="Otras formas de contacto">
 <span class="material-symbols-outlined">call</span>
 </a>
+<a onclick="handleParentLogout(event)" class="w-10 h-10 rounded-full flex items-center justify-center text-error hover:bg-error-container/20 transition-colors shrink-0 cursor-pointer" href="inicio_de_sesi_n.html" title="Cerrar sesión">
+<span class="material-symbols-outlined">logout</span>
+</a>
 </header>
 
 <!-- Chat Thread -->
@@ -192,6 +195,19 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+async function handleParentLogout(event){
+  event.preventDefault();
+  if(sb) await sb.auth.signOut();
+  window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
 </body></html>
