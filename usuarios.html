@@ -259,6 +259,24 @@
 </div>
 </main>
 
+<!-- Modal: Vincular Padre con Hijo(s) -->
+<div id="linkModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[200] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-md max-h-[85vh] overflow-y-auto p-lg">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">link</span> Vincular Hijo(s)
+</h3>
+<button onclick="closeLinkModal()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Padre/tutor: <strong id="linkModalParentName" class="text-on-surface"></strong></p>
+<p class="font-body-md text-[13px] text-on-surface-variant mb-sm">Marca a el/los alumno(s) que le corresponden. Este padre solo podrá ver la información de los que marques aquí.</p>
+<div id="linkModalStudentList" class="space-y-1.5 mb-md"></div>
+<button onclick="saveLinkModal()" class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">Guardar Vinculación</button>
+</div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
@@ -279,6 +297,8 @@ function initials(name){
 }
 
 function userRow(user){
+  const links = LINKS_BY_PARENT[user.id] || [];
+  const linkedNames = links.map(l => l.studentName).join(', ');
   return `
     <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] flex flex-wrap items-center justify-between gap-sm" data-user-id="${user.id}">
       <div class="flex items-center gap-sm min-w-0">
@@ -286,10 +306,13 @@ function userRow(user){
         <div class="min-w-0">
           <p class="font-label-md text-label-md text-on-surface truncate">${user.full_name || '(sin nombre)'}</p>
           <p class="font-body-md text-[13px] text-on-surface-variant truncate">${user.email || ''}</p>
-          ${user.child_name ? `<p class="font-body-md text-[12px] text-on-surface-variant">Hijo(a): ${user.child_name}</p>` : ''}
+          ${user.role === 'padre' ? (linkedNames
+            ? `<p class="font-body-md text-[12px] text-primary flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[14px]">check_circle</span> Vinculado a: ${linkedNames}</p>`
+            : `<p class="font-body-md text-[12px] text-error flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[14px]">link_off</span> Sin vincular a ningún alumno</p>`) : ''}
         </div>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+        ${user.role === 'padre' ? `<button onclick="openLinkModal('${user.id}', '${(user.full_name||'').replace(/'/g,"\\'")}')" class="px-3 py-1.5 rounded-lg border border-primary text-primary font-label-sm text-label-sm hover:bg-primary-container/20 transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">link</span> Vincular Hijo(s)</button>` : ''}
         <span class="px-2 py-1 rounded-full font-label-sm text-label-sm ${ROLE_STYLES[user.role] || ROLE_STYLES.padre}">${ROLE_LABELS[user.role] || user.role}</span>
         <select onchange="changeUserRole('${user.id}', this.value, this)" class="text-sm font-label-sm border border-outline-variant rounded-lg px-2 py-2 bg-surface-container-low text-on-surface cursor-pointer">
           <option value="padre" ${user.role === 'padre' ? 'selected' : ''}>Padre de familia</option>
@@ -298,6 +321,22 @@ function userRow(user){
         </select>
       </div>
     </div>`;
+}
+
+let LINKS_BY_PARENT = {};
+let ALL_ACTIVE_STUDENTS = [];
+
+async function loadLinksAndStudents(){
+  const [{ data: links }, { data: students }] = await Promise.all([
+    sb.from('parent_student_links').select('parent_id, student_id, students(full_name)'),
+    sb.from('students').select('id, full_name, room').eq('status', 'activo'),
+  ]);
+  ALL_ACTIVE_STUDENTS = students || [];
+  LINKS_BY_PARENT = {};
+  (links || []).forEach(l => {
+    if(!LINKS_BY_PARENT[l.parent_id]) LINKS_BY_PARENT[l.parent_id] = [];
+    LINKS_BY_PARENT[l.parent_id].push({ studentId: l.student_id, studentName: l.students ? l.students.full_name : '(alumno)' });
+  });
 }
 
 async function loadUsers(){
@@ -315,13 +354,15 @@ async function loadUsers(){
 
   const { data, error } = await sb.from('profiles').select('id, full_name, email, role, child_name, created_at').order('created_at', { ascending: false });
 
-  document.getElementById('usersLoading').classList.add('hidden');
-
   if(error){
+    document.getElementById('usersLoading').classList.add('hidden');
     document.getElementById('usersError').textContent = 'No se pudo cargar la lista. Es probable que tu cuenta todavía no tenga permisos de administrador. (' + error.message + ')';
     document.getElementById('usersError').classList.remove('hidden');
     return;
   }
+
+  await loadLinksAndStudents();
+  document.getElementById('usersLoading').classList.add('hidden');
 
   if(!data || data.length === 0){
     document.getElementById('usersList').innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay usuarios registrados.</p>';
@@ -329,6 +370,55 @@ async function loadUsers(){
   }
 
   document.getElementById('usersList').innerHTML = data.map(userRow).join('');
+}
+
+/* ===== Modal de Vinculación Padre-Hijo ===== */
+let linkModalParentId = null;
+function openLinkModal(parentId, parentName){
+  linkModalParentId = parentId;
+  document.getElementById('linkModalParentName').textContent = parentName;
+  const linkedIds = new Set((LINKS_BY_PARENT[parentId] || []).map(l => l.studentId));
+
+  const list = document.getElementById('linkModalStudentList');
+  if(ALL_ACTIVE_STUDENTS.length === 0){
+    list.innerHTML = '<p class="text-center text-on-surface-variant font-body-md text-sm py-md">No hay alumnos activos registrados todavía.</p>';
+  } else {
+    list.innerHTML = ALL_ACTIVE_STUDENTS.map(s => `
+      <label class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2 cursor-pointer hover:bg-surface-container transition-colors">
+        <input type="checkbox" class="link-student-checkbox w-4 h-4 accent-[#1b6b4a]" value="${s.id}" ${linkedIds.has(s.id) ? 'checked' : ''}/>
+        <span class="font-body-md text-body-md text-sm text-on-surface">${s.full_name} <span class="text-on-surface-variant text-[12px]">(${s.room})</span></span>
+      </label>`).join('');
+  }
+  document.getElementById('linkModal').classList.remove('hidden');
+}
+function closeLinkModal(){
+  document.getElementById('linkModal').classList.add('hidden');
+  linkModalParentId = null;
+}
+async function saveLinkModal(){
+  const selectedIds = [...document.querySelectorAll('.link-student-checkbox:checked')].map(c => c.value);
+  const currentIds = (LINKS_BY_PARENT[linkModalParentId] || []).map(l => l.studentId);
+
+  const toAdd = selectedIds.filter(id => !currentIds.includes(id));
+  const toRemove = currentIds.filter(id => !selectedIds.includes(id));
+
+  const { data: { session } } = await sb.auth.getSession();
+
+  if(toAdd.length){
+    const { error } = await sb.from('parent_student_links').insert(
+      toAdd.map(student_id => ({ parent_id: linkModalParentId, student_id, linked_by: session.user.id }))
+    );
+    if(error){ showToast('No se pudo vincular: ' + error.message, 'error'); return; }
+  }
+  if(toRemove.length){
+    for(const student_id of toRemove){
+      await sb.from('parent_student_links').delete().eq('parent_id', linkModalParentId).eq('student_id', student_id);
+    }
+  }
+
+  closeLinkModal();
+  await loadUsers();
+  showToast('Vinculación actualizada correctamente', 'link');
 }
 
 async function changeUserRole(userId, newRole, selectEl){
