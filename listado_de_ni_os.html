@@ -487,6 +487,19 @@
 </div>
 </div>
 
+<!-- Comida y Siesta -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Comida y Siesta</h4>
+<div class="grid grid-cols-2 gap-2">
+<button onclick="logMeal()" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">🍽️</span><span class="font-label-sm text-label-sm text-on-surface">Registrar Comida</span>
+</button>
+<button id="qpNapBtn" onclick="toggleNap()" class="flex flex-col items-center gap-1 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="text-xl">😴</span><span class="font-label-sm text-label-sm text-on-surface" id="qpNapBtnLabel">Iniciar Siesta</span>
+</button>
+</div>
+</div>
+
 <!-- Higiene / Pañal -->
 <div id="qpHygieneSection">
 <h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Higiene</h4>
@@ -780,14 +793,8 @@ function openQuickPanel(id){
     medSection.classList.add('hidden');
   }
 
-  // Cronómetro (siesta)
-  const timerSection = document.getElementById('qpTimerSection');
-  if(s.napStart){
-    timerSection.classList.remove('hidden');
-    document.getElementById('qpTimerText').textContent = `😴 En siesta (${timeAgo(s.napStart).replace('hace ', '')})`;
-  } else {
-    timerSection.classList.add('hidden');
-  }
+  // Comida y Siesta
+  renderNapUi();
 
   // Pañal
   document.getElementById('qpDiaperStatus').textContent = s.diaperTime
@@ -814,10 +821,23 @@ function closeQuickPanel(){
   currentQuickChild = null;
 }
 
-function pushHistory(icon, text){
+async function pushHistory(icon, text, type){
   const s = STUDENT_QUICK[currentQuickChild];
-  s.history.unshift({ icon, text, time: new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) });
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  s.history.unshift({ icon, text, time });
   renderQuickHistory();
+
+  if(!sb || !type) return; // sin conexión, o llamada interna sin tipo persistible
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return; // acceso de demostración: se queda solo en memoria
+
+  const card = document.querySelector(`.child-card[data-child-id="${currentQuickChild}"]`);
+  const name = card ? card.querySelector('h3').textContent.trim() : currentQuickChild;
+
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: currentQuickChild, student_name: name, type, icon, text, created_by: session.user.id,
+  });
+  if(error) showToast('No se pudo guardar en la bitácora: ' + error.message, 'error');
 }
 function renderQuickHistory(){
   const s = STUDENT_QUICK[currentQuickChild];
@@ -835,7 +855,7 @@ function renderQuickHistory(){
 }
 
 function addQuickComment(text){
-  pushHistory('💬', text);
+  pushHistory('💬', text, 'comentario');
   const name = document.getElementById('qpName').textContent;
   showToast(`Comentario agregado para ${name}`, 'chat');
 }
@@ -843,9 +863,44 @@ function addFreeNote(){
   const input = document.getElementById('qpFreeNote');
   const text = input.value.trim();
   if(!text) return;
-  pushHistory('📝', text);
+  pushHistory('📝', text, 'comentario');
   input.value = '';
   showToast('Nota agregada', 'check_circle');
+}
+
+function logMeal(){
+  const name = document.getElementById('qpName').textContent;
+  pushHistory('🍽️', 'Comida registrada', 'comida');
+  showToast('Comida registrada para ' + name, 'restaurant');
+}
+
+function toggleNap(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const name = document.getElementById('qpName').textContent;
+  if(s.napStart){
+    s.napStart = null;
+    pushHistory('⏰', 'Terminó la siesta', 'siesta_fin');
+    showToast(name + ' despertó de la siesta', 'wb_sunny');
+  } else {
+    s.napStart = Date.now();
+    pushHistory('😴', 'Inició la siesta', 'siesta_inicio');
+    showToast('Siesta de ' + name + ' iniciada', 'bedtime');
+  }
+  renderNapUi();
+}
+
+function renderNapUi(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const timerSection = document.getElementById('qpTimerSection');
+  const napBtnLabel = document.getElementById('qpNapBtnLabel');
+  if(s.napStart){
+    timerSection.classList.remove('hidden');
+    document.getElementById('qpTimerText').textContent = `😴 En siesta (${timeAgo(s.napStart).replace('hace ', '')})`;
+    napBtnLabel.textContent = 'Terminar Siesta';
+  } else {
+    timerSection.classList.add('hidden');
+    napBtnLabel.textContent = 'Iniciar Siesta';
+  }
 }
 
 function logDiaper(type){
@@ -853,7 +908,7 @@ function logDiaper(type){
   s.diaperTime = Date.now();
   s.diaperType = type;
   document.getElementById('qpDiaperStatus').textContent = `Último cambio: ${type} · hace 0m`;
-  pushHistory('🧷', 'Higiene registrada: ' + type);
+  pushHistory('🧷', 'Higiene registrada: ' + type, 'panal');
   renderCardExtraBadges(currentQuickChild);
   showToast(type + ' registrado', 'check_circle');
 }
@@ -872,7 +927,7 @@ function applyQuickMedication(){
   const s = STUDENT_QUICK[currentQuickChild];
   s.medication.applied = true;
   document.getElementById('qpMedSection').classList.add('hidden');
-  pushHistory('💊', 'Medicamento aplicado (' + s.medication.time + ')');
+  pushHistory('💊', 'Medicamento aplicado (' + s.medication.time + ')', 'medicamento');
   renderCardExtraBadges(currentQuickChild);
   const name = document.getElementById('qpName').textContent;
   showToast(`Medicamento marcado como aplicado a ${name}`, 'check_circle');
@@ -881,7 +936,7 @@ function applyQuickMedication(){
 function handleQuickPhoto(event){
   if(!event.target.files || event.target.files.length === 0) return;
   const name = document.getElementById('qpName').textContent;
-  pushHistory('📷', 'Foto agregada al muro');
+  pushHistory('📷', 'Foto agregada al muro', 'foto');
   showToast(`Foto subida al muro de ${name}`, 'photo_camera');
   event.target.value = '';
 }
@@ -939,7 +994,7 @@ async function notifyParentSupplies(){
 }
 
 function logQuickIncident(type){
-  pushHistory('🩹', type + ' registrado — pendiente de firma');
+  pushHistory('🩹', type + ' registrado — pendiente de firma', 'incidente');
   const name = document.getElementById('qpName').textContent;
   showToast(`${type} registrado para ${name} — pendiente de firma`, 'assignment_turned_in');
 }

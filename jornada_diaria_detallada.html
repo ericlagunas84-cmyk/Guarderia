@@ -154,23 +154,30 @@
 </header>
 <!-- Main Content -->
 <main class="max-w-2xl md:pl-80 px-margin-mobile py-md flex flex-col gap-md">
+<!-- Aviso: cuenta de padre sin hijo vinculado todavía -->
+<div id="noChildLinkedBanner" class="hidden bg-tertiary-container/30 border border-tertiary/30 rounded-xl p-md text-center">
+<span class="material-symbols-outlined text-tertiary text-3xl">family_restroom</span>
+<p class="font-label-md text-label-md text-on-surface mt-1">Tu cuenta todavía no está vinculada a ningún alumno</p>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-1">Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su bitácora aquí.</p>
+</div>
+<div id="jornadaPageContent">
 <!-- Header Section -->
 <section class="flex flex-col gap-xs mb-sm">
 <div class="flex items-center gap-sm">
 <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-surface shadow-md flex-shrink-0 z-10 relative">
-<img class="w-full h-full object-cover" data-alt="A close-up, joyful portrait of a toddler boy named Leo, laughing outside. Soft dappled sunlight through trees. Bright, warm, nurturing aesthetic. Used as the main child profile image at the top of the daily log screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOzBsq_99BIdKxA-lEQBTfzZ-17dPA9u7BS7O1H4oFOzURdFhzVbVUM2SV9kURJgNg7rhp3cLZmIgcjugGiyC7QXgWcWIBeAXKMcIj2uEj3gtVDGZL0do63NOhegPd92o9VmNuh_Zbh-FMdQA8HTKoKzcyF5FO_vZLkKPu8QBpmbxsGYAEdSLgKnnQ4VKdjOMCNqb68ep0tuSXmY4AyS3ierR-DnKZhcP5X76pjtYXvBwaqQpL0XFH"/>
+<img id="jornadaAvatar" class="w-full h-full object-cover" data-alt="A close-up, joyful portrait of a toddler boy named Leo, laughing outside. Soft dappled sunlight through trees. Bright, warm, nurturing aesthetic. Used as the main child profile image at the top of the daily log screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOzBsq_99BIdKxA-lEQBTfzZ-17dPA9u7BS7O1H4oFOzURdFhzVbVUM2SV9kURJgNg7rhp3cLZmIgcjugGiyC7QXgWcWIBeAXKMcIj2uEj3gtVDGZL0do63NOhegPd92o9VmNuh_Zbh-FMdQA8HTKoKzcyF5FO_vZLkKPu8QBpmbxsGYAEdSLgKnnQ4VKdjOMCNqb68ep0tuSXmY4AyS3ierR-DnKZhcP5X76pjtYXvBwaqQpL0XFH"/>
 </div>
 <div>
-<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">La Jornada de Leo</h1>
+<h1 id="jornadaTitle" class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">La Jornada de Leo</h1>
 <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
 <span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                        Hoy, 24 de Octubre
+<span id="jornadaDate">Hoy, 24 de Octubre</span>
                     </p>
 </div>
 </div>
 </section>
 <!-- Timeline Container -->
-<div class="flex flex-col gap-lg relative">
+<div class="flex flex-col gap-lg relative" id="demoTimelineContainer">
 <!-- 1. Alimentación -->
 <div class="timeline-item relative">
 <div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
@@ -283,6 +290,9 @@
 </div>
 </div>
 
+<!-- Timeline Real (se llena con la bitácora de verdad si hay un hijo vinculado) -->
+<div class="flex flex-col gap-md relative hidden" id="realTimelineContainer"></div>
+
 <!-- Reacción y comentario en vivo -->
 <div class="mt-lg bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container">
 <div class="flex items-center gap-sm mb-sm">
@@ -299,7 +309,85 @@
 </div>
 </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const LOG_TYPE_META = {
+  comentario:    { label: 'Comentario',    color: 'bg-secondary-container text-on-secondary-container' },
+  panal:         { label: 'Higiene',       color: 'bg-tertiary-container text-on-tertiary-container' },
+  comida:        { label: 'Alimentación',  color: 'bg-secondary-container text-on-secondary-container' },
+  siesta_inicio: { label: 'Sueño',         color: 'bg-primary-container text-on-primary-container' },
+  siesta_fin:    { label: 'Sueño',         color: 'bg-primary-container text-on-primary-container' },
+  foto:          { label: 'Momento',       color: 'bg-secondary-container text-on-secondary-container' },
+  medicamento:   { label: 'Medicamento',   color: 'bg-error-container text-on-error-container' },
+  incidente:     { label: 'Incidente',     color: 'bg-error-container text-on-error-container' },
+};
+
+function realTimelineItemHTML(log){
+  const meta = LOG_TYPE_META[log.type] || { label: 'Actualización', color: 'bg-surface-container text-on-surface-variant' };
+  const time = new Date(log.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  return `
+    <div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container flex items-start gap-sm">
+      <div class="w-10 h-10 rounded-full ${meta.color} flex items-center justify-center shrink-0 text-lg">${log.icon}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between gap-sm">
+          <span class="font-label-sm text-label-sm text-on-surface-variant">${meta.label}</span>
+          <span class="font-label-sm text-[11px] text-outline">${time}</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface mt-0.5">${log.text}</p>
+      </div>
+    </div>`;
+}
+
+async function loadRealJornada(){
+  if(!sb) return; // sin conexión: se queda con el contenido de ejemplo
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return; // acceso de demostración: se queda con el contenido de ejemplo
+
+  const { data: links, error } = await sb
+    .from('parent_student_links')
+    .select('student_id, students!inner(id, full_name)')
+    .eq('students.status', 'activo');
+
+  if(error || !links || links.length === 0){
+    document.getElementById('jornadaPageContent').classList.add('hidden');
+    document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+    return;
+  }
+
+  const s = links[0].students;
+  if(!s) return;
+
+  document.getElementById('jornadaTitle').textContent = 'La Jornada de ' + s.full_name.split(' ')[0];
+  document.getElementById('jornadaDate').textContent = 'Hoy, ' + new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
+  document.getElementById('jornadaAvatar').src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="48" fill="#E8DEF8"/><text x="50%" y="58%" font-size="34" text-anchor="middle" fill="#4A4459" font-family="sans-serif">${s.full_name.split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase()}</text></svg>`
+  );
+
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const { data: logs } = await sb
+    .from('daily_logs')
+    .select('icon, text, type, created_at')
+    .eq('student_key', s.id)
+    .eq('log_date', todayISO)
+    .order('created_at', { ascending: false });
+
+  document.getElementById('demoTimelineContainer').classList.add('hidden');
+  const realContainer = document.getElementById('realTimelineContainer');
+  realContainer.classList.remove('hidden');
+
+  if(!logs || logs.length === 0){
+    realContainer.innerHTML = '<p class="text-center text-on-surface-variant font-body-md text-sm py-lg">Aún no hay actividades registradas hoy para ' + s.full_name.split(' ')[0] + '.</p>';
+    return;
+  }
+  realContainer.innerHTML = logs.map(realTimelineItemHTML).join('');
+}
+
+loadRealJornada();
+
 let liked = false;
 function toggleLike(){
   liked = !liked;
@@ -399,12 +487,7 @@ function closeSidebar(){
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
-const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
 async function handleParentLogout(event){
   event.preventDefault();
   if(sb) await sb.auth.signOut();
