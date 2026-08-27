@@ -415,6 +415,22 @@
 
 <div class="p-md space-y-md">
 
+<!-- Asistencia del día -->
+<div class="bg-surface-container-low rounded-xl p-sm">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Asistencia de Hoy</h4>
+<div class="grid grid-cols-3 gap-2">
+<button onclick="setAttendance(currentQuickChild, 'presente')" data-qp-att-btn="presente" class="qp-att-btn flex flex-col items-center gap-1 py-2.5 rounded-xl transition-colors bg-surface text-on-surface-variant hover:bg-primary-container/50">
+<span class="text-lg">✅</span><span class="font-label-sm text-[10px]">Presente</span>
+</button>
+<button onclick="setAttendance(currentQuickChild, 'ausente')" data-qp-att-btn="ausente" class="qp-att-btn flex flex-col items-center gap-1 py-2.5 rounded-xl transition-colors bg-surface text-on-surface-variant hover:bg-error-container/50">
+<span class="text-lg">❌</span><span class="font-label-sm text-[10px]">Ausente</span>
+</button>
+<button onclick="setAttendance(currentQuickChild, 'justificado')" data-qp-att-btn="justificado" class="qp-att-btn flex flex-col items-center gap-1 py-2.5 rounded-xl transition-colors bg-surface text-on-surface-variant hover:bg-tertiary-container/50">
+<span class="text-lg">📝</span><span class="font-label-sm text-[10px]">Justificado</span>
+</button>
+</div>
+</div>
+
 <!-- Medicamento pendiente -->
 <div id="qpMedSection" class="hidden bg-amber-50 border-2 border-amber-300 rounded-xl p-sm">
 <div class="flex items-center justify-between gap-sm">
@@ -732,6 +748,9 @@ function openQuickPanel(id){
 
   const s = STUDENT_QUICK[id];
 
+  // Asistencia de hoy
+  renderQpAttendanceButtons();
+
   // Medicamento
   const medSection = document.getElementById('qpMedSection');
   if(s.medication && !s.medication.applied){
@@ -985,6 +1004,17 @@ function renderAttendanceButton(key){
   });
 }
 
+function renderQpAttendanceButtons(){
+  const status = ATTENDANCE_TODAY[currentQuickChild] || null;
+  document.querySelectorAll('.qp-att-btn').forEach(btn => {
+    const key = btn.dataset.qpAttBtn;
+    const isActive = key === status;
+    const info = ATTENDANCE_LABELS[key];
+    btn.className = 'qp-att-btn flex flex-col items-center gap-1 py-2.5 rounded-xl transition-colors ' +
+      (isActive ? info.cls + ' font-bold' : 'bg-surface text-on-surface-variant hover:bg-surface-container-high');
+  });
+}
+
 async function setAttendance(key, status){
   if(!sb){ showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error'); return; }
   const card = document.querySelector(`.child-card[data-child-id="${key}"]`);
@@ -1011,6 +1041,7 @@ async function setAttendance(key, status){
 
   ATTENDANCE_TODAY[key] = status;
   renderAttendanceButton(key);
+  renderQpAttendanceButtons();
   renderAttendanceSummary();
   showToast(`${name}: ${ATTENDANCE_LABELS[status].text} hoy`, 'event_available');
 }
