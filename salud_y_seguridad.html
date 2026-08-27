@@ -157,26 +157,37 @@
 <!-- Main Canvas -->
 <main class="w-full md:pl-80 px-margin-mobile md:px-margin-desktop py-md pb-24 space-y-md">
 <!-- Header Section -->
+<!-- Aviso: cuenta de padre sin hijo vinculado todavía -->
+<div id="noChildLinkedBanner" class="hidden bg-tertiary-container/30 border border-tertiary/30 rounded-xl p-md mb-md text-center max-w-md mx-auto">
+<span class="material-symbols-outlined text-tertiary text-3xl">family_restroom</span>
+<p class="font-label-md text-label-md text-on-surface mt-1">Tu cuenta todavía no está vinculada a ningún alumno</p>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-1">Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su información aquí.</p>
+</div>
+<div id="healthPageContent">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-base mb-md">
 <div>
 <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">Salud y Seguridad</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Leo Miller</p>
+<p class="font-body-md text-body-md text-on-surface-variant" id="healthChildName">Leo Miller</p>
 </div>
 <div class="bg-surface-container px-4 py-2 rounded-full inline-flex items-center gap-xs w-fit">
-<span class="w-2 h-2 rounded-full bg-[#34A853]"></span>
-<span class="font-label-md text-label-md text-on-surface">En instalaciones</span>
+<span class="w-2 h-2 rounded-full bg-[#34A853]" id="healthPresenceDot"></span>
+<span class="font-label-md text-label-md text-on-surface" id="healthPresenceLabel">En instalaciones</span>
 </div>
 </div>
-<!-- Critical Allergy Banner -->
-<div class="bg-error-container rounded-xl p-md shadow-sm border border-[#ffb4ab] flex items-start gap-sm animate-pulse-slow">
+<!-- Allergy / Health Alert Banner (dinámico) -->
+<div id="allergyBanner" class="bg-error-container rounded-xl p-md shadow-sm border border-[#ffb4ab] flex items-start gap-sm animate-pulse-slow">
 <span class="material-symbols-outlined text-error" data-icon="warning" data-weight="fill">warning</span>
 <div>
-<h3 class="font-headline-md text-headline-md text-on-error-container uppercase tracking-wide">ALERGIA SEVERA: CACAHUATE</h3>
-<p class="font-body-md text-body-md text-error mt-xs">Requiere EpiPen inmediato en caso de exposición. Contactar a emergencias y padres inmediatamente.</p>
+<h3 class="font-headline-md text-headline-md text-on-error-container uppercase tracking-wide" id="allergyTitle">ALERGIA SEVERA: CACAHUATE</h3>
+<p class="font-body-md text-body-md text-error mt-xs" id="allergyText">Requiere EpiPen inmediato en caso de exposición. Contactar a emergencias y padres inmediatamente.</p>
 </div>
 </div>
 <!-- Bento Grid Layout -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<div class="md:col-span-12 bg-tertiary-container/20 border border-tertiary/20 rounded-xl p-sm flex items-start gap-sm">
+<span class="material-symbols-outlined text-tertiary shrink-0">info</span>
+<p class="font-body-md text-body-md text-sm text-on-surface">Los medicamentos y el historial de incidentes que ves abajo son de ejemplo — la alergia y las personas autorizadas de arriba ya son datos reales del expediente de tu hijo(a).</p>
+</div>
 <!-- Active Medications (Spans 8 columns on desktop) -->
 <div class="md:col-span-8 bg-surface rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-outline-variant/30 flex flex-col h-full">
 <div class="flex items-center gap-sm mb-md">
@@ -261,7 +272,7 @@ function signMedication(){
                         Agregar Autorizado
                     </button>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md" id="authorizedPersonsGrid">
 <!-- Parent 1 -->
 <div class="bg-surface-container-lowest border-2 border-surface-container rounded-xl p-md flex flex-col items-center text-center hover:border-primary/30 transition-colors">
 <img class="w-20 h-20 rounded-full object-cover mb-sm border-2 border-surface" data-alt="A clear, professional portrait photo of a young father smiling. The lighting is soft and natural, background is neutral. Suitable for an official ID or authorized pickup profile in a childcare app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6IIL668LSYUJHtQPAZeEI9nFvEgn-BYUzhReIEHJi0oRKwOB86BSU8UbUcy95YUnuwupJRXa_55-1nQivDrRPw2Rerslue1PgxRSefDzUgavTUZ3JS7xKuNAGuIsSVYkOavULsFPpdqCiVnIyh-xlwlCOJjau4YMa1RutTcEkJSBlKZ2I0hmqL4DmEy3ub9vGafiLO9b5BZUvhM9lR7X6IZEoeHi7mR_q6BPk-uJya9Uhv9zNKrXP"/>
@@ -291,6 +302,7 @@ function signMedication(){
 <span class="material-symbols-outlined text-[14px]" data-icon="badge">badge</span>
                             INE: **** 9012
                         </div>
+</div>
 </div>
 </div>
 </div>
@@ -358,6 +370,72 @@ function closeSidebar(){
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+function initialsOf(name){
+  return (name || '').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+}
+
+function authorizedPersonCard(name){
+  return `
+    <div class="bg-surface-container-lowest border-2 border-surface-container rounded-xl p-md flex flex-col items-center text-center hover:border-primary/30 transition-colors">
+      <div class="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-sm border-2 border-surface font-headline-md text-headline-md">${initialsOf(name)}</div>
+      <h4 class="font-headline-md text-body-lg font-bold text-on-surface">${name}</h4>
+      <p class="font-body-md text-body-md text-on-surface-variant">Persona autorizada</p>
+    </div>`;
+}
+
+async function loadRealHealthData(){
+  if(!sb) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session) return; // acceso de demostración: se queda con el contenido de ejemplo
+
+  const { data: links, error } = await sb
+    .from('parent_student_links')
+    .select('student_id, students(id, full_name, allergies, authorized_names)');
+
+  if(error || !links || links.length === 0){
+    document.getElementById('healthPageContent').classList.add('hidden');
+    document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+    return;
+  }
+
+  // Si tiene más de un hijo vinculado, mostramos al primero (esta pantalla no tiene selector todavía)
+  const s = links[0].students;
+  if(!s) return;
+
+  document.getElementById('healthChildName').textContent = s.full_name;
+
+  // Asistencia de hoy para reflejar "En instalaciones" de verdad
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const { data: att } = await sb.from('attendance').select('status').eq('student_key', s.id).eq('date', todayISO).maybeSingle();
+  const presente = att && att.status === 'presente';
+  document.getElementById('healthPresenceDot').className = 'w-2 h-2 rounded-full ' + (presente ? 'bg-[#34A853]' : 'bg-outline-variant');
+  document.getElementById('healthPresenceLabel').textContent = presente ? 'En instalaciones' : 'Fuera de la estancia';
+
+  // Banner de alergias: real, con estado positivo si no tiene ninguna registrada
+  const banner = document.getElementById('allergyBanner');
+  if(s.allergies && s.allergies.trim()){
+    banner.className = 'bg-error-container rounded-xl p-md shadow-sm border border-[#ffb4ab] flex items-start gap-sm';
+    document.getElementById('allergyTitle').textContent = 'ALERGIA REGISTRADA';
+    document.getElementById('allergyText').textContent = s.allergies;
+  } else {
+    banner.className = 'bg-primary-container/40 rounded-xl p-md shadow-sm border border-primary/20 flex items-start gap-sm';
+    banner.querySelector('.material-symbols-outlined').textContent = 'check_circle';
+    document.getElementById('allergyTitle').textContent = 'SIN ALERGIAS REGISTRADAS';
+    document.getElementById('allergyTitle').className = 'font-headline-md text-headline-md text-on-primary-container uppercase tracking-wide';
+    document.getElementById('allergyText').textContent = 'No hay alergias registradas en el expediente de tu hijo(a).';
+    document.getElementById('allergyText').className = 'font-body-md text-body-md text-on-surface-variant mt-xs';
+  }
+
+  // Personas autorizadas: reales, del expediente
+  const grid = document.getElementById('authorizedPersonsGrid');
+  const names = s.authorized_names || [];
+  grid.innerHTML = names.length
+    ? names.map(authorizedPersonCard).join('')
+    : '<p class="col-span-full text-center text-on-surface-variant font-body-md text-sm py-md">Aún no hay personas autorizadas registradas para recoger a tu hijo(a).</p>';
+}
+
+loadRealHealthData();
 
 async function handleParentLogout(event){
   event.preventDefault();
