@@ -568,9 +568,13 @@ Registrar Nueva Maestra
 <input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsPhone" placeholder="55-0000-0000" type="text"/>
 </div>
 <div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo</label>
-<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsEmail" placeholder="nombre@correo.com" type="email"/>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo *</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nsEmail" placeholder="nombre@correo.com" type="email" required=""/>
 </div>
+</div>
+<div class="bg-primary-container/20 border border-primary/20 rounded-lg px-3 py-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">info</span>
+<p class="font-body-md text-[13px] text-on-surface">Con este correo se creará una cuenta real de acceso a la app (rol Staff), con una contraseña temporal que te mostraremos al terminar. Así el maestro(a) ya podrá aparecer en "Asignar Maestro" y podrá iniciar sesión.</p>
 </div>
 <div>
 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Documentos entregados</label>
@@ -582,8 +586,37 @@ Registrar Nueva Maestra
 </div>
 </div>
 <p class="hidden text-error font-label-sm text-label-sm" id="nsError">Completa los campos obligatorios (*) antes de guardar.</p>
-<button class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md mt-sm hover:bg-primary/90 transition-colors" type="submit">Registrar Educadora</button>
+<button id="nsSubmitBtn" class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md mt-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2" type="submit">
+<span id="nsSubmitBtnLabel">Registrar Educadora</span>
+</button>
 </form>
+</div>
+</div>
+
+<!-- Modal: Credenciales de acceso del nuevo staff -->
+<div class="hidden fixed inset-0 bg-inverse-surface/50 z-[210] flex items-center justify-center p-margin-mobile" id="staffCredentialsModal">
+<div class="bg-surface rounded-2xl shadow-xl w-full max-w-md p-lg">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Cuenta creada</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface mb-md">Comparte estos datos con <strong id="scName"></strong> para que inicie sesión. Podrá cambiar su contraseña desde "¿Olvidaste tu contraseña?" en la pantalla de acceso.</p>
+<div class="space-y-sm mb-md">
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-0.5">Correo</p>
+<p class="font-body-md text-body-md text-on-surface font-bold" id="scEmail"></p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-0.5">Contraseña temporal</p>
+<p class="font-body-md text-body-md text-on-surface font-bold" id="scPassword"></p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button onclick="copyStaffCredentials()" class="flex-1 border border-outline-variant text-on-surface rounded-xl py-sm font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">content_copy</span> Copiar
+</button>
+<button onclick="closeStaffCredentialsModal()" class="flex-1 bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">Entendido</button>
+</div>
 </div>
 </div>
 <script>
@@ -699,7 +732,37 @@ function openNewStaffModal(){
 function closeNewStaffModal(){
   document.getElementById('newStaffModal').classList.add('hidden');
 }
-function submitNewStaff(e){
+function generateTempPassword(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  let pass = '';
+  for(let i = 0; i < 10; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+  return pass;
+}
+
+function openStaffCredentialsModal(name, email, password){
+  document.getElementById('scName').textContent = name;
+  document.getElementById('scEmail').textContent = email;
+  document.getElementById('scPassword').textContent = password;
+  document.getElementById('staffCredentialsModal').classList.remove('hidden');
+}
+function closeStaffCredentialsModal(){
+  document.getElementById('staffCredentialsModal').classList.add('hidden');
+}
+function copyStaffCredentials(){
+  const email = document.getElementById('scEmail').textContent;
+  const password = document.getElementById('scPassword').textContent;
+  const text = `Correo: ${email}\nContraseña temporal: ${password}`;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(
+      () => showToast('Datos copiados al portapapeles', 'content_copy'),
+      () => showToast('No se pudo copiar. Cópialos manualmente.', 'error')
+    );
+  } else {
+    showToast('No se pudo copiar. Cópialos manualmente.', 'error');
+  }
+}
+
+async function submitNewStaff(e){
   e.preventDefault();
   const name = document.getElementById('nsName').value.trim();
   const room = document.getElementById('nsRoom').value;
@@ -707,13 +770,55 @@ function submitNewStaff(e){
   const end = document.getElementById('nsEnd').value;
   const contractType = document.getElementById('nsContractType').value;
   const hourlyRateRaw = document.getElementById('nsHourlyRate').value;
-  if(!name || !room || !start || !end || (contractType === 'Por horas' && !hourlyRateRaw)){
-    document.getElementById('nsError').classList.remove('hidden');
-    return false;
-  }
-  const hourlyRate = contractType === 'Por horas' ? parseFloat(hourlyRateRaw) : null;
   const phone = document.getElementById('nsPhone').value.trim();
   const email = document.getElementById('nsEmail').value.trim();
+  const nsError = document.getElementById('nsError');
+
+  if(!name || !room || !start || !end || !email || (contractType === 'Por horas' && !hourlyRateRaw)){
+    nsError.textContent = 'Completa los campos obligatorios (*) antes de guardar.';
+    nsError.classList.remove('hidden');
+    return false;
+  }
+  nsError.classList.add('hidden');
+
+  if(!sb){
+    nsError.textContent = 'Sin conexión con el servidor. Intenta recargar la página.';
+    nsError.classList.remove('hidden');
+    return false;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    nsError.textContent = 'Necesitas iniciar sesión como admin para registrar personal con acceso a la app.';
+    nsError.classList.remove('hidden');
+    return false;
+  }
+
+  const submitBtn = document.getElementById('nsSubmitBtn');
+  const submitBtnLabel = document.getElementById('nsSubmitBtnLabel');
+  submitBtn.disabled = true;
+  submitBtnLabel.textContent = 'Creando cuenta…';
+
+  // Se usa un cliente de Supabase aislado (sin persistir sesión) para no reemplazar
+  // la sesión del admin que está haciendo el alta con la de la nueva cuenta creada.
+  const tempPassword = generateTempPassword();
+  const { error: signUpError } = await sbSecondary.auth.signUp({
+    email, password: tempPassword,
+    options: { data: { full_name: name, role: 'staff', phone: phone || null } },
+  });
+
+  submitBtn.disabled = false;
+  submitBtnLabel.textContent = 'Registrar Educadora';
+
+  if(signUpError){
+    const friendly = signUpError.message === 'User already registered'
+      ? 'Ya existe una cuenta con ese correo. Pide al admin que le asigne el rol de Staff desde "Usuarios".'
+      : signUpError.message;
+    nsError.textContent = 'No se pudo crear la cuenta: ' + friendly;
+    nsError.classList.remove('hidden');
+    return false;
+  }
+
+  const hourlyRate = contractType === 'Por horas' ? parseFloat(hourlyRateRaw) : null;
   const docs = [];
   if(document.getElementById('nsDocId').checked) docs.push({ name: 'Identificación oficial', status: 'ok' });
   if(document.getElementById('nsDocCert').checked) docs.push({ name: 'Certificado de primeros auxilios', status: 'ok' });
@@ -750,7 +855,8 @@ function submitNewStaff(e){
   document.querySelector('.staff-card').closest('.grid').prepend(card);
 
   closeNewStaffModal();
-  showToast(`${name} registrada exitosamente`, 'check_circle');
+  showToast(`${name} registrada exitosamente — ya puede aparecer en "Asignar Maestro"`, 'check_circle');
+  openStaffCredentialsModal(name, email, tempPassword);
   return false;
 }
 function normalizeStaffText(str){
@@ -825,6 +931,12 @@ function closeSidebar(){
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Cliente aislado (no persiste sesión) usado solo para crear cuentas de staff
+// desde el panel de admin, sin reemplazar la sesión del admin que está logueado.
+const sbSecondary = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false, storageKey: 'sb-gael-staff-creation-temp' },
+});
 
 async function handleLogout(event){
   event.preventDefault();
