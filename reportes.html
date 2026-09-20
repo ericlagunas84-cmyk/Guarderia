@@ -281,7 +281,7 @@
 <div id="tabHoras" class="hidden">
 <div class="bg-tertiary-container/20 border border-tertiary/20 rounded-xl p-sm mb-md flex items-start gap-sm">
 <span class="material-symbols-outlined text-tertiary shrink-0">info</span>
-<p class="font-body-md text-body-md text-sm text-on-surface">Estos son <strong>datos de ejemplo</strong>. Para que este reporte se calcule con horas reales, hace falta conectar el registro de entrada/salida de Estancia (Registro Diario) a la base de datos — hoy solo vive en la sesión del navegador.</p>
+<p class="font-body-md text-body-md text-sm text-on-surface">Este reporte aún no tiene datos. Para que se calcule con horas reales, hace falta conectar el registro de entrada/salida de Estancia (Registro Diario) a la base de datos.</p>
 </div>
 <div class="bg-surface rounded-2xl border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)] overflow-hidden">
 <div class="px-md py-sm border-b border-outline-variant/20 bg-surface-container-lowest">
@@ -312,15 +312,6 @@
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
-// Alumnos "de siempre" (demo) para poder mostrar nombre/grupo aunque no estén en la tabla students
-const DEMO_STUDENTS = {
-  leo: { name: 'Leo Miller', group: 'Bebés' },
-  sofia: { name: 'Sofía García', group: 'Maternal' },
-  mateo: { name: 'Mateo López', group: 'Maternal' },
-  emma: { name: 'Emma Davis', group: 'Maternal' },
-  diego: { name: 'Diego Ramírez', group: 'Estancia' },
-};
 
 function inferGroup(room){
   if(!room) return 'Maternal';
@@ -363,9 +354,8 @@ async function loadAttendanceReport(){
     sb.from('students').select('id, full_name, room').eq('status', 'activo'),
   ]);
 
-  // Construir el universo completo de alumnos: demo + reales
+  // Universo de alumnos activos
   const universe = {};
-  Object.entries(DEMO_STUDENTS).forEach(([key, s]) => { universe[key] = { name: s.name, group: s.group }; });
   (realStudents || []).forEach(s => { universe[s.id] = { name: s.full_name, group: inferGroup(s.room) }; });
 
   const attByKey = {};
@@ -418,23 +408,9 @@ async function loadAttendanceReport(){
     </div>`).join('');
 }
 
-/* ===== Horas Extra (demo, ver aviso en la pantalla) ===== */
-const HORAS_EXTRA_DEMO = [
-  { name: 'Diego Ramírez', group: 'Estancia', horarioContratado: 'hasta 6:00 PM', horaSalida: '7:30 PM', horasExtra: 1.5, costoExtra: 75 },
-  { name: 'Valentina Ruiz', group: 'Estancia', horarioContratado: 'hasta 5:00 PM', horaSalida: '5:45 PM', horasExtra: 0.75, costoExtra: 37.5 },
-];
+/* ===== Horas Extra ===== */
 function renderHorasExtra(){
-  document.getElementById('horasExtraTable').innerHTML = HORAS_EXTRA_DEMO.map(h => `
-    <div class="px-md py-sm flex items-center justify-between gap-sm flex-wrap">
-      <div>
-        <p class="font-label-md text-label-md text-on-surface">${h.name} <span class="font-label-sm text-[11px] text-on-surface-variant">(${h.group})</span></p>
-        <p class="font-body-md text-[12px] text-on-surface-variant">Contratado ${h.horarioContratado} · Salió ${h.horaSalida}</p>
-      </div>
-      <div class="text-right">
-        <p class="font-label-md text-label-md text-on-surface">${h.horasExtra} h extra</p>
-        <p class="font-body-md text-[12px] text-tertiary">$${h.costoExtra.toFixed(2)} MXN</p>
-      </div>
-    </div>`).join('');
+  document.getElementById('horasExtraTable').innerHTML = '<p class="p-md text-on-surface-variant font-body-md text-sm">Aún no hay registros de horas extra.</p>';
 }
 
 /* ===== Insumos por Alumno (datos reales) ===== */

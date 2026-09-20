@@ -268,16 +268,7 @@ const MODULES = [
   { key: 'reportes', label: 'Reportes', icon: 'assessment' },
 ];
 
-const STAFF_PERMISSIONS = {
-  ana: { name: 'Maestra Ana López', role: 'Educadora · Salón Bebés', initials: 'AL',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  carlos: { name: 'Maestro Carlos Ruíz', role: 'Educador · Salón Maternal', initials: 'CR',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  sofia: { name: 'Maestra Sofia M.', role: 'Educadora · Preescolar 1', initials: 'SM',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false } },
-  elena: { name: 'Maestra Elena G.', role: 'Asistente General', initials: 'EG',
-    perms: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: false, personal: true, reportes: false } },
-};
+const STAFF_PERMISSIONS = {};
 
 const TEMPLATES = {
   admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
@@ -291,6 +282,10 @@ function countActive(perms){
 
 function renderPermissions(){
   const grid = document.getElementById('permissionsGrid');
+  if(Object.keys(STAFF_PERMISSIONS).length === 0){
+    grid.innerHTML = '<p class="text-on-surface-variant font-body-md text-sm p-md">Aún no hay personal registrado.</p>';
+    return;
+  }
   grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
     <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
       <div class="flex flex-wrap items-center justify-between gap-sm mb-sm">

@@ -157,11 +157,7 @@
 <span class="font-body-md text-body-md text-on-surface-variant">Bebé:</span>
 <div class="relative">
 <select id="babyChildSelect" onchange="switchBaby(this.value)" class="appearance-none font-bold font-body-md text-body-md text-on-surface bg-surface-container-low pl-2 pr-7 py-1 rounded-full border-2 border-transparent focus:border-primary focus:outline-none cursor-pointer">
-<option value="leo">Leo Miller · Salón Sol</option>
-<option value="sofia">Sofía García · Salón Luna</option>
-<option value="mateo">Mateo López · Salón Sol</option>
-<option value="emma">Emma Davis · Salón Sol</option>
-<option value="diego">Diego Ramírez · Estancia (8 años)</option>
+<option value="">Cargando…</option>
 </select>
 <span class="material-symbols-outlined absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">expand_more</span>
 </div>
@@ -500,31 +496,73 @@ Salida
 <!-- Historial de Hoy -->
 <section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-3xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container-low">
 <h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex items-center gap-2">
-<span class="material-symbols-outlined">history</span> Historial de Hoy · <span id="babyHistoryName" class="text-primary">Leo</span>
+<span class="material-symbols-outlined">history</span> Historial de Hoy · <span id="babyHistoryName" class="text-primary">…</span>
 </h2>
 <div id="babyHistory" class="space-y-2">
-<p id="babyHistoryEmpty" class="text-on-surface-variant font-body-md text-body-md">Aún no hay registros — usa los formularios de arriba.</p>
+<p id="babyHistoryEmpty" class="text-on-surface-variant font-body-md text-body-md">Cargando…</p>
 </div>
 </section>
 </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const BABIES = {
-  leo: { name: 'Leo Miller', short: 'Leo', group: 'lactante', history: [] },
-  sofia: { name: 'Sofía García', short: 'Sofía', group: 'mayor', history: [] },
-  mateo: { name: 'Mateo López', short: 'Mateo', group: 'mayor', history: [] },
-  emma: { name: 'Emma Davis', short: 'Emma', group: 'mayor', history: [] },
-  diego: { name: 'Diego Ramírez', short: 'Diego', group: 'estancia', history: [],
-    tasks: [
-      { text: 'Matemáticas — ejercicios pág. 24', done: false },
-      { text: 'Lectura — capítulo 3', done: false },
-    ],
-    checkedIn: false, checkedOut: false, checkInTime: null, checkOutTime: null,
-  },
-};
-let currentBaby = 'leo';
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-function switchBaby(key){
+const BABIES = {
+  // Se llena con alumnos reales en loadRealBabies().
+};
+let currentBaby = null;
+
+function classifyGroup(room){
+  const r = (room || '').toLowerCase();
+  if(/estancia/.test(r)) return 'estancia';
+  if(/beb[eé]|lactante/.test(r)) return 'lactante';
+  return 'mayor';
+}
+
+async function loadRealBabies(){
+  const select = document.getElementById('babyChildSelect');
+  if(!sb){
+    select.innerHTML = '<option value="">Sin conexión</option>';
+    return;
+  }
+  const { data: students, error } = await sb.from('students').select('id, full_name, room').eq('status', 'activo').order('full_name');
+  if(error || !students || students.length === 0){
+    select.innerHTML = '<option value="">Sin alumnos activos</option>';
+    document.getElementById('babyHistoryName').textContent = '—';
+    document.getElementById('babyHistory').innerHTML = '<p class="text-on-surface-variant font-body-md text-body-md">Aún no hay alumnos dados de alta.</p>';
+    return;
+  }
+  students.forEach(s => {
+    const group = classifyGroup(s.room);
+    BABIES[s.id] = {
+      name: s.full_name, short: s.full_name.split(' ')[0], group, history: [],
+      tasks: group === 'estancia' ? [] : undefined,
+      checkedIn: false, checkedOut: false, checkInTime: null, checkOutTime: null,
+    };
+  });
+  select.innerHTML = students.map(s => `<option value="${s.id}">${s.full_name} · ${s.room || 'Sin salón'}</option>`).join('');
+  currentBaby = students[0].id;
+  await switchBaby(currentBaby);
+}
+
+async function loadHistoryFor(key){
+  if(!sb) return;
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const { data: logs } = await sb.from('daily_logs').select('icon, text, type, created_at')
+    .eq('student_key', key).eq('log_date', todayISO).order('created_at', { ascending: false });
+  BABIES[key].history = (logs || []).map(l => {
+    const parts = (l.text || '').split('||');
+    return {
+      icon: l.icon, title: parts[0] || l.text, detail: parts[1] || '',
+      time: new Date(l.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    };
+  });
+}
+
+async function switchBaby(key){
   currentBaby = key;
   document.getElementById('babyHistoryName').textContent = BABIES[key].short;
   const group = BABIES[key].group;
@@ -538,6 +576,7 @@ function switchBaby(key){
     renderTasks();
     renderShiftStatus();
   }
+  await loadHistoryFor(key);
   renderHistory();
 }
 
@@ -583,10 +622,22 @@ function getSelectedChip(groupId){
   const active = group.querySelector('.chip-btn.border-primary, .chip-btn.border-tertiary');
   return active ? active.dataset.value : null;
 }
-function addHistoryEntry(icon, title, detail){
+async function addHistoryEntry(icon, title, detail){
   const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
   BABIES[currentBaby].history.unshift({ icon, title, detail, time });
   renderHistory();
+  if(!sb) return;
+  const { data: { session } } = await sb.auth.getSession();
+  const todayISO = new Date().toISOString().slice(0, 10);
+  await sb.from('daily_logs').insert({
+    student_key: currentBaby,
+    student_name: BABIES[currentBaby].name,
+    log_date: todayISO,
+    type: 'registro',
+    icon,
+    text: title + '||' + detail,
+    created_by: session ? session.user.id : null,
+  });
 }
 function saveFeeding(){
   const time = document.getElementById('feedTime').value || '—';
@@ -734,6 +785,8 @@ function registerCheckOut(){
   addHistoryEntry('logout', 'Salida registrada', `Salió a las ${time}`);
   showToast(`Salida de ${student.short} registrada`, 'check_circle');
 }
+
+loadRealBabies();
 </script>
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="listado_de_ni_os.html"><span class="material-symbols-outlined mb-1">groups</span><span class="font-label-sm text-[10px] text-center w-full truncate">Alumnos</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="registro_diario_beb_s.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">edit_note</span><span class="font-label-sm text-[10px] text-center w-full truncate">Registro</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Fichas</span></a></nav>

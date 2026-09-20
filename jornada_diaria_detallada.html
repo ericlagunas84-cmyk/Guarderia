@@ -3,7 +3,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>La Jornada de Leo - Gael</title>
+<title>Bitácora del Día - Gael</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -165,10 +165,10 @@
 <section class="flex flex-col gap-xs mb-sm">
 <div class="flex items-center gap-sm">
 <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-surface shadow-md flex-shrink-0 z-10 relative">
-<img id="jornadaAvatar" class="w-full h-full object-cover" data-alt="A close-up, joyful portrait of a toddler boy named Leo, laughing outside. Soft dappled sunlight through trees. Bright, warm, nurturing aesthetic. Used as the main child profile image at the top of the daily log screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOzBsq_99BIdKxA-lEQBTfzZ-17dPA9u7BS7O1H4oFOzURdFhzVbVUM2SV9kURJgNg7rhp3cLZmIgcjugGiyC7QXgWcWIBeAXKMcIj2uEj3gtVDGZL0do63NOhegPd92o9VmNuh_Zbh-FMdQA8HTKoKzcyF5FO_vZLkKPu8QBpmbxsGYAEdSLgKnnQ4VKdjOMCNqb68ep0tuSXmY4AyS3ierR-DnKZhcP5X76pjtYXvBwaqQpL0XFH"/>
+<img id="jornadaAvatar" class="w-full h-full object-cover" alt="Foto del alumno" src=""/>
 </div>
 <div>
-<h1 id="jornadaTitle" class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">La Jornada de Leo</h1>
+<h1 id="jornadaTitle" class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Bitácora del Día</h1>
 <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
 <span class="material-symbols-outlined text-[18px]">calendar_today</span>
 <span id="jornadaDate">Hoy, 24 de Octubre</span>
@@ -302,7 +302,7 @@
 </button>
 </div>
 <h3 class="font-label-md text-label-md text-on-surface-variant mb-sm">Comentario para la maestra</h3>
-<textarea id="commentInput" class="w-full border border-outline-variant rounded-lg p-sm font-body-md text-body-md" rows="2" placeholder="Escribe una nota sobre el día de Leo..."></textarea>
+<textarea id="commentInput" class="w-full border border-outline-variant rounded-lg p-sm font-body-md text-body-md" rows="2" placeholder="Escribe una nota sobre el día de hoy..."></textarea>
 <button onclick="addComment()" class="mt-sm bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md">Enviar</button>
 <div id="commentList" class="mt-md space-y-2"></div>
 </div>
@@ -342,10 +342,23 @@ function realTimelineItemHTML(log){
     </div>`;
 }
 
+function showNoChildBanner(title, detail){
+  document.getElementById('jornadaPageContent').classList.add('hidden');
+  document.getElementById('noChildLinkedBanner').querySelector('p.font-label-md').textContent = title;
+  document.getElementById('noChildLinkedBanner').querySelector('p.font-body-md').textContent = detail;
+  document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+}
+
 async function loadRealJornada(){
-  if(!sb) return; // sin conexión: se queda con el contenido de ejemplo
+  if(!sb){
+    showNoChildBanner('No se pudo conectar con el servidor', 'Intenta recargar la página en unos momentos.');
+    return;
+  }
   const { data: { session } } = await sb.auth.getSession();
-  if(!session) return; // acceso de demostración: se queda con el contenido de ejemplo
+  if(!session){
+    showNoChildBanner('Inicia sesión para ver la bitácora', 'Necesitas iniciar sesión con tu cuenta de Gael.');
+    return;
+  }
 
   const { data: links, error } = await sb
     .from('parent_student_links')
@@ -353,8 +366,7 @@ async function loadRealJornada(){
     .eq('students.status', 'activo');
 
   if(error || !links || links.length === 0){
-    document.getElementById('jornadaPageContent').classList.add('hidden');
-    document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+    showNoChildBanner('Tu cuenta todavía no está vinculada a ningún alumno', 'Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su bitácora aquí.');
     return;
   }
 
@@ -394,7 +406,7 @@ function toggleLike(){
   document.getElementById('likeIcon').textContent = liked ? 'favorite' : 'favorite_border';
   document.getElementById('likeIcon').style.fontVariationSettings = liked ? "'FILL' 1" : "'FILL' 0";
   document.getElementById('likeCount').textContent = liked ? '¡Cariño enviado!' : 'Enviar cariño';
-  if(liked) showToast('La maestra de Leo recibió tu mensaje de cariño ❤️', 'favorite');
+  if(liked) showToast('La maestra recibió tu mensaje de cariño ❤️', 'favorite');
 }
 function addComment(){
   const input = document.getElementById('commentInput');
@@ -419,9 +431,8 @@ function addComment(){
 <div class="px-md mb-lg flex items-center gap-base">
 <img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="A small, circular profile picture of an adult parent smiling warmly. Soft, natural lighting. The image is professional yet approachable, fitting for a modern childcare app's navigation drawer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB3DYhQ0EMpBBqwY0GlRh4ZsO6-MJjlUvak51NDdCl-FRGFEnrbY2K2f0j1lSYu42teu8mwn19DdmK3Xqr9X51mL6__0LSDMopUTE4GaQCIsiORHMKPZUPzkxxsxDFPIquIR6wMG1yBvKZE8gVhjAbRDt01wJapyA---SyRKj9dFwrOUlQIeoUW0xqFcWCAmxWc6CeGGUAqXLF7rG4ynDRUK59thCfjCyS5Kj2F8AyfLJ5P4yPQNxi"/>
 <div>
-<h2 class="font-headline-md text-headline-md text-on-surface">The Miller Family</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Child: Leo Miller</p>
-<p class="font-label-sm text-label-sm text-primary mt-1">Premium Member</p>
+<h2 class="font-headline-md text-headline-md text-on-surface">Mi cuenta</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Sin alumno vinculado</p>
 </div>
 </div>
 <nav class="flex flex-col gap-2">

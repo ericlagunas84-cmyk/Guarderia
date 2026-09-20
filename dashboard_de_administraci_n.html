@@ -248,11 +248,7 @@
 <h3 class="font-label-md text-label-md text-on-surface-variant">Alumnos Activos</h3>
 </div>
 <div class="mt-auto relative z-10">
-<p class="font-display-lg text-display-lg text-on-surface">45</p>
-<p class="font-label-sm text-label-sm text-primary mt-xs flex items-center gap-xs">
-<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
-                                +2 esta semana
-                            </p>
+<p class="font-display-lg text-display-lg text-on-surface" id="statAlumnosActivos">…</p>
 </div>
 </div>
 <!-- Metric Card 2 -->
@@ -262,16 +258,10 @@
 <div class="w-10 h-10 rounded-full bg-secondary-container/50 flex items-center justify-center text-secondary">
 <span class="material-symbols-outlined" data-icon="badge">badge</span>
 </div>
-<h3 class="font-label-md text-label-md text-on-surface-variant">Personal Presente</h3>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Personal Registrado</h3>
 </div>
 <div class="mt-auto relative z-10">
-<div class="flex items-baseline gap-xs">
-<p class="font-display-lg text-display-lg text-on-surface">12</p>
-<p class="font-body-md text-body-md text-on-surface-variant">/ 15</p>
-</div>
-<div class="w-full bg-surface-container-highest rounded-full h-1.5 mt-sm overflow-hidden">
-<div class="bg-secondary h-1.5 rounded-full" style="width: 80%"></div>
-</div>
+<p class="font-display-lg text-display-lg text-on-surface" id="statPersonalTotal">…</p>
 </div>
 </div>
 <!-- Metric Card 3 -->
@@ -284,8 +274,8 @@
 <h3 class="font-label-md text-label-md text-on-surface-variant">Ingresos del Mes</h3>
 </div>
 <div class="mt-auto relative z-10">
-<p class="font-headline-md text-headline-md text-on-surface truncate">$125,000</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">MXN Mensual</p>
+<p class="font-headline-md text-headline-md text-on-surface truncate" id="statIngresosMes">…</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">MXN este mes</p>
 </div>
 </div>
 <!-- Metric Card 4 -->
@@ -298,8 +288,8 @@
 <h3 class="font-label-md text-label-md text-error">Alertas de Salud</h3>
 </div>
 <div class="mt-auto relative z-10">
-<p class="font-display-lg text-display-lg text-error">2</p>
-<p class="font-label-sm text-label-sm text-on-error-container mt-xs">Requieren atención</p>
+<p class="font-display-lg text-display-lg text-error" id="statAlertasSalud">…</p>
+<p class="font-label-sm text-label-sm text-on-error-container mt-xs">Alumnos con alergias registradas</p>
 </div>
 </div>
 </div>
@@ -311,40 +301,8 @@
 <h3 class="font-headline-md text-headline-md text-on-surface">Actividad Reciente</h3>
 <button class="text-primary font-label-md text-label-md hover:underline" onclick="location.href='gesti_n_financiera.html'">Ver todo</button>
 </div>
-<div class="space-y-base flex-1">
-<!-- Activity Item 1 -->
-<div class="flex items-start gap-md p-sm hover:bg-surface-container-low rounded-lg transition-colors">
-<div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center text-primary shrink-0 mt-xs">
-<span class="material-symbols-outlined" data-icon="paid">paid</span>
-</div>
-<div class="flex-1">
-<p class="font-body-md text-body-md text-on-surface font-semibold">Pago recibido de Familia Miller</p>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm">Colegiatura mensual - Salón Sol</p>
-</div>
-<span class="font-label-sm text-label-sm text-outline shrink-0">Hace 10 min</span>
-</div>
-<!-- Activity Item 2 -->
-<div class="flex items-start gap-md p-sm bg-error-container/20 rounded-lg transition-colors border border-error-container/50">
-<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error shrink-0 mt-xs">
-<span class="material-symbols-outlined" data-icon="medical_information">medical_information</span>
-</div>
-<div class="flex-1">
-<p class="font-body-md text-body-md text-error font-semibold">Alerta de Alergia: Emma Davis</p>
-<p class="font-body-md text-body-md text-on-error-container text-sm">Revisión de menú sugerida por exposición a nueces.</p>
-</div>
-<span class="font-label-sm text-label-sm text-error shrink-0">Hace 45 min</span>
-</div>
-<!-- Activity Item 3 -->
-<div class="flex items-start gap-md p-sm hover:bg-surface-container-low rounded-lg transition-colors">
-<div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary shrink-0 mt-xs">
-<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
-</div>
-<div class="flex-1">
-<p class="font-body-md text-body-md text-on-surface font-semibold">Nuevo reporte de incidente: Mateo López</p>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm">Caída leve en área de juegos. Padre notificado.</p>
-</div>
-<span class="font-label-sm text-label-sm text-outline shrink-0">Hace 2 horas</span>
-</div>
+<div class="space-y-base flex-1" id="recentActivityList">
+<p class="text-center text-on-surface-variant font-body-md py-lg">Cargando actividad reciente…</p>
 </div>
 <button class="mt-md w-full py-sm border-2 border-surface-variant rounded-full font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors active:scale-95" onclick="showToast('Generando reporte diario en PDF...', 'summarize')">
                             Generar Reporte Diario
@@ -355,50 +313,8 @@
 <div class="mb-md pb-sm border-b border-surface-variant/50">
 <h3 class="font-headline-md text-headline-md text-on-surface">Ocupación por Salón</h3>
 </div>
-<div class="flex-1 flex flex-col justify-center space-y-md">
-<!-- Class 1 -->
-<div>
-<div class="flex justify-between mb-xs">
-<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
-<div class="w-3 h-3 rounded-full bg-tertiary"></div>
-                                        Salón Sol (Pre-K)
-                                    </span>
-<span class="font-label-md text-label-md text-on-surface-variant">18/20</span>
-</div>
-<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-tertiary h-full rounded-full" style="width: 90%"></div>
-</div>
-</div>
-<!-- Class 2 -->
-<div>
-<div class="flex justify-between mb-xs">
-<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
-<div class="w-3 h-3 rounded-full bg-secondary"></div>
-                                        Salón Luna (Toddlers)
-                                    </span>
-<span class="font-label-md text-label-md text-on-surface-variant">15/15</span>
-</div>
-<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-secondary h-full rounded-full" style="width: 100%"></div>
-</div>
-</div>
-<!-- Class 3 -->
-<div>
-<div class="flex justify-between mb-xs">
-<span class="font-label-md text-label-md text-on-surface flex items-center gap-xs">
-<div class="w-3 h-3 rounded-full bg-primary"></div>
-                                        Bebés (Nursery)
-                                    </span>
-<span class="font-label-md text-label-md text-on-surface-variant">12/15</span>
-</div>
-<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full rounded-full" style="width: 80%"></div>
-</div>
-</div>
-</div>
-<div class="mt-md p-sm bg-surface-container-low rounded-lg flex items-start gap-sm">
-<span class="material-symbols-outlined text-outline mt-xs" data-icon="info">info</span>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm">Salón Luna se encuentra a máxima capacidad. Considere reasignación para nuevas inscripciones.</p>
+<div class="flex-1 flex flex-col justify-center space-y-md" id="occupancyList">
+<p class="text-center text-on-surface-variant font-body-md py-md">Cargando ocupación…</p>
 </div>
 </div>
 </div>
@@ -460,5 +376,84 @@ async function handleLogout(event){
   await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
+
+async function loadDashboardStats(){
+  if(!sb) return;
+  const [studentsRes, profilesRes, invoicesRes] = await Promise.all([
+    sb.from('students').select('id, room, allergies').eq('status', 'activo'),
+    sb.from('profiles').select('id, role').in('role', ['staff', 'admin']),
+    sb.from('invoices').select('amount, paid_at, student_name, concept'),
+  ]);
+
+  const activeStudents = studentsRes.data || [];
+  const staff = profilesRes.data || [];
+  const invoices = invoicesRes.data || [];
+
+  const elAlumnos = document.getElementById('statAlumnosActivos');
+  if(elAlumnos) elAlumnos.textContent = activeStudents.length;
+
+  const elPersonal = document.getElementById('statPersonalTotal');
+  if(elPersonal) elPersonal.textContent = staff.length;
+
+  const now = new Date();
+  const monthRevenue = invoices
+    .filter(inv => {
+      if(!inv.paid_at) return false;
+      const d = new Date(inv.paid_at);
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    })
+    .reduce((sum, inv) => sum + Number(inv.amount || 0), 0);
+  const elIngresos = document.getElementById('statIngresosMes');
+  if(elIngresos) elIngresos.textContent = '$' + monthRevenue.toLocaleString('es-MX', { maximumFractionDigits: 0 });
+
+  const alertCount = activeStudents.filter(s => s.allergies && s.allergies.trim().length > 0).length;
+  const elAlertas = document.getElementById('statAlertasSalud');
+  if(elAlertas) elAlertas.textContent = alertCount;
+
+  // Ocupación por salón
+  const occupancyEl = document.getElementById('occupancyList');
+  if(occupancyEl){
+    const rooms = {};
+    activeStudents.forEach(s => {
+      const key = s.room || 'Sin salón asignado';
+      rooms[key] = (rooms[key] || 0) + 1;
+    });
+    const entries = Object.entries(rooms);
+    occupancyEl.innerHTML = entries.length === 0
+      ? '<p class="text-center text-on-surface-variant font-body-md py-md">Aún no hay alumnos inscritos.</p>'
+      : entries.map(([room, count]) => `
+          <div>
+            <div class="flex justify-between mb-xs">
+              <span class="font-label-md text-label-md text-on-surface">${room}</span>
+              <span class="font-label-md text-label-md text-on-surface-variant">${count}</span>
+            </div>
+          </div>`).join('');
+  }
+
+  // Actividad reciente: últimos pagos registrados
+  const activityEl = document.getElementById('recentActivityList');
+  if(activityEl){
+    const recentInvoices = [...invoices]
+      .filter(inv => inv.paid_at)
+      .sort((a, b) => new Date(b.paid_at) - new Date(a.paid_at))
+      .slice(0, 5);
+    if(recentInvoices.length === 0){
+      activityEl.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Sin actividad reciente.</p>';
+    } else {
+      activityEl.innerHTML = recentInvoices.map(inv => `
+        <div class="flex items-start gap-md p-sm hover:bg-surface-container-low rounded-lg transition-colors">
+          <div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center text-primary shrink-0 mt-xs">
+            <span class="material-symbols-outlined" data-icon="paid">paid</span>
+          </div>
+          <div class="flex-1">
+            <p class="font-body-md text-body-md text-on-surface font-semibold">Pago recibido${inv.student_name ? ' de ' + inv.student_name : ''}</p>
+            <p class="font-body-md text-body-md text-on-surface-variant text-sm">${inv.concept || 'Sin concepto'}</p>
+          </div>
+          <span class="font-label-sm text-label-sm text-outline shrink-0">${new Date(inv.paid_at).toLocaleDateString('es-MX')}</span>
+        </div>`).join('');
+    }
+  }
+}
+loadDashboardStats();
 </script>
 </body></html>

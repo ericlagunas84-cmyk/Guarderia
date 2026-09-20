@@ -80,10 +80,12 @@
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-24 md:pb-0">
 <!-- Header -->
 <header class="sticky top-0 z-40 flex items-center gap-sm px-margin-mobile md:px-margin-desktop py-sm bg-surface-container-lowest border-b border-surface-variant shadow-sm">
-<img alt="Maestra Ana" class="w-11 h-11 rounded-full object-cover shrink-0" data-alt="A portrait of a friendly female preschool teacher smiling warmly, wearing a green polo shirt in a bright classroom setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZoNkhdrjjHhOf4PeblxULzDdXRRbErRPEo6IzwH98N6IVhMVK-eXgea_6nccr0Bxff4MCRnkuFXrUkpkAUSZP-Sjr20E8GCVPyHom_FiHJT5fUMriAXPY-eT8T0T_hGaoeFEdC1OhlosO9R8Le97NFjLY2U4KCskO1Vncnn2bvUMQb4usWcyjaElrWlbrl408C8XBRdXB8UlKT8_mJxSm1gVfu0wkrA755iFfqiYqk7j0HODKQMsE"/>
+<div class="w-11 h-11 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined">school</span>
+</div>
 <div class="flex-1 min-w-0">
-<h1 class="font-headline-md text-[18px] text-on-surface leading-tight truncate">Maestra Ana</h1>
-<p class="font-label-sm text-label-sm text-secondary truncate">Salón Abejitas · Leo</p>
+<h1 class="font-headline-md text-[18px] text-on-surface leading-tight truncate" id="chatTeacherName">Maestra</h1>
+<p class="font-label-sm text-label-sm text-secondary truncate" id="chatChildLabel">Cargando…</p>
 </div>
 <a class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary-container/20 transition-colors shrink-0" href="contacto.html" title="Otras formas de contacto">
 <span class="material-symbols-outlined">call</span>
@@ -112,14 +114,16 @@
 
 <script>
 const MESSAGES = [
-  { from: 'them', text: '¡Buen día familia Miller! Quería contarles que Leo tuvo una excelente mañana. Estuvimos trabajando con pinturas de dedos y compartió muy bien con sus compañeros.', time: '10:30 AM' },
-  { from: 'me', text: '¡Qué bueno! Gracias por contarnos, Maestra Ana. A él le encanta pintar en casa también.', time: '11:02 AM' },
-  { from: 'them', text: 'Se nota. Cualquier cosa que necesiten para la clase de mañana me avisan por aquí.', time: '11:10 AM' },
+  // El historial de mensajes reales se agregará aquí cuando la mensajería esté conectada.
 ];
 const REPLY = '¡Recibido! Te aviso cualquier novedad. 😊';
 
 function renderThread(){
   const thread = document.getElementById('chatThread');
+  if(MESSAGES.length === 0){
+    thread.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay mensajes en esta conversación.</p>';
+    return;
+  }
   thread.innerHTML = MESSAGES.map(m => {
     if(m.from === 'me'){
       return `<div class="flex items-end gap-2 max-w-[85%] ml-auto justify-end">
@@ -156,11 +160,25 @@ function sendMessage(){
     const replyTime = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
     MESSAGES.push({ from: 'them', text: REPLY, time: replyTime });
     renderThread();
-    showToast('Nuevo mensaje de Maestra Ana', 'mail');
+    showToast('Nuevo mensaje de tu maestra', 'mail');
   }, 1200);
 }
 
 renderThread();
+
+async function loadChatContext(){
+  const label = document.getElementById('chatChildLabel');
+  if(!sb || !label) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ label.textContent = 'Inicia sesión para ver tus mensajes'; return; }
+  const { data: links } = await sb
+    .from('parent_student_links')
+    .select('students!inner(full_name, room)')
+    .eq('students.status', 'activo');
+  if(!links || links.length === 0){ label.textContent = 'Sin alumno vinculado'; return; }
+  const s = links[0].students;
+  label.textContent = (s.room ? s.room + ' · ' : '') + s.full_name.split(' ')[0];
+}
 </script>
 
 <!-- Shared Toast Component -->
@@ -209,5 +227,6 @@ async function handleParentLogout(event){
   if(sb) await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
+loadChatContext();
 </script>
 </body></html>

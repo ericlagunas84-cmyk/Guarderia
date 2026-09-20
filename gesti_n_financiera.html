@@ -403,134 +403,7 @@
 </tr>
 </thead>
 <tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/20" id="paymentsTableBody">
-<!-- Row 1: Pagado -->
-<tr class="table-row-hover transition-colors group" data-status="pagado">
-<td class="py-sm px-md">
-<div class="flex items-center gap-sm">
-<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-label-sm">R</div>
-<div>
-<p class="font-label-md text-label-md">Familia Rodríguez</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Mateo R. (Sala Cuna)</p>
-</div>
-</div>
-</td>
-<td class="py-sm px-md text-on-surface-variant">Colegiatura Octubre</td>
-<td class="py-sm px-md font-label-md">$450.00</td>
-<td class="py-sm px-md text-on-surface-variant">05/10/2023</td>
-<td class="py-sm px-md">
-<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                    Pagado
-                                </span>
-</td>
-<td class="py-sm px-md text-right">
-<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors tooltip-trigger" onclick="showToast('Mostrando recibo de Familia Rodríguez', 'visibility')" title="Ver Recibo">
-<span class="material-symbols-outlined text-sm">visibility</span>
-</button>
-<button class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-surface-container-high rounded-md transition-colors" onclick="showToast('Descargando recibo en PDF...', 'download')" title="Descargar PDF">
-<span class="material-symbols-outlined text-sm">download</span>
-</button>
-<button class="px-2 py-1 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="generateInvoice('Familia Rodríguez', '$450.00', this)" title="Generar Factura">
-<span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
-<span class="hidden md:inline">Factura</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2: Pendiente -->
-<tr class="table-row-hover transition-colors group" data-status="pendiente" id="rowGarcia">
-<td class="py-sm px-md">
-<div class="flex items-center gap-sm">
-<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-sm">G</div>
-<div>
-<p class="font-label-md text-label-md">Familia García</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Sofía G. (Pre-K)</p>
-</div>
-</div>
-</td>
-<td class="py-sm px-md text-on-surface-variant">Colegiatura Octubre + Comedor</td>
-<td class="py-sm px-md font-label-md">$520.00</td>
-<td class="py-sm px-md text-on-surface-variant">10/10/2023</td>
-<td class="py-sm px-md" id="statusCellGarcia">
-<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-label-sm border border-tertiary/20">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                                    Pendiente
-                                </span>
-</td>
-<td class="py-sm px-md text-right" id="actionsCellGarcia">
-<div class="flex items-center justify-end gap-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="px-2 py-1 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="markPaid('Garcia')">
-<span class="material-symbols-outlined text-sm" style="font-size: 16px;">check_circle</span>
-<span class="hidden md:inline">Marcar Pagado</span>
-</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" onclick="showToast('Recordatorio de pago enviado a Familia García', 'notifications_active')" title="Enviar Recordatorio">
-<span class="material-symbols-outlined text-sm">notifications_active</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3: Atrasado -->
-<tr class="table-row-hover transition-colors group bg-error-container/10" data-status="atrasado">
-<td class="py-sm px-md">
-<div class="flex items-center gap-sm">
-<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-label-sm border border-error/20">L</div>
-<div>
-<p class="font-label-md text-label-md text-error">Familia López</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Lucas L. (Jardín)</p>
-</div>
-</div>
-</td>
-<td class="py-sm px-md text-on-surface-variant">Colegiatura Septiembre</td>
-<td class="py-sm px-md font-label-md">$450.00</td>
-<td class="py-sm px-md text-error font-semibold">05/09/2023</td>
-<td class="py-sm px-md">
-<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-error text-on-error font-label-sm text-label-sm shadow-sm animate-pulse">
-<span class="material-symbols-outlined text-sm" style="font-size: 14px;">warning</span>
-                                    Atrasado
-                                </span>
-</td>
-<td class="py-sm px-md text-right">
-<div class="flex items-center justify-end gap-xs">
-<button class="px-2 py-1 border border-error text-error hover:bg-error-container font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="showToast('Aviso de cobro enviado a Familia López', 'mail')">
-<span class="material-symbols-outlined text-sm" style="font-size: 16px;">mail</span>
-<span class="hidden md:inline">Reclamar</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 4: Pendiente -->
-<tr class="table-row-hover transition-colors group" data-status="pendiente" id="rowMartinez">
-<td class="py-sm px-md">
-<div class="flex items-center gap-sm">
-<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-sm">M</div>
-<div>
-<p class="font-label-md text-label-md">Familia Martínez</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Emma M. (Sala Cuna)</p>
-</div>
-</div>
-</td>
-<td class="py-sm px-md text-on-surface-variant">Materiales Anuales</td>
-<td class="py-sm px-md font-label-md">$150.00</td>
-<td class="py-sm px-md text-on-surface-variant">15/10/2023</td>
-<td class="py-sm px-md" id="statusCellMartinez">
-<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-label-sm border border-tertiary/20">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                                    Pendiente
-                                </span>
-</td>
-<td class="py-sm px-md text-right" id="actionsCellMartinez">
-<div class="flex items-center justify-end gap-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="px-2 py-1 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="markPaid('Martinez')">
-<span class="material-symbols-outlined text-sm" style="font-size: 16px;">check_circle</span>
-<span class="hidden md:inline">Marcar Pagado</span>
-</button>
-<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" onclick="showToast('Recordatorio de pago enviado a Familia Martínez', 'notifications_active')" title="Enviar Recordatorio">
-<span class="material-symbols-outlined text-sm">notifications_active</span>
-</button>
-</div>
-</td>
-</tr>
+<tr id="paymentsEmptyRow"><td colspan="6" class="py-lg px-md text-center text-on-surface-variant font-body-md">Cargando pagos…</td></tr>
 </tbody>
 </table>
 <!-- Pagination (Simple) -->
@@ -566,13 +439,7 @@
 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Alumno *</label>
 <select id="payStudent" onchange="onStudentChange()" class="w-full px-sm py-2.5 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md">
 <option value="">Selecciona un alumno…</option>
-<optgroup label="Alumnos de ejemplo">
-<option value="mateo">Mateo Rodríguez (Sala Cuna)</option>
-<option value="sofia">Sofía García (Pre-K)</option>
-<option value="lucas">Lucas López (Jardín)</option>
-<option value="emma">Emma Martínez (Sala Cuna)</option>
-</optgroup>
-<optgroup label="Alumnos reales" id="realStudentsOptGroup"></optgroup>
+<optgroup label="Alumnos" id="realStudentsOptGroup"></optgroup>
 </select>
 </div>
 
@@ -671,32 +538,54 @@ const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-const FAMILY_NAMES = { Garcia: 'Familia García', Martinez: 'Familia Martínez' };
-function markPaid(key){
-  const statusCell = document.getElementById('statusCell' + key);
-  const actionsCell = document.getElementById('actionsCell' + key);
-  const row = document.getElementById('row' + key);
-  const amount = row.querySelector('td:nth-child(3)').textContent.trim();
-  statusCell.innerHTML = `
-    <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
-      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-      Pagado
-    </span>`;
-  actionsCell.innerHTML = `
-    <div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
-      <button onclick="showToast('Mostrando recibo', 'visibility')" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-md transition-colors" title="Ver Recibo">
-        <span class="material-symbols-outlined text-sm">visibility</span>
-      </button>
-      <button onclick="showToast('Descargando recibo en PDF...', 'download')" class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-surface-container-high rounded-md transition-colors" title="Descargar PDF">
-        <span class="material-symbols-outlined text-sm">download</span>
-      </button>
-      <button onclick="generateInvoice('${FAMILY_NAMES[key]}', '${amount}', this)" class="px-2 py-1 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary font-label-sm rounded-md transition-colors flex items-center gap-xs" title="Generar Factura">
-        <span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
-        <span class="hidden md:inline">Factura</span>
-      </button>
-    </div>`;
-  row.dataset.status = 'pagado';
-  showToast(`Pago de ${FAMILY_NAMES[key]} marcado como recibido`, 'check_circle');
+async function loadRealInvoices(){
+  const tbody = document.getElementById('paymentsTableBody');
+  if(!sb){
+    tbody.innerHTML = '<tr><td colspan="6" class="py-lg px-md text-center text-on-surface-variant font-body-md">No se pudo conectar con la base de datos.</td></tr>';
+    return;
+  }
+  const { data, error } = await sb.from('invoices').select('id, student_name, concept, amount, method, folio, paid_at').order('paid_at', { ascending: false }).limit(50);
+  if(error || !data || data.length === 0){
+    tbody.innerHTML = '<tr><td colspan="6" class="py-lg px-md text-center text-on-surface-variant font-body-md">Aún no hay pagos registrados.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  data.forEach(inv => {
+    const initial = (inv.student_name || '?').trim().charAt(0).toUpperCase();
+    const dateLabel = inv.paid_at ? new Date(inv.paid_at).toLocaleDateString('es-MX') : '—';
+    const amountLabel = typeof inv.amount === 'number' ? `$${inv.amount.toFixed(2)}` : (inv.amount || '—');
+    const tr = document.createElement('tr');
+    tr.className = 'table-row-hover transition-colors group';
+    tr.dataset.status = 'pagado';
+    tr.innerHTML = `
+      <td class="py-sm px-md">
+        <div class="flex items-center gap-sm">
+          <div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-label-sm">${initial}</div>
+          <div>
+            <p class="font-label-md text-label-md">${inv.student_name || 'Alumno'}</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">${inv.folio ? 'Folio ' + inv.folio : ''}</p>
+          </div>
+        </div>
+      </td>
+      <td class="py-sm px-md text-on-surface-variant">${inv.concept || '—'}</td>
+      <td class="py-sm px-md font-label-md">${amountLabel}</td>
+      <td class="py-sm px-md text-on-surface-variant">${dateLabel}</td>
+      <td class="py-sm px-md">
+        <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Pagado
+        </span>
+      </td>
+      <td class="py-sm px-md text-right">
+        <div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+          <button class="px-2 py-1 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary font-label-sm rounded-md transition-colors flex items-center gap-xs" onclick="generateInvoice('${(inv.student_name || 'Alumno').replace(/'/g, "\\'")}', '${amountLabel}', this)" title="Generar Factura">
+            <span class="material-symbols-outlined text-sm" style="font-size: 16px;">receipt_long</span>
+            <span class="hidden md:inline">Factura</span>
+          </button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
   filterInvoices();
 }
 function filterInvoices(){
@@ -867,7 +756,7 @@ function renderTurnoHistory(){
 renderTurno();
 
 /* ===== Calendario / Selector de Período ===== */
-let calendarDate = new Date(2023, 9, 14); // 14 de octubre de 2023, consistente con los datos de ejemplo de la tabla
+let calendarDate = new Date();
 let calendarView = 'mes';
 
 function startOfWeek(d){
@@ -926,15 +815,9 @@ renderPeriodLabel();
 setCashCutDate();
 
 /* ===== Registrar Pago Presencial ===== */
-const STUDENTS = {
-  mateo: { name: 'Mateo Rodríguez', room: 'Sala Cuna', weeksOverdue: 0 },
-  sofia: { name: 'Sofía García', room: 'Pre-K', weeksOverdue: 1 },
-  lucas: { name: 'Lucas López', room: 'Jardín', weeksOverdue: 2 },
-  emma: { name: 'Emma Martínez', room: 'Sala Cuna', weeksOverdue: 0 },
-};
 let REAL_STUDENTS = {};
 function getStudentInfo(key){
-  return STUDENTS[key] || REAL_STUDENTS[key];
+  return REAL_STUDENTS[key];
 }
 async function loadRealStudentsForPayment(){
   if(!sb) return;
@@ -950,6 +833,7 @@ async function loadRealStudentsForPayment(){
   });
 }
 loadRealStudentsForPayment();
+loadRealInvoices();
 const WEEK_PRICE = 1000;
 const LATE_FEE = 100;
 const CONCEPTO_PRICES = { inscripcion: 1500, materiales: 150 };

@@ -146,9 +146,8 @@
 <div class="flex items-center gap-md mb-md">
 <img class="w-16 h-16 rounded-full object-cover shadow-md" data-alt="A portrait of a happy family, a mother and a young toddler boy, smiling warmly in a bright, modern nursery setting. The room is filled with soft natural light and colorful educational toys, conveying safety and joy. The photo has a premium, professional lifestyle feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn87vDwM9PFHRB8IzaXDtqA9hBEhEVQgSqp-Zzdyn_jasrxv3rm-Y74l_nl7BWeOqFOr7Zy2w5yHLQ4RCleCZx0FP3QMD_yc5CuOnkB9XDvxcfdDeEBBCMaq3J6V9T1-lUb8BH8Y-HJUhEy5W2BQp5-ZaXRYSPqteLn2YXOGBICX4Uuo-Zo_GViOmNsKv3yUBVpd-Pxv77ON0lsRg8tejCY3r4LcvyAVQJ-k9-YjW2frMGrzaNEHdr"/>
 <div>
-<h2 class="font-headline-md text-headline-md text-primary">The Miller Family</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Child: Leo Miller</p>
-<span class="inline-block mt-xs px-2 py-1 bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-full">Premium Member</span>
+<h2 class="font-headline-md text-headline-md text-primary">Mi cuenta</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Sin alumno vinculado</p>
 </div>
 </div>
 </div>
@@ -195,9 +194,9 @@
 <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-primary-fixed opacity-20 rounded-full blur-xl"></div>
 <div class="relative z-10 flex flex-col h-full justify-between">
 <div>
-<p class="font-label-md text-label-md text-primary-fixed uppercase tracking-wider mb-xs" id="balanceLabel">Saldo Pendiente</p>
-<h3 id="balanceAmount" class="font-display-lg text-display-lg font-bold">$3,500<span class="text-headline-md font-normal opacity-80">.00 MXN</span></h3>
-<p id="balanceDue" class="font-body-md text-body-md text-primary-fixed-dim mt-2">Vence en 5 días (20 Oct)</p>
+<p class="font-label-md text-label-md text-primary-fixed uppercase tracking-wider mb-xs" id="balanceLabel">Historial de pagos</p>
+<h3 id="balanceAmount" class="font-display-lg text-display-lg font-bold">Cargando…</h3>
+<p id="balanceDue" class="font-body-md text-body-md text-primary-fixed-dim mt-2"></p>
 </div>
 <div class="mt-lg" id="payBtnWrap">
 <button id="payBtn" onclick="payTuition()" class="w-full sm:w-auto bg-surface-container-lowest text-primary font-headline-md text-headline-md py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all squishy-btn flex items-center justify-center gap-sm">
@@ -214,74 +213,9 @@
                         Historial Reciente
                     </h4>
 <div class="space-y-sm mt-md" id="historyList">
-<!-- History Item 1 -->
-<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Colegiatura Septiembre · $3,500.00 · 05 Sep 2023', 'receipt_long')">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+<p class="text-center text-on-surface-variant font-body-md text-sm py-md">Cargando historial de pagos…</p>
 </div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Colegiatura Septiembre</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">05 Sep 2023</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
-<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
-</div>
-</div>
-<div class="h-px bg-surface-variant w-full"></div>
-<!-- History Item 2 -->
-<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Material Didáctico · $850.00 · 15 Ago 2023', 'receipt_long')">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
-</div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Material Didáctico</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">15 Ago 2023</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-label-md text-label-md text-on-surface">-$850.00</p>
-<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
-</div>
-</div>
-<div id="moreHistory" class="hidden space-y-sm">
-<div class="h-px bg-surface-variant w-full"></div>
-<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Colegiatura Agosto · $3,500.00 · 05 Ago 2023', 'receipt_long')">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
-</div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Colegiatura Agosto</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">05 Ago 2023</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
-<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
-</div>
-</div>
-<div class="h-px bg-surface-variant w-full"></div>
-<div class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group" onclick="showToast('Recibo: Inscripción anual · $1,200.00 · 20 Jul 2023', 'receipt_long')">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
-</div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Inscripción Anual</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">20 Jul 2023</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-label-md text-label-md text-on-surface">-$1,200.00</p>
-<p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
-</div>
-</div>
-</div>
-</div>
+<div id="moreHistory" class="hidden space-y-sm"></div>
 <button id="toggleHistoryBtn" onclick="toggleHistory()" class="w-full mt-sm text-primary font-label-md text-label-md py-2 hover:bg-primary-container/20 rounded-lg transition-colors flex items-center justify-center gap-xs">
 <span>Ver historial completo</span>
 <span id="toggleHistoryIcon" class="material-symbols-outlined text-[18px]">expand_more</span>
@@ -295,23 +229,7 @@
                         Métodos de Pago
                     </h4>
 <div class="space-y-sm mt-md" id="cardList">
-<label class="flex items-center gap-sm p-sm rounded-lg border-2 border-primary bg-primary-container/10 cursor-pointer transition-colors">
-<input type="radio" name="paycard" checked="" class="w-4 h-4 accent-[#1b6b4a]"/>
-<div class="w-10 h-7 rounded bg-secondary flex items-center justify-center text-on-secondary font-label-sm text-[10px] font-bold shrink-0">VISA</div>
-<div class="flex-1">
-<p class="font-label-md text-label-md text-on-surface">Terminación 4242</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Vence 08/27</p>
-</div>
-<span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]">Predeterminada</span>
-</label>
-<label class="flex items-center gap-sm p-sm rounded-lg border-2 border-surface-variant hover:border-primary/40 cursor-pointer transition-colors">
-<input type="radio" name="paycard" class="w-4 h-4 accent-[#1b6b4a]"/>
-<div class="w-10 h-7 rounded bg-tertiary flex items-center justify-center text-on-tertiary font-label-sm text-[10px] font-bold shrink-0">MC</div>
-<div class="flex-1">
-<p class="font-label-md text-label-md text-on-surface">Terminación 8810</p>
-<p class="font-body-sm text-body-md text-on-surface-variant text-sm">Vence 03/26</p>
-</div>
-</label>
+<p class="text-center text-on-surface-variant font-body-md text-sm py-md">Sin métodos de pago guardados. Los pagos se registran directamente en la estancia.</p>
 </div>
 <button onclick="showToast('Formulario para agregar un nuevo método de pago', 'add_card')" class="w-full mt-sm text-primary font-label-md text-label-md py-2 border border-primary/30 rounded-lg hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-xs">
 <span class="material-symbols-outlined text-[18px]">add</span>
@@ -374,28 +292,7 @@
 </div>
 </div>
 <div class="space-y-sm flex-grow">
-<!-- Event 1 -->
-<div class="flex items-start gap-sm p-sm rounded-lg border border-transparent hover:border-surface-variant hover:bg-surface-container-low transition-all">
-<div class="flex flex-col items-center justify-center w-12 h-12 bg-tertiary-container text-on-tertiary-container rounded-lg shrink-0">
-<span class="font-label-sm text-label-sm font-bold">OCT</span>
-<span class="font-headline-md text-headline-md leading-none mt-1">15</span>
-</div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Viernes de Pijamas</p>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Venir en pijama, traer peluche favorito. Habrá cine en el salón.</p>
-</div>
-</div>
-<!-- Event 2 -->
-<div class="flex items-start gap-sm p-sm rounded-lg border border-transparent hover:border-surface-variant hover:bg-surface-container-low transition-all">
-<div class="flex flex-col items-center justify-center w-12 h-12 bg-primary-container text-on-primary-container rounded-lg shrink-0">
-<span class="font-label-sm text-label-sm font-bold">OCT</span>
-<span class="font-headline-md text-headline-md leading-none mt-1">18</span>
-</div>
-<div>
-<p class="font-label-md text-label-md text-on-surface">Cumpleaños de Sofía</p>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Celebración pequeña a la hora del almuerzo. (Sin nueces).</p>
-</div>
-</div>
+<p class="text-center text-on-surface-variant font-body-md text-sm py-md">Aún no hay eventos programados.</p>
 </div>
 <button onclick="showToast('Eventos de la guardería sincronizados con tu calendario', 'sync')" class="mt-md w-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md py-3 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center justify-center gap-sm squishy-btn">
 <span class="material-symbols-outlined" data-icon="sync">sync</span>
@@ -435,10 +332,23 @@ function paymentHistoryRow(inv){
     </div>`;
 }
 
+function showNoChildBanner(title, detail){
+  document.getElementById('financePageContent').classList.add('hidden');
+  document.getElementById('noChildLinkedBanner').querySelector('p.font-label-md').textContent = title;
+  document.getElementById('noChildLinkedBanner').querySelector('p.font-body-md').textContent = detail;
+  document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+}
+
 async function loadRealPaymentHistory(){
-  if(!sb) return; // sin conexión: se queda con el contenido de ejemplo
+  if(!sb){
+    showNoChildBanner('No se pudo conectar con el servidor', 'Intenta recargar la página en unos momentos.');
+    return;
+  }
   const { data: { session } } = await sb.auth.getSession();
-  if(!session) return; // acceso de demostración: se queda con el contenido de ejemplo
+  if(!session){
+    showNoChildBanner('Inicia sesión para ver tu información de pagos', 'Necesitas iniciar sesión con tu cuenta de Gael.');
+    return;
+  }
 
   const { data: links, error } = await sb
     .from('parent_student_links')
@@ -446,8 +356,7 @@ async function loadRealPaymentHistory(){
     .eq('students.status', 'activo');
 
   if(error || !links || links.length === 0){
-    document.getElementById('financePageContent').classList.add('hidden');
-    document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+    showNoChildBanner('Tu cuenta todavía no está vinculada a ningún alumno', 'Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su información de pagos aquí.');
     return;
   }
 
