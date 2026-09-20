@@ -294,7 +294,7 @@
 <span class="material-symbols-outlined text-secondary">assignment_late</span>
                                 Alertas de Documentos
                             </h3>
-<div class="space-y-sm">
+<div class="space-y-sm" id="docAlertsList">
 <p class="text-center text-on-surface-variant font-body-md py-md">Sin alertas de documentos por ahora.</p>
 </div>
 </div>
@@ -474,10 +474,96 @@ Registrar Nueva Maestra
 </div>
 </div>
 <script>
-const STAFF_DATA = {
-  // Se llena al registrar nuevas educadoras reales desde este panel.
-};
+const STAFF_DATA = {}; // caché en memoria de lo cargado desde la tabla real `staff` de Supabase
 let currentStaffKey = null;
+
+/* ===== Carga real de personal desde Supabase (tabla `staff`, ligada a `profiles`) ===== */
+function staffRowToModel(row){
+  return {
+    id: row.id,
+    name: (row.profiles && row.profiles.full_name) || 'Sin nombre',
+    email: (row.profiles && row.profiles.email) || '',
+    phone: (row.profiles && row.profiles.phone) || '',
+    room: row.room,
+    start: (row.shift_start || '08:00').slice(0, 5),
+    end: (row.shift_end || '16:00').slice(0, 5),
+    contractType: row.contract_type,
+    hourlyRate: row.hourly_rate,
+    docs: row.docs || [],
+  };
+}
+
+function renderDocAlerts(){
+  const container = document.getElementById('docAlertsList');
+  if(!container) return;
+  const pending = [];
+  Object.values(STAFF_DATA).forEach(s => {
+    (s.docs || []).forEach(d => {
+      if(d.status === 'pending' || d.status === 'expired') pending.push({ staffName: s.name, ...d });
+    });
+  });
+  if(pending.length === 0){
+    container.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-md">Sin alertas de documentos por ahora.</p>';
+    return;
+  }
+  container.innerHTML = pending.map(p => `
+    <div class="flex items-center justify-between gap-sm bg-surface-container-low rounded-lg p-sm">
+      <div class="min-w-0">
+        <p class="font-label-md text-label-md text-on-surface truncate">${p.staffName}</p>
+        <p class="font-body-md text-[12px] text-on-surface-variant truncate">${p.name}</p>
+      </div>
+      <span class="shrink-0 px-2 py-0.5 rounded-full font-label-sm text-[10px] ${p.status === 'expired' ? 'bg-error-container text-on-error-container' : 'bg-tertiary-container text-on-tertiary-container'}">${p.status === 'expired' ? 'Vencido' : 'Pendiente'}</span>
+    </div>`).join('');
+}
+
+function buildStaffCard(s){
+  const docsOk = s.docs.length > 0 && s.docs.every(d => d.status === 'ok');
+  const card = document.createElement('div');
+  card.onclick = () => toggleAttendance(card, s.name);
+  card.dataset.status = 'presente';
+  card.dataset.staff = s.id;
+  card.className = 'staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group';
+  card.innerHTML = `
+    <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary-fixed-dim text-on-secondary-container font-headline-md">${staffInitials(s.name)}</div>
+    <div class="flex-grow min-w-0">
+      <div class="flex justify-between items-start">
+        <h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">${s.name}</h4>
+        <button onclick="event.stopPropagation(); openStaffDetail('${s.id}')" class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors"><span class="material-symbols-outlined text-[18px]">info</span></button>
+      </div>
+      <div class="flex items-center gap-xs mt-1">
+        <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Presente</span>
+      </div>
+      <p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">${s.room}</p>
+      <div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
+        <span class="staff-schedule flex items-center gap-1">${formatSchedule(s.start, s.end)}</span>
+        <span class="flex items-center gap-1 ${docsOk ? 'text-primary' : 'text-error'}"><span class="material-symbols-outlined text-[14px]">${docsOk ? 'verified' : 'warning'}</span>${docsOk ? 'Docs OK' : 'Docs pendientes'}</span>
+      </div>
+    </div>`;
+  return card;
+}
+
+async function loadStaffList(){
+  if(!sb) return;
+  const { data, error } = await sb.from('staff').select('*, profiles(full_name, email, phone)').eq('status', 'activo').order('created_at', { ascending: false });
+  const grid = document.getElementById('staffGrid');
+  const emptyEl = document.getElementById('staffEmptyState');
+  if(error){
+    showToast('No se pudo cargar el personal: ' + error.message, 'error');
+    return;
+  }
+  if(!data || data.length === 0){
+    if(emptyEl) emptyEl.classList.remove('hidden');
+    renderDocAlerts();
+    return;
+  }
+  if(emptyEl) emptyEl.classList.add('hidden');
+  data.forEach(row => {
+    const s = staffRowToModel(row);
+    STAFF_DATA[s.id] = s;
+    grid.appendChild(buildStaffCard(s));
+  });
+  renderDocAlerts();
+}
 
 function toggleHourlyRate(){
   const type = document.getElementById('nsContractType').value;
@@ -552,9 +638,16 @@ function toggleEditSchedule(){
   edit.classList.toggle('hidden', !editing);
   btn.textContent = editing ? 'Cancelar' : 'Editar';
 }
-function saveSchedule(){
+async function saveSchedule(){
   const start = document.getElementById('stStart').value;
   const end = document.getElementById('stEnd').value;
+
+  const { error } = await sb.from('staff').update({ shift_start: start, shift_end: end }).eq('id', currentStaffKey);
+  if(error){
+    showToast('No se pudo guardar el horario: ' + error.message, 'error');
+    return;
+  }
+
   STAFF_DATA[currentStaffKey].start = start;
   STAFF_DATA[currentStaffKey].end = end;
   document.getElementById('stScheduleView').innerHTML = formatSchedule(start, end);
@@ -648,7 +741,7 @@ async function submitNewStaff(e){
   // Se usa un cliente de Supabase aislado (sin persistir sesión) para no reemplazar
   // la sesión del admin que está haciendo el alta con la de la nueva cuenta creada.
   const tempPassword = generateTempPassword();
-  const { error: signUpError } = await sbSecondary.auth.signUp({
+  const { data: signUpData, error: signUpError } = await sbSecondary.auth.signUp({
     email, password: tempPassword,
     options: { data: { full_name: name, role: 'staff', phone: phone || null } },
   });
@@ -665,6 +758,13 @@ async function submitNewStaff(e){
     return false;
   }
 
+  const newStaffId = signUpData && signUpData.user ? signUpData.user.id : null;
+  if(!newStaffId){
+    nsError.textContent = 'La cuenta se creó pero no se pudo obtener su ID. Recarga la página e inténtalo de nuevo.';
+    nsError.classList.remove('hidden');
+    return false;
+  }
+
   const hourlyRate = contractType === 'Por horas' ? parseFloat(hourlyRateRaw) : null;
   const docs = [];
   if(document.getElementById('nsDocId').checked) docs.push({ name: 'Identificación oficial', status: 'ok' });
@@ -674,43 +774,39 @@ async function submitNewStaff(e){
   const allDocs = ['Identificación oficial','Certificado de primeros auxilios','Verificación de antecedentes','CV / referencias laborales'];
   allDocs.forEach(d => { if(!docs.find(x => x.name === d)) docs.push({ name: d, status: 'pending' }); });
 
-  const key = normalizeStaffText(name);
-  STAFF_DATA[key] = { name, room, start, end, phone, email, contractType, hourlyRate, docs };
+  // La cuenta de acceso (auth.users + profiles) ya se creó arriba con signUp.
+  // Si este insert falla, la cuenta queda creada pero sin ficha de personal -- se lo avisamos al admin.
+  const { error: staffInsertError } = await sb.from('staff').insert({
+    id: newStaffId,
+    room,
+    shift_start: start,
+    shift_end: end,
+    contract_type: contractType,
+    hourly_rate: hourlyRate,
+    docs,
+    created_by: session.user.id,
+  });
 
-  const docsOk = docs.every(d => d.status === 'ok');
-  const card = document.createElement('div');
-  card.onclick = () => toggleAttendance(card, name);
-  card.dataset.status = 'presente';
-  card.dataset.staff = key;
-  card.className = 'staff-card bg-surface p-sm rounded-lg border border-surface-variant hover:shadow-[0_8px_20px_rgba(26,43,60,0.08)] transition-all flex items-start gap-sm cursor-pointer group';
-  card.innerHTML = `
-    <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center border-2 border-secondary-fixed-dim text-on-secondary-container font-headline-md">${staffInitials(name)}</div>
-    <div class="flex-grow min-w-0">
-      <div class="flex justify-between items-start">
-        <h4 class="font-label-md text-[16px] text-on-surface truncate group-hover:text-primary transition-colors">${name}</h4>
-        <button onclick="event.stopPropagation(); openStaffDetail('${key}')" class="text-on-surface-variant hover:text-primary shrink-0 p-0.5 rounded-full hover:bg-primary-container/30 transition-colors"><span class="material-symbols-outlined text-[18px]">info</span></button>
-      </div>
-      <div class="flex items-center gap-xs mt-1">
-        <span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Presente</span>
-      </div>
-      <p class="font-body-md text-[13px] text-on-surface-variant mt-0.5">${room}</p>
-      <div class="flex items-center flex-wrap gap-x-base gap-y-1 mt-2 text-on-surface-variant font-label-sm">
-        <span class="staff-schedule flex items-center gap-1">${formatSchedule(start, end)}</span>
-        <span class="flex items-center gap-1 ${docsOk ? 'text-primary' : 'text-error'}"><span class="material-symbols-outlined text-[14px]">${docsOk ? 'verified' : 'warning'}</span>${docsOk ? 'Docs OK' : 'Docs pendientes'}</span>
-      </div>
-    </div>`;
+  if(staffInsertError){
+    nsError.textContent = 'Se creó la cuenta de acceso, pero no se pudo guardar la ficha de personal: ' + staffInsertError.message + '. La cuenta ya existe, contacta soporte para completar el registro.';
+    nsError.classList.remove('hidden');
+    return false;
+  }
+
+  const key = newStaffId;
+  STAFF_DATA[key] = { id: key, name, room, start, end, phone, email, contractType, hourlyRate, docs };
+
+  const card = buildStaffCard(STAFF_DATA[key]);
   const staffGrid = document.getElementById('staffGrid');
   const emptyStateEl = document.getElementById('staffEmptyState');
   if(emptyStateEl) emptyStateEl.classList.add('hidden');
   staffGrid.prepend(card);
+  renderDocAlerts();
 
   closeNewStaffModal();
-  showToast(`${name} registrada exitosamente — ya puede aparecer en "Asignar Maestro"`, 'check_circle');
+  showToast(name + ' registrada exitosamente — ya puede aparecer en "Asignar Maestro"', 'check_circle');
   openStaffCredentialsModal(name, email, tempPassword);
   return false;
-}
-function normalizeStaffText(str){
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g,'-');
 }
 </script>
 <script>
@@ -793,5 +889,7 @@ async function handleLogout(event){
   await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
+
+loadStaffList();
 </script>
 </body></html>

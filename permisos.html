@@ -269,6 +269,9 @@ const MODULES = [
 ];
 
 const STAFF_PERMISSIONS = {};
+// Nota: `sb` (cliente de Supabase) se crea en el script al final del archivo.
+// Las funciones de abajo lo usan dentro de su cuerpo, que solo se ejecuta
+// despues de que todos los <script> de la pagina ya corrieron.
 
 const TEMPLATES = {
   admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
@@ -321,26 +324,85 @@ function renderPermissions(){
   `).join('');
 }
 
-function togglePermission(staffKey, moduleKey, value){
+async function togglePermission(staffKey, moduleKey, value){
   STAFF_PERMISSIONS[staffKey].perms[moduleKey] = value;
   document.getElementById('permCount-' + staffKey).textContent = countActive(STAFF_PERMISSIONS[staffKey].perms) + '/' + MODULES.length + ' módulos';
   const moduleLabel = MODULES.find(m => m.key === moduleKey).label;
+
+  const { error } = await sb.from('staff').update({ permissions: STAFF_PERMISSIONS[staffKey].perms }).eq('id', staffKey);
+  if(error){
+    showToast('No se pudo guardar: ' + error.message, 'error');
+    return;
+  }
   showToast(`${value ? 'Acceso otorgado' : 'Acceso quitado'}: ${moduleLabel} para ${STAFF_PERMISSIONS[staffKey].name}`, value ? 'check_circle' : 'block');
 }
 
-function applyTemplate(staffKey, templateKey){
+async function applyTemplate(staffKey, templateKey){
   if(!templateKey) return;
   STAFF_PERMISSIONS[staffKey].perms = { ...TEMPLATES[templateKey] };
   renderPermissions();
   const templateNames = { admin: 'Administrador', maestra: 'Maestra', ninguno: 'Ninguno' };
+
+  const { error } = await sb.from('staff').update({ permissions: STAFF_PERMISSIONS[staffKey].perms }).eq('id', staffKey);
+  if(error){
+    showToast('No se pudo guardar la plantilla: ' + error.message, 'error');
+    return;
+  }
   showToast(`Plantilla "${templateNames[templateKey]}" aplicada a ${STAFF_PERMISSIONS[staffKey].name}`, 'auto_fix_high');
 }
 
-function saveAllPermissions(){
+async function saveAllPermissions(){
+  const entries = Object.entries(STAFF_PERMISSIONS);
+  if(entries.length === 0){
+    showToast('No hay personal registrado para guardar', 'info');
+    return;
+  }
+  const results = await Promise.all(entries.map(([id, staff]) =>
+    sb.from('staff').update({ permissions: staff.perms }).eq('id', id)
+  ));
+  const failed = results.filter(r => r.error);
+  if(failed.length > 0){
+    showToast(`No se pudieron guardar ${failed.length} de ${entries.length} registro(s)`, 'error');
+    return;
+  }
   showToast('Permisos guardados para todo el equipo', 'save');
 }
 
-renderPermissions();
+function staffInitialsForPerms(name){
+  return (name || '').trim().split(/\s+/).map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+}
+
+function normalizeStaffPerms(raw){
+  const perms = {};
+  MODULES.forEach(m => { perms[m.key] = !!(raw && raw[m.key]); });
+  return perms;
+}
+
+async function loadPermissions(){
+  if(!sb) return;
+  const { data, error } = await sb.from('staff')
+    .select('id, permissions, profiles(full_name, role)')
+    .eq('status', 'activo')
+    .order('created_at', { ascending: false });
+
+  if(error){
+    showToast('No se pudieron cargar los permisos: ' + error.message, 'error');
+    renderPermissions();
+    return;
+  }
+
+  (data || []).forEach(row => {
+    const fullName = (row.profiles && row.profiles.full_name) || 'Sin nombre';
+    const roleLabel = (row.profiles && row.profiles.role === 'admin') ? 'Administrador' : 'Maestra / Staff';
+    STAFF_PERMISSIONS[row.id] = {
+      name: fullName,
+      role: roleLabel,
+      initials: staffInitialsForPerms(fullName),
+      perms: normalizeStaffPerms(row.permissions),
+    };
+  });
+  renderPermissions();
+}
 </script>
 
 <!-- Shared Toast Component -->
@@ -396,5 +458,7 @@ async function handleLogout(event){
   await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
+
+loadPermissions();
 </script>
 </body></html>
