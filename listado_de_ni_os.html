@@ -168,6 +168,17 @@
 <input id="childSearch" oninput="filterChildren()" class="w-full h-full bg-transparent border-none focus:ring-0 text-body-md font-body-md px-3 text-on-surface placeholder:text-outline-variant outline-none" placeholder="Buscar por nombre o salón..." type="text"/>
 </div>
 </div>
+<!-- Toggle Vista: Tarjetas / Directorio -->
+<div class="px-margin-mobile mb-3 flex items-center gap-2">
+<div class="inline-flex bg-surface-container rounded-full p-1 gap-1">
+<button id="viewToggleCards" onclick="setListView('cards')" class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-colors bg-primary text-on-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>Tarjetas
+</button>
+<button id="viewToggleTable" onclick="setListView('table')" class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-colors text-on-surface-variant hover:bg-surface-container-high flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">table_rows</span>Directorio
+</button>
+</div>
+</div>
 <!-- Filters (Scrollable Row) -->
 <div class="px-margin-mobile flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-base">
 <button onclick="filterRoom(this,'todos')" data-room-filter="todos" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md transition-transform active:scale-95 shadow-sm">Todos</button>
@@ -194,6 +205,29 @@
 <div class="px-margin-mobile flex flex-col gap-sm" id="childList">
 <p id="noResults" data-default-text="No se encontraron alumnos con ese criterio." class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
 <p id="emptyState" class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay alumnos dados de alta. Usa el botón "+" para registrar al primero.</p>
+</div>
+<!-- Directorio de Alumnos (vista de tabla con datos de padres e historial de ingreso) -->
+<div id="directoryView" class="hidden px-margin-mobile mb-base">
+<div class="overflow-x-auto rounded-xl border border-outline-variant/40 shadow-[0_2px_8px_0_rgba(26,43,60,0.04)]">
+<table class="min-w-full text-left text-sm bg-surface-container-lowest">
+<thead class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<tr>
+<th class="px-3 py-2.5 whitespace-nowrap">Alumno</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Salón</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Fecha nac.</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Tutor</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Teléfono</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Contacto de emergencia</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Personas autorizadas</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Fecha de ingreso</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Estatus</th>
+<th class="px-3 py-2.5 whitespace-nowrap">Acciones</th>
+</tr>
+</thead>
+<tbody id="directoryTableBody" class="divide-y divide-outline-variant/30 font-body-md text-on-surface"></tbody>
+</table>
+</div>
+<p id="directoryEmpty" class="hidden text-center text-on-surface-variant font-body-md py-lg">Aún no hay alumnos dados de alta.</p>
 </div>
 </main>
 
@@ -1130,6 +1164,74 @@ const ATTENDANCE_LABELS = {
 };
 let ATTENDANCE_TODAY = {}; // { studentKey: 'presente' | 'ausente' | 'justificado' }
 let ALL_STUDENT_KEYS = []; // se llena con alumnos reales en loadRealStudents()
+let REAL_STUDENTS = []; // datos completos de alumnos activos, para el Directorio (vista de tabla)
+
+/* ===== Directorio de Alumnos (vista de tabla: datos de padres, contacto, fecha de ingreso) ===== */
+function setListView(view){
+  const cardsBtn = document.getElementById('viewToggleCards');
+  const tableBtn = document.getElementById('viewToggleTable');
+  const cardsList = document.getElementById('childList');
+  const tableView = document.getElementById('directoryView');
+  const isTable = view === 'table';
+
+  cardsList.classList.toggle('hidden', isTable);
+  tableView.classList.toggle('hidden', !isTable);
+
+  cardsBtn.classList.toggle('bg-primary', !isTable);
+  cardsBtn.classList.toggle('text-on-primary', !isTable);
+  cardsBtn.classList.toggle('text-on-surface-variant', isTable);
+  tableBtn.classList.toggle('bg-primary', isTable);
+  tableBtn.classList.toggle('text-on-primary', isTable);
+  tableBtn.classList.toggle('text-on-surface-variant', !isTable);
+
+  if(isTable) renderDirectoryTable();
+}
+
+function formatFecha(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function directoryRowHTML(student){
+  const esc = s => (s === null || s === undefined || s === '') ? '—' : String(s).replace(/</g, '&lt;');
+  const authorized = Array.isArray(student.authorized_names) && student.authorized_names.length
+    ? student.authorized_names.join(', ')
+    : '—';
+  return `
+    <tr data-directory-row="${student.id}">
+    <td class="px-3 py-2.5 whitespace-nowrap font-label-md">${esc(student.full_name)}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">${esc(student.room)}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">${formatFecha(student.birth_date)}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">${esc(student.parent_name)}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">${esc(student.parent_phone)}</td>
+    <td class="px-3 py-2.5">${esc(student.emergency_contact)}</td>
+    <td class="px-3 py-2.5">${authorized}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">${formatFecha(student.created_at)}</td>
+    <td class="px-3 py-2.5 whitespace-nowrap">
+      <span class="px-2.5 py-1 rounded-full font-label-sm text-[11px] ${student.status === 'inactivo' ? 'bg-error-container text-on-error-container' : 'bg-primary-container text-on-primary-container'}">${student.status === 'inactivo' ? 'Inactivo' : 'Activo'}</span>
+    </td>
+    <td class="px-3 py-2.5 whitespace-nowrap">
+      <button onclick="openDeactivateModal('${student.id}', '${String(student.full_name).replace(/'/g,"\\'")}')" class="flex items-center gap-1 px-2 py-1 rounded-full bg-error-container/40 hover:bg-error-container text-on-error-container font-label-sm text-[10px] transition-colors" title="Dar de baja">
+      <span class="material-symbols-outlined text-[14px]">person_remove</span> Dar de Baja
+      </button>
+    </td>
+    </tr>`;
+}
+
+function renderDirectoryTable(){
+  const tbody = document.getElementById('directoryTableBody');
+  const emptyEl = document.getElementById('directoryEmpty');
+  if(!tbody) return;
+  if(REAL_STUDENTS.length === 0){
+    tbody.innerHTML = '';
+    if(emptyEl) emptyEl.classList.remove('hidden');
+    return;
+  }
+  if(emptyEl) emptyEl.classList.add('hidden');
+  tbody.innerHTML = REAL_STUDENTS.map(directoryRowHTML).join('');
+}
 
 function todayISO(){
   return new Date().toISOString().slice(0, 10);
@@ -1298,6 +1400,13 @@ async function confirmDeactivate(){
   delete STUDENT_QUICK[deactivateTargetId];
   delete ATTENDANCE_TODAY[deactivateTargetId];
   ALL_STUDENT_KEYS = ALL_STUDENT_KEYS.filter(k => k !== deactivateTargetId);
+  REAL_STUDENTS = REAL_STUDENTS.filter(s => s.id !== deactivateTargetId);
+  const directoryRow = document.querySelector(`tr[data-directory-row="${deactivateTargetId}"]`);
+  if(directoryRow) directoryRow.remove();
+  if(REAL_STUDENTS.length === 0){
+    const emptyEl = document.getElementById('directoryEmpty');
+    if(emptyEl) emptyEl.classList.remove('hidden');
+  }
   renderAttendanceSummary();
 
   closeDeactivateModal();
@@ -1317,6 +1426,7 @@ async function loadRealStudents(){
   data.forEach(student => {
     if(document.querySelector(`.child-card[data-child-id="${student.id}"]`)) return; // ya cargado
     container.insertBefore(document.createRange().createContextualFragment(realStudentCardHTML(student)), noResultsEl);
+    REAL_STUDENTS.push(student);
 
     // Registrar en el modelo de acción rápida con valores por defecto
     const isEstancia = /estancia/i.test(student.room);
