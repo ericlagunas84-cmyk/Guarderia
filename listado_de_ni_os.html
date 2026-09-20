@@ -337,10 +337,11 @@
 <div class="max-w-[600px] mx-auto bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-xl p-3">
 <div class="flex items-center justify-between mb-2">
 <span class="font-label-md text-label-md" id="selectionCount">0 seleccionados</span>
-<button onclick="toggleSelectionMode()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/15 transition-colors shrink-0" aria-label="Cancelar selección">
-<span class="material-symbols-outlined text-[20px]">close</span>
+<button onclick="toggleSelectionMode()" class="flex items-center gap-1 h-8 px-3 rounded-full bg-white/15 hover:bg-white/25 transition-colors shrink-0 font-label-sm text-label-sm" aria-label="Terminar selección">
+<span class="material-symbols-outlined text-[18px]">check</span> Listo
 </button>
 </div>
+<p class="font-label-sm text-label-sm opacity-75 mb-2">Puedes tocar varias acciones — se aplican todas a los seleccionados.</p>
 <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
 <button onclick="applyBulkAction('siesta')" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
 <span class="material-symbols-outlined text-[18px]">bedtime</span> Siesta
@@ -667,38 +668,66 @@ function updateBulkBar(){
     count === 0 ? 'Selecciona alumnos…' : count + (count === 1 ? ' seleccionado' : ' seleccionados');
 }
 
-function applyBulkAction(kind){
+async function applyBulkAction(kind){
   if(selectedChildren.size === 0){
     showToast('Selecciona al menos un alumno', 'info');
     return;
   }
   const LABELS = { siesta: 'Siesta', comida: 'Comida', panal: 'Pañal' };
-  const ICONS = { siesta: 'bedtime', comida: 'restaurant' };
+  const ICONS = { siesta: 'bedtime', comida: 'restaurant', panal: null };
+  const EMOJI = { siesta: '😴', comida: '🍽️', panal: '🧷' };
+  const TYPES = { siesta: 'siesta_inicio', comida: 'comida', panal: 'panal' };
+  const TEXTS = { siesta: 'Inició la siesta (acción grupal)', comida: 'Comida registrada (acción grupal)', panal: 'Higiene registrada (acción grupal)' };
   const label = LABELS[kind];
-  const total = selectedChildren.size;
-  selectedChildren.forEach(id => {
+  const ids = Array.from(selectedChildren);
+
+  let session = null;
+  if(sb){
+    const { data } = await sb.auth.getSession();
+    session = data.session;
+  }
+
+  let applied = 0;
+  for(const id of ids){
     const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
-    if(!card) return;
+    if(!card) continue;
     const statusCol = card.querySelector('.flex.flex-col.items-end');
+    let badge = statusCol ? statusCol.querySelector('.batch-badge-' + kind) : null;
+    if(badge) continue; // ya se aplicó esta acción a este alumno hoy, evita duplicar
+    applied++;
     if(statusCol){
-      let badge = statusCol.querySelector('.batch-badge-' + kind);
-      if(!badge){
-        badge = document.createElement('span');
-        badge.className = 'batch-badge-' + kind + ' px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px] flex items-center gap-1 mt-1';
-        const iconHtml = kind === 'panal' ? '🧷' : `<span class="material-symbols-outlined text-[12px]">${ICONS[kind]}</span>`;
-        badge.innerHTML = `${iconHtml} ${label} ✓`;
-        statusCol.appendChild(badge);
-      }
+      badge = document.createElement('span');
+      badge.className = 'batch-badge-' + kind + ' px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-[10px] flex items-center gap-1 mt-1';
+      const iconHtml = kind === 'panal' ? '🧷' : `<span class="material-symbols-outlined text-[12px]">${ICONS[kind]}</span>`;
+      badge.innerHTML = `${iconHtml} ${label} ✓`;
+      statusCol.appendChild(badge);
     }
-    if(kind === 'panal' && STUDENT_QUICK[id]){
-      STUDENT_QUICK[id].diaperTime = Date.now();
-      STUDENT_QUICK[id].diaperType = 'Registrado (grupal)';
-      STUDENT_QUICK[id].history.unshift({ icon: '🧷', text: 'Higiene registrada (acción grupal)', time: new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) });
+    if(STUDENT_QUICK[id]){
+      STUDENT_QUICK[id].history.unshift({ icon: EMOJI[kind], text: TEXTS[kind], time: new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) });
+      if(kind === 'panal'){
+        STUDENT_QUICK[id].diaperTime = Date.now();
+        STUDENT_QUICK[id].diaperType = 'Registrado (grupal)';
+      }
+      if(kind === 'siesta' && !STUDENT_QUICK[id].napStart){
+        STUDENT_QUICK[id].napStart = Date.now();
+      }
       renderCardExtraBadges(id);
     }
-  });
-  showToast(`${label} registrada para ${total} alumno(s)`, 'check_circle');
-  toggleSelectionMode();
+    if(sb && session){
+      const name = card.querySelector('h3').textContent.trim();
+      const { error } = await sb.from('daily_logs').insert({
+        student_key: id, student_name: name, type: TYPES[kind], icon: EMOJI[kind], text: TEXTS[kind], created_by: session.user.id,
+      });
+      if(error) console.error('No se pudo guardar acción grupal en la bitácora:', error.message);
+    }
+  }
+
+  if(applied === 0){
+    showToast(`${label} ya estaba registrada para los seleccionados`, 'info');
+  } else {
+    showToast(`${label} registrada para ${applied} alumno(s)`, 'check_circle');
+  }
+  // La selección permanece activa para poder aplicar otras acciones (p. ej. Comida y luego Siesta)
 }
 
 /* ===== Comentario Grupal ===== */
@@ -717,22 +746,38 @@ function closeGroupCommentModal(){
 function setGroupComment(text){
   document.getElementById('groupCommentText').value = text;
 }
-function sendGroupComment(){
+async function sendGroupComment(){
   const text = document.getElementById('groupCommentText').value.trim();
   if(!text){
     showToast('Escribe o elige un comentario antes de enviar', 'info');
     return;
   }
-  const total = selectedChildren.size;
+  const ids = Array.from(selectedChildren);
+  const total = ids.length;
   const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
-  selectedChildren.forEach(id => {
+
+  let session = null;
+  if(sb){
+    const { data } = await sb.auth.getSession();
+    session = data.session;
+  }
+
+  for(const id of ids){
     if(STUDENT_QUICK[id]){
       STUDENT_QUICK[id].history.unshift({ icon: '💬', text, time });
     }
-  });
+    if(sb && session){
+      const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
+      const name = card ? card.querySelector('h3').textContent.trim() : id;
+      const { error } = await sb.from('daily_logs').insert({
+        student_key: id, student_name: name, type: 'comentario', icon: '💬', text, created_by: session.user.id,
+      });
+      if(error) console.error('No se pudo guardar comentario grupal en la bitácora:', error.message);
+    }
+  }
   closeGroupCommentModal();
   showToast(`Comentario enviado a ${total} alumno(s)`, 'check_circle');
-  toggleSelectionMode();
+  // La selección permanece activa para poder aplicar otras acciones
 }
 
 /* ===== Modo de Emergencia ===== */
