@@ -358,7 +358,29 @@
 <button onclick="openGroupCommentModal()" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
 <span class="material-symbols-outlined text-[18px]">chat</span> Comentario Grupal
 </button>
+<button onclick="openAssignTeacherModal()" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 rounded-full px-3 py-2 font-label-sm text-label-sm transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">school</span> Asignar Maestro
+</button>
 </div>
+</div>
+</div>
+
+<!-- Modal: Asignar Maestro (grupal) -->
+<div id="assignTeacherModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[210] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-md p-lg">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span> Asignar Maestro
+</h3>
+<button onclick="closeAssignTeacherModal()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm" id="assignTeacherTarget"></p>
+<select id="bulkTeacherSelect" class="w-full px-3 py-2 rounded-lg bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md mb-sm">
+<option value="">Sin asignar</option>
+</select>
+<button onclick="applyBulkTeacherAssignment()" class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">Asignar a los seleccionados</button>
 </div>
 </div>
 
@@ -920,11 +942,22 @@ async function loadTeachersAndSession(){
 }
 
 function renderTeacherOptions(){
-  const sel = document.getElementById('qpTeacherSelect');
-  if(!sel) return;
   const esc = s => String(s).replace(/</g, '&lt;');
-  sel.innerHTML = '<option value="">Sin asignar</option>' +
+  const optionsHtml = '<option value="">Sin asignar</option>' +
     TEACHERS_LIST.map(t => `<option value="${t.id}">${esc(t.full_name || 'Sin nombre')}</option>`).join('');
+  const sel = document.getElementById('qpTeacherSelect');
+  if(sel) sel.innerHTML = optionsHtml;
+  const bulkSel = document.getElementById('bulkTeacherSelect');
+  if(bulkSel) bulkSel.innerHTML = optionsHtml;
+}
+
+const TEACHER_META_SEP = ' · 👩‍🏫 ';
+function updateCardTeacherMeta(card, teacherId){
+  const metaP = card && card.querySelector('.ml-4 p');
+  if(!metaP) return;
+  const base = metaP.textContent.split(TEACHER_META_SEP)[0];
+  const teacherName = teacherId ? (TEACHERS_MAP[teacherId] || 'Maestro') : null;
+  metaP.textContent = base + (teacherName ? TEACHER_META_SEP + teacherName : '');
 }
 
 async function assignTeacher(teacherId){
@@ -948,9 +981,75 @@ async function assignTeacher(teacherId){
     return;
   }
 
-  if(card) card.dataset.teacherId = teacherId || '';
+  if(card){
+    card.dataset.teacherId = teacherId || '';
+    updateCardTeacherMeta(card, teacherId);
+  }
   const teacherName = teacherId ? (TEACHERS_MAP[teacherId] || 'Maestro') : null;
   showToast(teacherName ? `Alumno asignado a ${teacherName}` : 'Alumno sin maestro asignado', 'school');
+}
+
+/* ===== Asignar Maestro a varios alumnos a la vez (selección múltiple) ===== */
+function openAssignTeacherModal(){
+  if(selectedChildren.size === 0){
+    showToast('Selecciona al menos un alumno', 'info');
+    return;
+  }
+  document.getElementById('assignTeacherTarget').textContent =
+    `Se asignará a ${selectedChildren.size} alumno(s) seleccionado(s).`;
+  renderTeacherOptions();
+  const sel = document.getElementById('bulkTeacherSelect');
+  if(sel) sel.value = '';
+  document.getElementById('assignTeacherModal').classList.remove('hidden');
+}
+function closeAssignTeacherModal(){
+  document.getElementById('assignTeacherModal').classList.add('hidden');
+}
+
+async function applyBulkTeacherAssignment(){
+  const teacherId = document.getElementById('bulkTeacherSelect').value;
+  const ids = Array.from(selectedChildren);
+  if(ids.length === 0){
+    showToast('Selecciona al menos un alumno', 'info');
+    return;
+  }
+  if(!sb){
+    showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para asignar un maestro', 'error');
+    return;
+  }
+
+  let applied = 0;
+  for(const id of ids){
+    const { error } = await sb.from('students').update({ assigned_teacher: teacherId || null }).eq('id', id);
+    if(error){
+      console.error('No se pudo asignar maestro a', id, error.message);
+      continue;
+    }
+    applied++;
+    const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
+    if(card){
+      card.dataset.teacherId = teacherId || '';
+      updateCardTeacherMeta(card, teacherId);
+    }
+    if(currentQuickChild === id){
+      const qpSel = document.getElementById('qpTeacherSelect');
+      if(qpSel) qpSel.value = teacherId || '';
+    }
+  }
+
+  closeAssignTeacherModal();
+  const teacherName = teacherId ? (TEACHERS_MAP[teacherId] || 'Maestro') : null;
+  if(applied === 0){
+    showToast('No se pudo asignar el maestro a los alumnos seleccionados', 'error');
+  } else {
+    showToast(teacherName ? `${applied} alumno(s) asignado(s) a ${teacherName}` : `${applied} alumno(s) quedaron sin maestro asignado`, 'school');
+  }
+  // La selección permanece activa para poder aplicar otras acciones (ej. también Comida o Siesta)
 }
 
 async function pushHistory(icon, text, type){
