@@ -254,10 +254,6 @@
 <h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Control Médico y Alergias</h2>
 <p class="font-body-md text-body-md text-on-surface-variant mt-1">Administra los expedientes médicos, medicamentos diarios y reportes de incidentes.</p>
 </div>
-<button class="bg-primary text-on-primary rounded-xl py-sm px-md flex items-center gap-2 font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors" onclick="openNewFichaModal()">
-<span class="material-symbols-outlined">add_circle</span>
-                    Nueva Ficha Médica
-                </button>
 </div>
 <!-- Bento Grid Layout -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter md:gap-md">
@@ -315,62 +311,6 @@
 </div>
 </div>
 </main>
-<!-- Modal: Nueva Ficha Médica -->
-<div class="hidden fixed inset-0 bg-inverse-surface/50 z-[200] flex items-center justify-center p-margin-mobile" id="newFichaModal">
-<div class="bg-surface rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-lg relative">
-<button class="absolute top-4 right-4 text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors" onclick="closeNewFichaModal()">
-<span class="material-symbols-outlined">close</span>
-</button>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">add_circle</span>
-Nueva Ficha Médica
-</h3>
-<form class="space-y-sm" id="newFichaForm" onsubmit="return submitNewFicha(event)">
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre completo *</label>
-<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfName" required="" type="text"/>
-</div>
-<div class="grid grid-cols-2 gap-sm">
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Grupo *</label>
-<select class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfGroup" required="">
-<option value="">Selecciona...</option>
-<option>Lactantes</option>
-<option>Maternal A</option>
-<option>Maternal B</option>
-<option>Pre-K 1</option>
-<option>Pre-K 2</option>
-</select>
-</div>
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Tipo de sangre</label>
-<select class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfBlood">
-<option value="">No especificado</option>
-<option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
-</select>
-</div>
-</div>
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Alergias (opcional)</label>
-<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfAllergies" placeholder="Ej: Cacahuate, polen..." type="text"/>
-</div>
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Medicamento activo (opcional)</label>
-<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfMeds" placeholder="Ej: Antialérgico diario" type="text"/>
-</div>
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Contacto de emergencia *</label>
-<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="nfContact" placeholder="Nombre y teléfono" required="" type="text"/>
-</div>
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Notas</label>
-<textarea class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md resize-none" id="nfNotes" rows="2"></textarea>
-</div>
-<p class="hidden text-error font-label-sm text-label-sm" id="nfError">Completa los campos obligatorios (*) antes de guardar.</p>
-<button class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md mt-sm hover:bg-primary/90 transition-colors" type="submit">Guardar Ficha</button>
-</form>
-</div>
-</div>
 <!-- Modal: Detalle / Historial del Alumno -->
 <div class="hidden fixed inset-0 bg-inverse-surface/50 z-[200] flex items-center justify-center p-margin-mobile" id="studentModal">
 <div class="bg-surface rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-lg relative">
@@ -388,6 +328,10 @@ Nueva Ficha Médica
 <div class="bg-surface-container-low rounded-lg p-sm">
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tipo de sangre</p>
 <p class="font-label-md text-label-md text-on-surface" id="sdBlood"></p>
+<select class="hidden w-full mt-1 px-2 py-1 bg-surface border-2 border-transparent rounded-lg focus:border-primary focus:outline-none text-sm font-body-md" id="sdBloodEdit">
+<option value="">No especificado</option>
+<option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
+</select>
 </div>
 <div class="bg-surface-container-low rounded-lg p-sm">
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Contacto de emergencia</p>
@@ -395,22 +339,70 @@ Nueva Ficha Médica
 </div>
 </div>
 <div class="mb-md">
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Alergias y medicamentos</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Alergias</p>
+<p class="font-body-md text-body-md text-on-surface" id="sdAllergiesView"></p>
+<input class="hidden w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md" id="sdAllergiesEdit" type="text" placeholder="Ej: Cacahuate, polen..."/>
+</div>
+<div class="mb-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Medicamentos y alertas</p>
 <div class="flex flex-wrap gap-1" id="sdTags"></div>
 </div>
 <div class="mb-md">
 <div class="flex items-center justify-between mb-xs">
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Notas</p>
-<button class="text-primary font-label-sm text-label-sm hover:underline" id="sdEditBtn" onclick="toggleEditNotes()">Editar</button>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Notas médicas</p>
+<button class="text-primary font-label-sm text-label-sm hover:underline" id="sdEditBtn" onclick="toggleEditFicha()">Editar</button>
 </div>
 <p class="font-body-md text-body-md text-on-surface" id="sdNotesView"></p>
 <textarea class="hidden w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none text-sm font-body-md resize-none" id="sdNotesEdit" rows="2"></textarea>
-<button class="hidden mt-xs text-primary font-label-sm text-label-sm bg-primary-container/30 px-3 py-1 rounded-lg" id="sdSaveBtn" onclick="saveNotes()">Guardar notas</button>
+<button class="hidden mt-xs text-primary font-label-sm text-label-sm bg-primary-container/30 px-3 py-1 rounded-lg" id="sdSaveBtn" onclick="saveFicha()">Guardar cambios</button>
+</div>
+<div class="mb-md">
+<div class="flex items-center justify-between mb-xs">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Medicamentos activos</p>
+<button class="text-primary hover:bg-primary-container/50 p-1 rounded-full transition-colors" onclick="openMedModal()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<div class="space-y-sm" id="sdMedications"></div>
 </div>
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-xs">Historial de incidentes</p>
 <div class="space-y-sm" id="sdIncidents"></div>
 </div>
+</div>
+</div>
+<!-- Modal: Agregar Medicamento -->
+<div class="hidden fixed inset-0 bg-inverse-surface/50 z-[210] flex items-center justify-center p-margin-mobile" id="medModal">
+<div class="bg-surface rounded-2xl shadow-xl w-full max-w-md p-lg relative">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:bg-surface-container-low p-1 rounded-full transition-colors" onclick="closeMedModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">medication</span>
+Agregar Medicamento
+</h3>
+<form class="space-y-sm" id="medForm" onsubmit="return submitNewMedication(event)">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre del medicamento *</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="medName" required type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Dosis</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="medDose" placeholder="Ej: 5ml" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Hora habitual</label>
+<input class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md" id="medTime" type="time"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Notas</label>
+<textarea class="w-full px-sm py-2 bg-surface-container-low border-2 border-transparent rounded-lg focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md resize-none" id="medNotes" rows="2"></textarea>
+</div>
+<p class="hidden text-error font-label-sm text-label-sm" id="medError">Completa el nombre del medicamento.</p>
+<button class="w-full bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md mt-sm hover:bg-primary/90 transition-colors" type="submit">Guardar Medicamento</button>
+</form>
 </div>
 </div>
 
@@ -522,6 +514,28 @@ function tagChip(tag){
   return `<span class="inline-flex items-center gap-1 ${styles[tag.kind]} px-2 py-1 rounded-full font-label-sm text-label-sm"><span class="material-symbols-outlined text-[14px]">${icons[tag.kind]}</span>${tag.label}</span>`;
 }
 
+function buildTags(s){
+  const tags = [];
+  if(s.allergies) tags.push({ label: 'Alergia: ' + s.allergies, kind: 'alert' });
+  (s.medications || []).forEach(m => tags.push({ label: 'Medicación: ' + m.name, kind: 'med' }));
+  if(tags.length === 0) tags.push({ label: 'Sin alertas médicas', kind: 'ok' });
+  return tags;
+}
+
+function occurredLabel(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return '';
+  const today = new Date();
+  const sameDay = d.toDateString() === today.toDateString();
+  const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  return sameDay ? ('Hoy, ' + time) : (d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + ', ' + time);
+}
+function timeOnly(iso){
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? '' : d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+}
+
 function incidentRow(inc){
   const tagStyles = { ok: 'bg-primary-container text-on-primary-container', pending: 'bg-surface-container-highest text-on-surface-variant' };
   return `<div class="flex justify-between items-baseline bg-surface-container-low rounded-lg p-sm">
@@ -533,8 +547,7 @@ function incidentRow(inc){
   </div>`;
 }
 
-/* ===== Bitácora de Incidentes (lista principal) ===== */
-let incidentCounter = 0;
+/* ===== Bitacora de Incidentes (lista global, real, tabla incident_reports) ===== */
 const INCIDENTS = [];
 
 function renderIncidentList(){
@@ -548,7 +561,7 @@ function renderIncidentList(){
       <div class="w-2 h-2 rounded-full ${inc.signed ? 'bg-primary' : 'bg-error'} mt-2 shrink-0"></div>
       <div class="flex-1 min-w-0">
         <div class="flex justify-between items-baseline gap-sm">
-          <h4 class="font-label-md text-label-md text-on-surface">${inc.title}${inc.zone ? ' · ' + inc.zone : ''}</h4>
+          <h4 class="font-label-md text-label-md text-on-surface">${inc.title}${inc.zone ? ' - ' + inc.zone : ''}</h4>
           <span class="font-label-sm text-label-sm text-on-surface-variant text-xs shrink-0">${inc.date}</span>
         </div>
         <p class="font-body-md text-body-md text-sm text-on-surface-variant">${inc.studentLabel}</p>
@@ -622,39 +635,69 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function saveIncidentReport(){
+async function saveIncidentReport(){
   const studentKey = document.getElementById('incStudent').value;
-  const studentName = document.getElementById('incStudent').selectedOptions[0].textContent;
+  const studentSelectedOption = document.getElementById('incStudent').selectedOptions[0];
+  const studentName = studentSelectedOption ? studentSelectedOption.textContent : '';
   const type = getIncidentType();
   const desc = document.getElementById('incDesc').value.trim();
-  const time = document.getElementById('incTime').value || new Date().toTimeString().slice(0,5);
+  const timeVal = document.getElementById('incTime').value || new Date().toTimeString().slice(0,5);
 
-  if(!desc || !selectedBodyZone){
+  if(!studentKey || !desc || !selectedBodyZone){
     document.getElementById('incError').classList.remove('hidden');
     return;
   }
   document.getElementById('incError').classList.add('hidden');
 
-  incidentCounter++;
-  const id = 'inc-' + incidentCounter;
+  if(!sb){
+    showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para reportar un incidente', 'error');
+    return;
+  }
+
+  const [hh, mm] = timeVal.split(':').map(Number);
+  const occurredAt = new Date();
+  occurredAt.setHours(hh || 0, mm || 0, 0, 0);
+
+  const { data: inserted, error } = await sb.from('incident_reports').insert({
+    student_id: studentKey,
+    incident_type: type,
+    body_zone: selectedBodyZone,
+    description: desc,
+    occurred_at: occurredAt.toISOString(),
+    created_by: session.user.id,
+  }).select().single();
+
+  if(error){
+    showToast('No se pudo guardar el reporte: ' + error.message, 'error');
+    return;
+  }
+
   const studentGroup = STUDENT_DATA[studentKey] ? STUDENT_DATA[studentKey].group.replace('Grupo: ', '') : '';
   const newIncident = {
-    id, title: type + ' en ' + selectedBodyZone.toLowerCase(), studentKey,
+    id: inserted.id, title: type + ' en ' + selectedBodyZone.toLowerCase(), studentKey,
     studentLabel: studentName + (studentGroup ? ' (' + studentGroup + ')' : ''),
-    date: 'Hoy, ' + time, zone: selectedBodyZone, signed: false, desc,
+    date: 'Hoy, ' + timeVal, zone: selectedBodyZone, signed: false, desc,
   };
   INCIDENTS.unshift(newIncident);
   renderIncidentList();
 
   if(STUDENT_DATA[studentKey]){
     STUDENT_DATA[studentKey].incidents.unshift({ title: newIncident.title, date: 'Hoy', tag: 'Firma pendiente', tagKind: 'pending' });
+    if(currentStudentKey === studentKey){
+      document.getElementById('sdIncidents').innerHTML = STUDENT_DATA[studentKey].incidents.map(incidentRow).join('');
+    }
   }
 
   closeIncidentModal();
-  showToast('Reporte de incidente guardado — pendiente de firma', 'assignment_turned_in');
+  showToast('Reporte de incidente guardado, pendiente de firma', 'assignment_turned_in');
 }
 
-/* ===== Modal: Firma Digital ===== */
+/* ===== Modal: Firma Digital (solo se guarda firmado + hora, no el trazo) ===== */
 let signingIncidentId = null;
 let hasSignature = false;
 let isDrawing = false;
@@ -662,7 +705,7 @@ let isDrawing = false;
 function openSignaturePad(incidentId){
   signingIncidentId = incidentId;
   const inc = INCIDENTS.find(i => i.id === incidentId);
-  document.getElementById('sigIncidentSummary').textContent = inc ? (inc.title + ' — ' + inc.studentLabel) : '';
+  document.getElementById('sigIncidentSummary').textContent = inc ? (inc.title + ' - ' + inc.studentLabel) : '';
   clearSignature();
   document.getElementById('signatureModal').classList.remove('hidden');
 }
@@ -683,19 +726,34 @@ function markSignatureDrawn(){
     document.getElementById('confirmSigBtn').disabled = false;
   }
 }
-function confirmSignature(){
+async function confirmSignature(){
   if(!hasSignature || !signingIncidentId) return;
   const inc = INCIDENTS.find(i => i.id === signingIncidentId);
-  if(inc){
-    inc.signed = true;
-    const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
-    renderIncidentList();
-    if(STUDENT_DATA[inc.studentKey]){
-      const match = STUDENT_DATA[inc.studentKey].incidents.find(i => i.title === inc.title && i.tagKind === 'pending');
-      if(match){ match.tag = 'Firmado a las ' + time; match.tagKind = 'ok'; }
-    }
-    showToast('Firma registrada — el padre quedó enterado del incidente', 'check_circle');
+  if(!inc){ closeSignatureModal(); return; }
+
+  if(!sb){
+    showToast('Sin conexión con el servidor.', 'error');
+    return;
   }
+
+  const nowIso = new Date().toISOString();
+  const { error } = await sb.from('incident_reports').update({ signed: true, signed_at: nowIso }).eq('id', signingIncidentId);
+  if(error){
+    showToast('No se pudo registrar la firma: ' + error.message, 'error');
+    return;
+  }
+
+  inc.signed = true;
+  const time = new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  renderIncidentList();
+  if(STUDENT_DATA[inc.studentKey]){
+    const match = STUDENT_DATA[inc.studentKey].incidents.find(i => i.title === inc.title && i.tagKind === 'pending');
+    if(match){ match.tag = 'Firmado a las ' + time; match.tagKind = 'ok'; }
+    if(currentStudentKey === inc.studentKey){
+      document.getElementById('sdIncidents').innerHTML = STUDENT_DATA[inc.studentKey].incidents.map(incidentRow).join('');
+    }
+  }
+  showToast('Firma registrada, el padre quedo enterado del incidente', 'check_circle');
   closeSignatureModal();
 }
 
@@ -741,6 +799,7 @@ function confirmSignature(){
 
 renderIncidentList();
 
+/* ===== Ficha del alumno: detalle, edición de tipo de sangre / alergias / notas ===== */
 function openStudentDetail(key){
   const s = STUDENT_DATA[key];
   if(!s) return;
@@ -749,14 +808,26 @@ function openStudentDetail(key){
   document.getElementById('sdName').textContent = s.name;
   document.getElementById('sdGroup').textContent = s.group;
   document.getElementById('sdBlood').textContent = s.blood || 'No especificado';
+  document.getElementById('sdBloodEdit').value = s.blood || '';
   document.getElementById('sdContact').textContent = s.contact;
+  document.getElementById('sdAllergiesView').textContent = s.allergies || 'Sin alergias registradas.';
+  document.getElementById('sdAllergiesEdit').value = s.allergies || '';
   document.getElementById('sdTags').innerHTML = s.tags.map(tagChip).join('');
   document.getElementById('sdNotesView').textContent = s.notes || 'Sin notas.';
   document.getElementById('sdNotesEdit').value = s.notes || '';
+
+  document.getElementById('sdBlood').classList.remove('hidden');
+  document.getElementById('sdBloodEdit').classList.add('hidden');
+  document.getElementById('sdAllergiesView').classList.remove('hidden');
+  document.getElementById('sdAllergiesEdit').classList.add('hidden');
   document.getElementById('sdNotesView').classList.remove('hidden');
   document.getElementById('sdNotesEdit').classList.add('hidden');
   document.getElementById('sdSaveBtn').classList.add('hidden');
   document.getElementById('sdEditBtn').textContent = 'Editar';
+
+  document.getElementById('sdMedications').innerHTML = s.medications.length
+    ? s.medications.map(m => medRow(m, key, s.name, { showApply: true, showRemove: true })).join('')
+    : '<p class="font-body-md text-body-md text-on-surface-variant text-sm">Sin medicamentos activos.</p>';
   document.getElementById('sdIncidents').innerHTML = s.incidents.length
     ? s.incidents.map(incidentRow).join('')
     : '<p class="font-body-md text-body-md text-on-surface-variant text-sm">Sin incidentes registrados.</p>';
@@ -765,68 +836,189 @@ function openStudentDetail(key){
 function closeStudentModal(){
   document.getElementById('studentModal').classList.add('hidden');
 }
-function toggleEditNotes(){
-  const view = document.getElementById('sdNotesView');
-  const edit = document.getElementById('sdNotesEdit');
-  const saveBtn = document.getElementById('sdSaveBtn');
-  const editBtn = document.getElementById('sdEditBtn');
-  const editing = edit.classList.contains('hidden');
-  view.classList.toggle('hidden', editing);
-  edit.classList.toggle('hidden', !editing);
-  saveBtn.classList.toggle('hidden', !editing);
-  editBtn.textContent = editing ? 'Cancelar' : 'Editar';
+function toggleEditFicha(){
+  const editing = document.getElementById('sdNotesEdit').classList.contains('hidden');
+  ['sdBlood','sdAllergiesView','sdNotesView'].forEach(id => document.getElementById(id).classList.toggle('hidden', editing));
+  ['sdBloodEdit','sdAllergiesEdit','sdNotesEdit'].forEach(id => document.getElementById(id).classList.toggle('hidden', !editing));
+  document.getElementById('sdSaveBtn').classList.toggle('hidden', !editing);
+  document.getElementById('sdEditBtn').textContent = editing ? 'Cancelar' : 'Editar';
 }
-function saveNotes(){
-  const text = document.getElementById('sdNotesEdit').value.trim();
-  STUDENT_DATA[currentStudentKey].notes = text;
-  document.getElementById('sdNotesView').textContent = text || 'Sin notas.';
-  toggleEditNotes();
-  showToast('Notas actualizadas', 'check_circle');
+async function saveFicha(){
+  const blood = document.getElementById('sdBloodEdit').value || null;
+  const allergies = document.getElementById('sdAllergiesEdit').value.trim();
+  const notes = document.getElementById('sdNotesEdit').value.trim();
+
+  if(!sb){
+    showToast('Sin conexión con el servidor.', 'error');
+    return;
+  }
+  const { error } = await sb.from('students').update({
+    blood_type: blood,
+    allergies: allergies || null,
+    medical_notes: notes || null,
+  }).eq('id', currentStudentKey);
+
+  if(error){
+    showToast('No se pudo guardar: ' + error.message, 'error');
+    return;
+  }
+
+  const s = STUDENT_DATA[currentStudentKey];
+  s.blood = blood || '';
+  s.allergies = allergies;
+  s.notes = notes;
+  s.tags = buildTags(s);
+
+  document.getElementById('sdBlood').textContent = s.blood || 'No especificado';
+  document.getElementById('sdAllergiesView').textContent = s.allergies || 'Sin alergias registradas.';
+  document.getElementById('sdNotesView').textContent = s.notes || 'Sin notas.';
+  document.getElementById('sdTags').innerHTML = s.tags.map(tagChip).join('');
+  toggleEditFicha();
+  refreshMedCard(currentStudentKey);
+  showToast('Ficha médica actualizada', 'check_circle');
 }
 
-function openNewFichaModal(){
-  document.getElementById('newFichaForm').reset();
-  document.getElementById('nfError').classList.add('hidden');
-  document.getElementById('newFichaModal').classList.remove('hidden');
+/* ===== Medicamentos activos (tabla real `medications`) ===== */
+function medRow(med, studentKey, studentName, opts){
+  opts = opts || {};
+  const timeLabel = med.schedule_time ? String(med.schedule_time).slice(0,5) : 'Sin horario fijo';
+  const nameEsc = String(studentName).replace(/'/g, "\\'");
+  return `<div class="flex items-center justify-between gap-sm bg-surface-container-low rounded-lg p-sm">
+    <div class="min-w-0">
+      ${opts.showStudent ? `<p class="font-label-sm text-label-sm text-on-surface-variant truncate">${studentName}</p>` : ''}
+      <p class="font-label-md text-label-md text-on-surface truncate">${med.name}${med.dose ? ' - ' + med.dose : ''}</p>
+      <p class="font-body-md text-[12px] text-on-surface-variant">${timeLabel}</p>
+    </div>
+    <div class="flex items-center gap-1 shrink-0">
+      ${opts.showApply ? `<button onclick="markMedicationApplied('${med.id}','${studentKey}','${nameEsc}')" class="text-primary font-label-sm text-label-sm bg-primary-container/30 px-2 py-1 rounded-lg hover:bg-primary-container/50 transition-colors">Aplicado</button>` : ''}
+      ${opts.showRemove ? `<button onclick="suspendMedication('${med.id}')" class="text-on-surface-variant hover:text-error p-1 rounded-full transition-colors" title="Suspender"><span class="material-symbols-outlined text-[16px]">delete</span></button>` : ''}
+    </div>
+  </div>`;
 }
-function closeNewFichaModal(){
-  document.getElementById('newFichaModal').classList.add('hidden');
+
+function openMedModal(){
+  if(!currentStudentKey) return;
+  document.getElementById('medForm').reset();
+  document.getElementById('medError').classList.add('hidden');
+  document.getElementById('medModal').classList.remove('hidden');
 }
-function submitNewFicha(e){
+function closeMedModal(){
+  document.getElementById('medModal').classList.add('hidden');
+}
+async function submitNewMedication(e){
   e.preventDefault();
-  const name = document.getElementById('nfName').value.trim();
-  const group = document.getElementById('nfGroup').value;
-  const contact = document.getElementById('nfContact').value.trim();
-  if(!name || !group || !contact){
-    document.getElementById('nfError').classList.remove('hidden');
+  const name = document.getElementById('medName').value.trim();
+  const dose = document.getElementById('medDose').value.trim();
+  const time = document.getElementById('medTime').value;
+  const notes = document.getElementById('medNotes').value.trim();
+
+  if(!name){
+    document.getElementById('medError').classList.remove('hidden');
     return false;
   }
-  const blood = document.getElementById('nfBlood').value;
-  const allergies = document.getElementById('nfAllergies').value.trim();
-  const meds = document.getElementById('nfMeds').value.trim();
-  const notes = document.getElementById('nfNotes').value.trim();
-  const key = normalizeText(name);
+  document.getElementById('medError').classList.add('hidden');
 
-  const tags = [];
-  if(allergies) tags.push({ label: 'Alergia: ' + allergies, kind: 'alert' });
-  if(meds) tags.push({ label: 'Medicación Activa: ' + meds, kind: 'med' });
-  if(tags.length === 0) tags.push({ label: 'Sin alertas médicas', kind: 'ok' });
-  const cat = allergies ? 'alerta' : (meds ? 'medicamento' : 'clear');
+  if(!sb){
+    showToast('Sin conexión con el servidor.', 'error');
+    return false;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin', 'error');
+    return false;
+  }
 
-  STUDENT_DATA[key] = { name, group: 'Grupo: ' + group, blood, tags, contact, notes, incidents: [] };
+  const { data: inserted, error } = await sb.from('medications').insert({
+    student_id: currentStudentKey,
+    name, dose: dose || null, schedule_time: time || null, notes: notes || null,
+    created_by: session.user.id,
+  }).select().single();
 
-  const card = buildMedCard(key, name, group, cat, tags);
-  document.getElementById('medGrid').prepend(card);
+  if(error){
+    document.getElementById('medError').textContent = 'No se pudo guardar: ' + error.message;
+    document.getElementById('medError').classList.remove('hidden');
+    return false;
+  }
 
-  closeNewFichaModal();
-  showToast(`Ficha médica creada para ${name}`, 'check_circle');
+  const s = STUDENT_DATA[currentStudentKey];
+  s.medications.push(inserted);
+  s.tags = buildTags(s);
+  document.getElementById('sdMedications').innerHTML = s.medications.map(m => medRow(m, currentStudentKey, s.name, { showApply: true, showRemove: true })).join('');
+  document.getElementById('sdTags').innerHTML = s.tags.map(tagChip).join('');
+  refreshMedCard(currentStudentKey);
+  renderMedsToday();
+
+  closeMedModal();
+  showToast('Medicamento agregado para ' + s.name, 'check_circle');
   return false;
+}
+async function suspendMedication(medId){
+  if(!sb) return;
+  const { error } = await sb.from('medications').update({ status: 'suspendido' }).eq('id', medId);
+  if(error){
+    showToast('No se pudo suspender: ' + error.message, 'error');
+    return;
+  }
+  Object.keys(STUDENT_DATA).forEach(key => {
+    const s = STUDENT_DATA[key];
+    const idx = (s.medications || []).findIndex(m => m.id === medId);
+    if(idx !== -1){
+      s.medications.splice(idx, 1);
+      s.tags = buildTags(s);
+      if(currentStudentKey === key){
+        document.getElementById('sdMedications').innerHTML = s.medications.length
+          ? s.medications.map(m => medRow(m, key, s.name, { showApply: true, showRemove: true })).join('')
+          : '<p class="font-body-md text-body-md text-on-surface-variant text-sm">Sin medicamentos activos.</p>';
+        document.getElementById('sdTags').innerHTML = s.tags.map(tagChip).join('');
+      }
+      refreshMedCard(key);
+    }
+  });
+  renderMedsToday();
+  showToast('Medicamento suspendido', 'check_circle');
+}
+async function markMedicationApplied(medId, studentKey, studentName){
+  if(!sb){
+    showToast('Sin conexión con el servidor.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin', 'error');
+    return;
+  }
+  const med = ((STUDENT_DATA[studentKey] && STUDENT_DATA[studentKey].medications) || []).find(m => m.id === medId);
+  const label = med ? med.name + (med.dose ? ' (' + med.dose + ')' : '') : 'Medicamento';
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: studentKey, student_name: studentName,
+    type: 'medicamento', icon: 'medication', text: label + ' aplicado',
+    created_by: session.user.id,
+  });
+  if(error){
+    showToast('No se pudo registrar: ' + error.message, 'error');
+    return;
+  }
+  showToast(label + ' marcado como aplicado', 'check_circle');
+}
+function renderMedsToday(){
+  const container = document.getElementById('medicamentosHoyList');
+  const items = [];
+  Object.keys(STUDENT_DATA).forEach(key => {
+    const s = STUDENT_DATA[key];
+    (s.medications || []).forEach(m => items.push({ med: m, studentKey: key, studentName: s.name }));
+  });
+  if(items.length === 0){
+    container.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-sm">Sin medicamentos activos registrados hoy.</p>';
+    return;
+  }
+  container.innerHTML = items.map(it => medRow(it.med, it.studentKey, it.studentName, { showStudent: true, showApply: true })).join('');
 }
 
 function buildMedCard(key, name, group, cat, tags){
   const card = document.createElement('div');
   card.onclick = () => openStudentDetail(key);
   card.dataset.name = key;
+  card.dataset.search = normalizeText(name);
   card.dataset.cat = cat;
   const borderClass = cat === 'alerta' ? 'border-l-4 border-l-error' : (cat === 'medicamento' ? 'border-l-4 border-l-tertiary' : '');
   card.className = `med-card bg-surface rounded-xl p-md ambient-shadow ambient-shadow-hover transition-all border border-surface-variant ${borderClass} cursor-pointer`;
@@ -843,6 +1035,19 @@ function buildMedCard(key, name, group, cat, tags){
   return card;
 }
 
+function refreshMedCard(key){
+  const s = STUDENT_DATA[key];
+  if(!s) return;
+  const old = document.querySelector(`.med-card[data-name="${key}"]`);
+  if(!old) return;
+  const hasActiveMed = (s.medications || []).length > 0;
+  const cat = s.allergies ? 'alerta' : (hasActiveMed ? 'medicamento' : 'clear');
+  const group = s.group.replace('Grupo: ', '');
+  const fresh = buildMedCard(key, s.name, group, cat, s.tags);
+  old.replaceWith(fresh);
+  filterMed();
+}
+
 async function loadRealMedStudents(){
   const grid = document.getElementById('medGrid');
   const select = document.getElementById('incStudent');
@@ -850,30 +1055,81 @@ async function loadRealMedStudents(){
     grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant font-body-md py-lg">No se pudo conectar con la base de datos.</p>';
     return;
   }
-  const { data, error } = await sb.from('students').select('id, full_name, room, allergies, parent_name, parent_phone').eq('status', 'activo').order('full_name');
+  const { data, error } = await sb.from('students')
+    .select('id, full_name, room, allergies, parent_name, parent_phone, blood_type, medical_notes')
+    .eq('status', 'activo').order('full_name');
+
   if(error || !data || data.length === 0){
     grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant font-body-md py-lg">Aún no hay alumnos dados de alta.</p>';
     select.innerHTML = '<option value="">Sin alumnos registrados</option>';
+    renderMedsToday();
+    renderIncidentList();
     return;
   }
+
+  const studentIds = data.map(s => s.id);
+
+  const [medsRes, incRes] = await Promise.all([
+    sb.from('medications').select('*').in('student_id', studentIds).eq('status', 'activo').order('created_at', { ascending: true }),
+    sb.from('incident_reports').select('*').in('student_id', studentIds).order('occurred_at', { ascending: false }).limit(50),
+  ]);
+
+  const medsByStudent = {};
+  (medsRes.data || []).forEach(m => { (medsByStudent[m.student_id] = medsByStudent[m.student_id] || []).push(m); });
+  const incByStudent = {};
+  (incRes.data || []).forEach(ir => { (incByStudent[ir.student_id] = incByStudent[ir.student_id] || []).push(ir); });
+  const studentInfoById = {};
+  data.forEach(s => { studentInfoById[s.id] = { name: s.full_name, group: s.room || 'Sin grupo asignado' }; });
+
   grid.innerHTML = '';
   select.innerHTML = '';
+
   data.forEach(s => {
     const key = s.id;
     const group = s.room || 'Sin grupo asignado';
-    const contact = [s.parent_name, s.parent_phone].filter(Boolean).join(' · ') || 'No disponible';
-    const tags = [];
-    if(s.allergies) tags.push({ label: 'Alergia: ' + s.allergies, kind: 'alert' });
-    if(tags.length === 0) tags.push({ label: 'Sin alertas médicas', kind: 'ok' });
-    const cat = s.allergies ? 'alerta' : 'clear';
-    STUDENT_DATA[key] = { name: s.full_name, group: 'Grupo: ' + group, blood: null, tags, contact, notes: '', incidents: [] };
-    grid.appendChild(buildMedCard(key, s.full_name, group, cat, tags));
+    const contact = [s.parent_name, s.parent_phone].filter(Boolean).join(' - ') || 'No disponible';
+    const medications = medsByStudent[key] || [];
+    const incidentsRaw = incByStudent[key] || [];
+
+    const entry = {
+      id: key, name: s.full_name, group: 'Grupo: ' + group,
+      blood: s.blood_type || '', allergies: s.allergies || '', contact,
+      notes: s.medical_notes || '', medications,
+      incidents: incidentsRaw.map(ir => ({
+        title: ir.incident_type + ' en ' + ir.body_zone.toLowerCase(),
+        date: occurredLabel(ir.occurred_at),
+        tag: ir.signed ? ('Firmado' + (ir.signed_at ? ' a las ' + timeOnly(ir.signed_at) : '')) : 'Firma pendiente',
+        tagKind: ir.signed ? 'ok' : 'pending',
+      })),
+    };
+    entry.tags = buildTags(entry);
+    STUDENT_DATA[key] = entry;
+
+    const hasActiveMed = medications.length > 0;
+    const cat = entry.allergies ? 'alerta' : (hasActiveMed ? 'medicamento' : 'clear');
+    grid.appendChild(buildMedCard(key, s.full_name, group, cat, entry.tags));
+
     const opt = document.createElement('option');
     opt.value = key;
     opt.textContent = s.full_name;
     select.appendChild(opt);
   });
+
+  INCIDENTS.length = 0;
+  (incRes.data || []).forEach(ir => {
+    const info = studentInfoById[ir.student_id] || { name: 'Alumno', group: '' };
+    INCIDENTS.push({
+      id: ir.id, title: ir.incident_type + ' en ' + ir.body_zone.toLowerCase(), studentKey: ir.student_id,
+      studentLabel: info.name + (info.group ? ' (' + info.group + ')' : ''),
+      date: occurredLabel(ir.occurred_at), zone: ir.body_zone, signed: ir.signed, desc: ir.description,
+    });
+  });
+
+  renderIncidentList();
+  renderMedsToday();
+  filterMed();
 }
+
 </script>
 <script>
 let currentMedCat = 'todos';
@@ -894,7 +1150,7 @@ function filterMed(){
   const q = normalizeText(document.getElementById('medSearch').value.trim());
   document.querySelectorAll('.med-card').forEach(card => {
     const matchesCat = currentMedCat === 'todos' || card.dataset.cat === currentMedCat;
-    const matchesSearch = !q || normalizeText(card.dataset.name).includes(q);
+    const matchesSearch = !q || normalizeText(card.dataset.search).includes(q);
     card.style.display = (matchesCat && matchesSearch) ? '' : 'none';
   });
 }
