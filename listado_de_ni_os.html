@@ -171,6 +171,9 @@
 <!-- Filters (Scrollable Row) -->
 <div class="px-margin-mobile flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-base">
 <button onclick="filterRoom(this,'todos')" data-room-filter="todos" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md transition-transform active:scale-95 shadow-sm">Todos</button>
+<button onclick="filterRoom(this,'__mine__')" data-room-filter="__mine__" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">school</span> Mi grupo
+</button>
 <button onclick="filterRoom(this,'salón sol')" data-room-filter="salón sol" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Sol</button>
 <button onclick="filterRoom(this,'salón luna')" data-room-filter="salón luna" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Salón Luna</button>
 <button onclick="filterRoom(this,'bebés')" data-room-filter="bebés" class="room-filter-btn whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-transform active:scale-95 hover:bg-surface-container-high border border-outline-variant">Bebés</button>
@@ -328,7 +331,7 @@
 </div>
 <div class="extra-badges-row hidden flex-wrap gap-2 mt-2 pl-2 sm:pl-[68px]" id="extraBadges-diego"></div>
 </div>
-<p id="noResults" class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
+<p id="noResults" data-default-text="No se encontraron alumnos con ese criterio." class="hidden text-center text-on-surface-variant font-body-md py-lg">No se encontraron alumnos con ese criterio.</p>
 </div>
 </main>
 
@@ -432,6 +435,17 @@
 </div>
 
 <div class="p-md space-y-md">
+
+<!-- Maestro asignado -->
+<div class="bg-surface-container-low rounded-xl p-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+<div class="flex-1 min-w-0">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Maestro(a) asignado(a)</label>
+<select id="qpTeacherSelect" onchange="assignTeacher(this.value)" class="w-full px-2 py-1.5 rounded-lg bg-surface border-2 border-transparent focus:border-primary focus:outline-none text-sm font-body-md">
+<option value="">Sin asignar</option>
+</select>
+</div>
+</div>
 
 <!-- Asistencia del día -->
 <div class="bg-surface-container-low rounded-xl p-sm">
@@ -590,6 +604,10 @@
 <script>
 let currentRoomFilter = 'todos';
 function filterRoom(btn, room){
+  if(room === '__mine__' && !CURRENT_STAFF_ID){
+    showToast('Inicia sesi\u00f3n con tu cuenta de staff para ver tu grupo asignado', 'info');
+    return;
+  }
   currentRoomFilter = room;
   document.querySelectorAll('.room-filter-btn').forEach(b => {
     b.classList.remove('bg-primary','text-on-primary','shadow-sm');
@@ -608,13 +626,26 @@ function filterChildren(){
   document.querySelectorAll('.child-card').forEach(card => {
     const name = normalizeText(card.dataset.name);
     const room = normalizeText(card.dataset.room);
-    const matchesRoom = currentRoomFilter === 'todos' || card.dataset.room === currentRoomFilter;
+    let matchesRoom;
+    if(currentRoomFilter === 'todos'){
+      matchesRoom = true;
+    } else if(currentRoomFilter === '__mine__'){
+      matchesRoom = !!CURRENT_STAFF_ID && card.dataset.teacherId === CURRENT_STAFF_ID;
+    } else {
+      matchesRoom = card.dataset.room === currentRoomFilter;
+    }
     const matchesSearch = !q || name.includes(q) || room.includes(q);
     const show = matchesRoom && matchesSearch;
     card.style.display = show ? '' : 'none';
     if(show) visibleCount++;
   });
-  document.getElementById('noResults').classList.toggle('hidden', visibleCount !== 0);
+  const noResultsEl = document.getElementById('noResults');
+  noResultsEl.classList.toggle('hidden', visibleCount !== 0);
+  if(visibleCount === 0 && currentRoomFilter === '__mine__'){
+    noResultsEl.textContent = 'Todav\u00eda no tienes alumnos asignados a tu grupo. Pide a un administrador que te asigne alumnos desde "Ver perfil".';
+  } else if(noResultsEl.dataset.defaultText){
+    noResultsEl.textContent = noResultsEl.dataset.defaultText;
+  }
 }
 
 /* ===== Selección múltiple y acciones masivas ===== */
@@ -821,6 +852,9 @@ function openQuickPanel(id){
   document.getElementById('qpName').textContent = name;
   document.getElementById('qpMeta').textContent = room;
 
+  const teacherSelect = document.getElementById('qpTeacherSelect');
+  if(teacherSelect) teacherSelect.value = card.dataset.teacherId || '';
+
   const s = STUDENT_QUICK[id];
 
   // Asistencia de hoy
@@ -864,6 +898,59 @@ function openQuickPanel(id){
 function closeQuickPanel(){
   document.getElementById('quickPanelModal').classList.add('hidden');
   currentQuickChild = null;
+}
+
+/* ===== Maestro asignado por alumno ===== */
+let TEACHERS_LIST = [];
+let TEACHERS_MAP = {};
+let CURRENT_STAFF_ID = null;
+
+async function loadTeachersAndSession(){
+  if(!sb) return;
+  const { data: { session } } = await sb.auth.getSession();
+  CURRENT_STAFF_ID = session ? session.user.id : null;
+
+  const { data, error } = await sb.from('profiles').select('id, full_name').in('role', ['staff', 'admin']).order('full_name');
+  if(!error && data){
+    TEACHERS_LIST = data;
+    TEACHERS_MAP = {};
+    data.forEach(t => { TEACHERS_MAP[t.id] = t.full_name || 'Sin nombre'; });
+  }
+  renderTeacherOptions();
+}
+
+function renderTeacherOptions(){
+  const sel = document.getElementById('qpTeacherSelect');
+  if(!sel) return;
+  const esc = s => String(s).replace(/</g, '&lt;');
+  sel.innerHTML = '<option value="">Sin asignar</option>' +
+    TEACHERS_LIST.map(t => `<option value="${t.id}">${esc(t.full_name || 'Sin nombre')}</option>`).join('');
+}
+
+async function assignTeacher(teacherId){
+  const id = currentQuickChild;
+  if(!id) return;
+  const card = document.querySelector(`.child-card[data-child-id="${id}"]`);
+
+  if(!sb){
+    showToast('Sin conexión con el servidor. Intenta recargar la página.', 'error');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como staff/admin para asignar un maestro', 'error');
+    return;
+  }
+
+  const { error } = await sb.from('students').update({ assigned_teacher: teacherId || null }).eq('id', id);
+  if(error){
+    showToast('No se pudo asignar el maestro: ' + error.message, 'error');
+    return;
+  }
+
+  if(card) card.dataset.teacherId = teacherId || '';
+  const teacherName = teacherId ? (TEACHERS_MAP[teacherId] || 'Maestro') : null;
+  showToast(teacherName ? `Alumno asignado a ${teacherName}` : 'Alumno sin maestro asignado', 'school');
 }
 
 async function pushHistory(icon, text, type){
@@ -1190,8 +1277,10 @@ async function loadTodayAttendance(){
 /* ===== Cargar alumnos reales dados de alta desde Supabase ===== */
 function realStudentCardHTML(student){
   const initials = student.full_name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+  const teacherId = student.assigned_teacher || '';
+  const teacherName = teacherId ? TEACHERS_MAP[teacherId] : null;
   return `
-    <div onclick="handleCardClick(event, this, '${student.full_name.replace(/'/g,"\\'")} · ${student.room}', 'person')" data-name="${student.full_name.toLowerCase()}" data-room="${student.room.toLowerCase()}" data-child-id="${student.id}" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-outline-variant/40 cursor-pointer group">
+    <div onclick="handleCardClick(event, this, '${student.full_name.replace(/'/g,"\\'")} · ${student.room}', 'person')" data-name="${student.full_name.toLowerCase()}" data-room="${student.room.toLowerCase()}" data-teacher-id="${teacherId}" data-child-id="${student.id}" class="child-card flex flex-col p-4 rounded-xl bg-surface-container-lowest shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)] transition-shadow duration-300 border border-outline-variant/40 cursor-pointer group">
     <div class="flex items-center w-full">
     <div class="selection-checkbox hidden shrink-0 mr-3">
     <span class="material-symbols-outlined text-outline-variant checkbox-unchecked text-[26px]">radio_button_unchecked</span>
@@ -1200,7 +1289,7 @@ function realStudentCardHTML(student){
     <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-outline-variant bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-md text-label-md">${initials}</div>
     <div class="ml-4 flex-grow">
     <h3 class="font-headline-md text-[18px] leading-[24px] text-on-surface group-hover:text-primary transition-colors">${student.full_name}</h3>
-    <p class="font-body-md text-body-md text-on-surface-variant text-[14px]">${student.room}</p>
+    <p class="font-body-md text-body-md text-on-surface-variant text-[14px]">${student.room}${teacherName ? ` · 👩‍🏫 ${teacherName}` : ''}</p>
     </div>
     <div class="flex flex-col items-end gap-1 shrink-0">
     <button onclick="event.stopPropagation(); openQuickPanel('${student.id}')" class="mb-0.5 flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container-low hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant font-label-sm text-[10px] transition-colors" title="Ver perfil y personalizar">
@@ -1288,6 +1377,7 @@ async function loadRealStudents(){
 }
 
 (async function initListado(){
+  await loadTeachersAndSession();
   await loadRealStudents();
   await loadTodayAttendance();
 })();
