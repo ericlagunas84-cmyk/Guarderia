@@ -277,6 +277,27 @@
 </div>
 </div>
 
+<!-- Modal: Nueva contraseña generada -->
+<div id="newPasswordModal" class="hidden fixed inset-0 bg-inverse-surface/60 z-[210] flex items-end md:items-center justify-center">
+<div class="bg-surface rounded-t-3xl md:rounded-2xl shadow-xl w-full md:max-w-md p-lg">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">key</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Nueva contraseña generada</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface mb-md">Comparte esta contraseña con <strong id="npUserName"></strong>. Su usuario para iniciar sesión sigue siendo el mismo correo de siempre.</p>
+<div class="bg-surface-container-low rounded-lg p-sm mb-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-0.5">Contraseña temporal</p>
+<p class="font-body-md text-body-md text-on-surface font-bold" id="npPassword"></p>
+</div>
+<div class="flex gap-sm">
+<button onclick="copyNewPassword()" class="flex-1 border border-outline-variant text-on-surface rounded-xl py-sm font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">content_copy</span> Copiar
+</button>
+<button onclick="closeNewPasswordModal()" class="flex-1 bg-primary text-on-primary rounded-xl py-sm font-label-md text-label-md hover:bg-primary/90 transition-colors">Entendido</button>
+</div>
+</div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
@@ -313,6 +334,7 @@ function userRow(user){
       </div>
       <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
         ${user.role === 'padre' ? `<button onclick="openLinkModal('${user.id}', '${(user.full_name||'').replace(/'/g,"\\'")}')" class="px-3 py-1.5 rounded-lg border border-primary text-primary font-label-sm text-label-sm hover:bg-primary-container/20 transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">link</span> Vincular Hijo(s)</button>` : ''}
+        ${user.role !== 'padre' ? `<button onclick="generateNewPassword('${user.id}', '${(user.full_name||'').replace(/'/g,"\\'")}')" class="px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface font-label-sm text-label-sm hover:bg-surface-container-low transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">key</span> Nueva contraseña</button>` : ''}
         <span class="px-2 py-1 rounded-full font-label-sm text-label-sm ${ROLE_STYLES[user.role] || ROLE_STYLES.padre}">${ROLE_LABELS[user.role] || user.role}</span>
         <select onchange="changeUserRole('${user.id}', this.value, this)" class="text-sm font-label-sm border border-outline-variant rounded-lg px-2 py-2 bg-surface-container-low text-on-surface cursor-pointer">
           <option value="padre" ${user.role === 'padre' ? 'selected' : ''}>Padre de familia</option>
@@ -431,6 +453,44 @@ async function changeUserRole(userId, newRole, selectEl){
   }
   showToast('Rol actualizado a ' + ROLE_LABELS[newRole], 'check_circle');
   loadUsers();
+}
+
+/* ===== Generar nueva contraseña para staff/admin (sin depender de correo) ===== */
+async function generateNewPassword(userId, name){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showToast('Necesitas iniciar sesión como administrador para hacer esto', 'error');
+    return;
+  }
+
+  showToast('Generando contraseña…', 'progress_activity');
+
+  const { data, error } = await sb.functions.invoke('admin-set-password', {
+    body: { targetUserId: userId },
+  });
+
+  if(error || !data || data.error){
+    showToast('No se pudo generar la contraseña: ' + (data?.error || error?.message || 'error desconocido'), 'error');
+    return;
+  }
+
+  document.getElementById('npUserName').textContent = name || 'este usuario';
+  document.getElementById('npPassword').textContent = data.password;
+  document.getElementById('newPasswordModal').classList.remove('hidden');
+}
+function closeNewPasswordModal(){
+  document.getElementById('newPasswordModal').classList.add('hidden');
+}
+function copyNewPassword(){
+  const password = document.getElementById('npPassword').textContent;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(password).then(
+      () => showToast('Contraseña copiada al portapapeles', 'content_copy'),
+      () => showToast('No se pudo copiar. Cópiala manualmente.', 'error')
+    );
+  } else {
+    showToast('No se pudo copiar. Cópiala manualmente.', 'error');
+  }
 }
 
 loadUsers();
