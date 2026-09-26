@@ -501,11 +501,12 @@
 <!-- Incidente rápido -->
 <div>
 <h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-2 flex items-center gap-1">🩹 Reportar Incidente</h4>
-<div class="grid grid-cols-3 gap-2">
-<button onclick="logQuickIncident('Raspón')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Raspón</button>
-<button onclick="logQuickIncident('Golpe')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Golpe</button>
-<button onclick="logQuickIncident('Caída')" class="py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Caída</button>
+<div id="qpIncidentButtons" class="grid grid-cols-3 gap-2">
+<button onclick="logQuickIncident('Raspón')" class="qp-incident-btn py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Raspón</button>
+<button onclick="logQuickIncident('Golpe')" class="qp-incident-btn py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Golpe</button>
+<button onclick="logQuickIncident('Caída')" class="qp-incident-btn py-2.5 rounded-xl border-2 border-error-container text-on-error-container font-label-sm text-label-sm hover:bg-error-container/30 transition-colors">Caída</button>
 </div>
+<p id="qpIncidentStatus" class="hidden font-body-md text-[13px] text-on-surface-variant bg-surface-container-low rounded-xl p-sm flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">check_circle</span> Ya se registró un incidente hoy para este alumno.</p>
 <a href="fichas_m_dicas_y_salud.html" class="block text-center mt-2 text-primary font-label-sm text-label-sm hover:underline">Reporte detallado con silueta corporal →</a>
 </div>
 
@@ -643,6 +644,7 @@ async function applyBulkAction(kind){
     const statusCol = card.querySelector('.flex.flex-col.items-end');
     let badge = statusCol ? statusCol.querySelector('.batch-badge-' + kind) : null;
     if(badge) continue; // ya se aplicó esta acción a este alumno hoy, evita duplicar
+    if(kind === 'siesta' && STUDENT_QUICK[id] && (STUDENT_QUICK[id].napStartLoggedToday || STUDENT_QUICK[id].napEndLoggedToday)) continue; // la siesta de hoy ya se registró (individualmente o en otra sesión)
     applied++;
     if(statusCol){
       badge = document.createElement('span');
@@ -659,6 +661,7 @@ async function applyBulkAction(kind){
       }
       if(kind === 'siesta' && !STUDENT_QUICK[id].napStart){
         STUDENT_QUICK[id].napStart = Date.now();
+        STUDENT_QUICK[id].napStartLoggedToday = true;
       }
       renderCardExtraBadges(id);
     }
@@ -788,6 +791,9 @@ function openQuickPanel(id){
 
   // Comida y Siesta
   renderNapUi();
+
+  // Incidente rápido
+  renderIncidentUi();
 
   // Pañal
   document.getElementById('qpDiaperStatus').textContent = s.diaperTime
@@ -1002,10 +1008,15 @@ function toggleNap(){
   const name = document.getElementById('qpName').textContent;
   if(s.napStart){
     s.napStart = null;
+    s.napEndLoggedToday = true;
     pushHistory('⏰', 'Terminó la siesta', 'siesta_fin');
     showToast(name + ' despertó de la siesta', 'wb_sunny');
+  } else if(s.napEndLoggedToday){
+    showToast('La siesta de hoy ya quedó registrada (inicio y fin) para ' + name, 'info');
+    return;
   } else {
     s.napStart = Date.now();
+    s.napStartLoggedToday = true;
     pushHistory('😴', 'Inició la siesta', 'siesta_inicio');
     showToast('Siesta de ' + name + ' iniciada', 'bedtime');
   }
@@ -1015,14 +1026,24 @@ function toggleNap(){
 function renderNapUi(){
   const s = STUDENT_QUICK[currentQuickChild];
   const timerSection = document.getElementById('qpTimerSection');
+  const napBtn = document.getElementById('qpNapBtn');
   const napBtnLabel = document.getElementById('qpNapBtnLabel');
   if(s.napStart){
     timerSection.classList.remove('hidden');
     document.getElementById('qpTimerText').textContent = `😴 En siesta (${timeAgo(s.napStart).replace('hace ', '')})`;
     napBtnLabel.textContent = 'Terminar Siesta';
+    napBtn.disabled = false;
+    napBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+  } else if(s.napEndLoggedToday){
+    timerSection.classList.add('hidden');
+    napBtnLabel.textContent = 'Siesta ya registrada hoy';
+    napBtn.disabled = true;
+    napBtn.classList.add('opacity-50', 'cursor-not-allowed');
   } else {
     timerSection.classList.add('hidden');
     napBtnLabel.textContent = 'Iniciar Siesta';
+    napBtn.disabled = false;
+    napBtn.classList.remove('opacity-50', 'cursor-not-allowed');
   }
 }
 
@@ -1117,9 +1138,26 @@ async function notifyParentSupplies(){
 }
 
 function logQuickIncident(type){
-  pushHistory('🩹', type + ' registrado — pendiente de firma', 'incidente');
+  const s = STUDENT_QUICK[currentQuickChild];
   const name = document.getElementById('qpName').textContent;
+  if(s.incidentLoggedToday){
+    showToast(`Ya se reportó un incidente hoy para ${name}. Usa el reporte detallado si necesitas agregar más información.`, 'info');
+    return;
+  }
+  s.incidentLoggedToday = true;
+  pushHistory('🩹', type + ' registrado — pendiente de firma', 'incidente');
   showToast(`${type} registrado para ${name} — pendiente de firma`, 'assignment_turned_in');
+  renderIncidentUi();
+}
+
+function renderIncidentUi(){
+  const s = STUDENT_QUICK[currentQuickChild];
+  const buttonsEl = document.getElementById('qpIncidentButtons');
+  const statusEl = document.getElementById('qpIncidentStatus');
+  if(!buttonsEl || !statusEl) return;
+  const already = !!s.incidentLoggedToday;
+  buttonsEl.classList.toggle('hidden', already);
+  statusEl.classList.toggle('hidden', !already);
 }
 
 function renderCardExtraBadges(id){
@@ -1432,6 +1470,7 @@ async function loadRealStudents(){
     const isEstancia = /estancia/i.test(student.room);
     STUDENT_QUICK[student.id] = {
       diaperTime: null, diaperType: null, medication: null, suppliesLow: null, napStart: null,
+      napStartLoggedToday: false, napEndLoggedToday: false, incidentLoggedToday: false,
       history: [], group: isEstancia ? 'estancia' : 'maternal',
     };
     renderCardExtraBadges(student.id);
@@ -1451,6 +1490,37 @@ async function loadRealStudents(){
   renderAttendanceSummary();
 }
 
+async function loadTodayOnceOnlyLogs(){
+  if(!sb || ALL_STUDENT_KEYS.length === 0) return;
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const { data: logs, error } = await sb.from('daily_logs')
+    .select('student_key, type, created_at')
+    .eq('log_date', todayISO)
+    .in('student_key', ALL_STUDENT_KEYS)
+    .in('type', ['incidente', 'siesta_inicio', 'siesta_fin']);
+  if(error || !logs) return;
+
+  logs.forEach(l => {
+    const s = STUDENT_QUICK[l.student_key];
+    if(!s) return;
+    if(l.type === 'incidente'){
+      s.incidentLoggedToday = true;
+    } else if(l.type === 'siesta_inicio'){
+      s.napStartLoggedToday = true;
+      if(!s.napEndLoggedToday) s.napStart = new Date(l.created_at).getTime();
+    } else if(l.type === 'siesta_fin'){
+      s.napEndLoggedToday = true;
+      s.napStart = null;
+    }
+  });
+
+  // Si el panel rápido ya está abierto (poco probable en la carga inicial), refrescar su estado.
+  if(currentQuickChild){
+    renderNapUi();
+    renderIncidentUi();
+  }
+}
+
 const EMERGENCY_DATA = [
   // Se llena con alumnos reales (sin datos médicos ficticios).
 ];
@@ -1459,6 +1529,7 @@ const EMERGENCY_DATA = [
   await loadTeachersAndSession();
   await loadRealStudents();
   await loadTodayAttendance();
+  await loadTodayOnceOnlyLogs();
 })();
 
 function openEmergencyMode(){
