@@ -3,10 +3,9 @@
 <html class="h-full" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Permisos - Gael</title>
+<title>Ajustes - Gael</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -110,33 +109,15 @@
         .material-symbols-outlined.fill {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
-        /* Subtle ambient shadows for tactile feel */
         .ambient-shadow {
             box-shadow: 0 4px 12px rgba(26, 43, 60, 0.05);
         }
-        .ambient-shadow-hover:hover {
-            box-shadow: 0 8px 20px rgba(26, 43, 60, 0.08);
-            transform: translateY(-2px);
-        }
-        
-        /* Input focus transition */
         .input-tactile {
             transition: all 0.2s ease;
         }
         .input-tactile:focus {
             border-color: #1b6b4a;
             box-shadow: 0 0 0 2px rgba(27, 107, 74, 0.2);
-        }
-        
-        /* Pulse animation for alerts */
-        @keyframes pulse-alert {
-            0% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(186, 26, 26, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
-        }
-        .pulse-urgent {
-            animation: pulse-alert 2s infinite;
         }
     </style>
 <link rel="manifest" href="manifest.json"/>
@@ -190,7 +171,7 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="gesti_n_de_personal.html"><span class="material-symbols-outlined" data-icon="badge">badge</span>
                 Personal
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined fill" data-icon="admin_panel_settings">admin_panel_settings</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="permisos.html"><span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
                 Permisos
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="usuarios.html"><span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
@@ -205,7 +186,7 @@
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="reportes.html"><span class="material-symbols-outlined" data-icon="assessment">assessment</span>
                 Reportes
             </a>
-<a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="ajustes.html"><span class="material-symbols-outlined" data-icon="settings">settings</span>
+<a class="flex items-center gap-sm px-sm py-sm rounded-xl bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary font-label-md text-label-md transition-colors" href="ajustes.html"><span class="material-symbols-outlined fill" data-icon="settings">settings</span>
                 Ajustes
             </a>
 <a class="flex items-center gap-sm px-sm py-sm rounded-xl text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-variant/20 font-label-md text-label-md transition-colors" href="inicio_de_sesi_n.html" onclick="handleLogout(event)"><span class="material-symbols-outlined" data-icon="logout">logout</span>
@@ -222,193 +203,131 @@
 <span class="material-symbols-outlined">menu</span>
 </button>
 <h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Gael</h1>
-<div class="flex items-center gap-sm ml-auto">
-<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors active:scale-95 duration-150 relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface"></span>
-</button>
-<button class="ml-2 w-8 h-8 rounded-full overflow-hidden border-2 border-primary-container active:scale-95 duration-150 transition-transform">
-<img alt="Administrator profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsWmv3FJXdqSPQ7A5BACLgbXVuSIz6G6zQYmOi_DbGdQQq-F2whbGmDxewBivalb9AF60kK44H-KnMBJJPwgAxTDw0C6J7yIZCKJl3M15nK14TtSnLDMN8cxhYoAS7bMODgoncOsu_UpkK-ySugnMu4mGp-XgFyKxK3TMGScx5jtHKK1AM4XQ734XiHXbVfTjyzJrzpTvonJGuYtMZcv2F2lm3pfICwoBhqtiYDKKlL7a3vKK9_l6e"/>
-</button>
-</div>
 </header>
 <!-- Canvas -->
 <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
-<div class="max-w-5xl mx-auto">
-<div class="mb-lg">
-<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Permisos de Acceso</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-1">Decide qué puede ver y usar cada persona del equipo dentro de la plataforma.</p>
+<div class="max-w-3xl mx-auto space-y-lg pb-xl">
+<div class="mb-md">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Ajustes</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Configura los datos generales de la guardería y tu cuenta.</p>
 </div>
 
-<div class="bg-primary-container/20 border border-primary/20 rounded-xl p-sm mb-lg flex items-start gap-sm">
-<span class="material-symbols-outlined text-primary shrink-0">info</span>
-<p class="font-body-md text-body-md text-sm text-on-surface">Los permisos se asignan de forma individual — cada persona puede tener una combinación distinta. Usa las plantillas rápidas como punto de partida y ajusta lo que necesites después.</p>
+<!-- No-admin banner -->
+<div id="noAdminBanner" class="hidden bg-error-container text-on-error-container rounded-xl p-md flex items-start gap-sm">
+<span class="material-symbols-outlined shrink-0">lock</span>
+<p class="font-body-md text-body-md">Solo una cuenta de administrador puede ver y cambiar estos ajustes.</p>
 </div>
 
-<div id="permissionsGrid" class="space-y-md"></div>
+<div id="ajustesContent" class="hidden space-y-lg">
 
-<div class="mt-lg flex flex-col sm:flex-row justify-end gap-sm">
-<button onclick="saveAllPermissions()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">save</span>
-Guardar todos los cambios
+<!-- Escuela -->
+<section class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-sm flex items-center gap-2"><span class="material-symbols-outlined">school</span> Escuela</h3>
+<div class="flex flex-col sm:flex-row gap-md items-start">
+<div class="flex flex-col items-center gap-sm shrink-0">
+<div class="w-24 h-24 rounded-2xl bg-surface-container overflow-hidden border border-outline-variant/40 flex items-center justify-center">
+<img id="logoPreview" alt="Logo de la escuela" class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
+</div>
+<label class="cursor-pointer text-primary font-label-sm text-label-sm hover:underline">
+Cambiar logo
+<input id="logoFileInput" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden"/>
+</label>
+<span id="logoUploadStatus" class="font-label-sm text-[11px] text-on-surface-variant"></span>
+</div>
+<div class="flex-1 w-full space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre de la escuela</label>
+<input id="schoolName" type="text" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contacto -->
+<section class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-sm flex items-center gap-2"><span class="material-symbols-outlined">call</span> Datos de contacto</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Teléfono</label>
+<input id="schoolPhone" type="tel" placeholder="(656) 251-2926" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Dirección</label>
+<input id="schoolAddress" type="text" placeholder="Calle, colonia, ciudad" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+<div class="sm:col-span-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Horario</label>
+<input id="schoolHours" type="text" placeholder="Lunes a Viernes: 7:00 AM - 7:00 PM" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+</div>
+<p class="font-label-sm text-[11px] text-on-surface-variant mt-sm">Estos datos se guardan en la base de datos para uso futuro del sitio; hoy `contacto.html` e `index.html` todavía muestran el texto fijo que se configuró al lanzamiento.</p>
+</section>
+
+<!-- Marca -->
+<section class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-sm flex items-center gap-2"><span class="material-symbols-outlined">palette</span> Marca</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Color primario</label>
+<div class="flex items-center gap-sm">
+<input id="primaryColor" type="color" class="w-12 h-10 rounded-lg border border-outline-variant/50 cursor-pointer bg-surface"/>
+<input id="primaryColorHex" type="text" class="input-tactile flex-1 px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface font-mono text-sm"/>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Color secundario</label>
+<div class="flex items-center gap-sm">
+<input id="secondaryColor" type="color" class="w-12 h-10 rounded-lg border border-outline-variant/50 cursor-pointer bg-surface"/>
+<input id="secondaryColorHex" type="text" class="input-tactile flex-1 px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface font-mono text-sm"/>
+</div>
+</div>
+</div>
+<p class="font-label-sm text-[11px] text-on-surface-variant mt-sm">Estos colores se guardan para uso futuro; hoy no cambian automáticamente el diseño de las páginas ya construidas — aplicarlos a todo el sitio sería un trabajo aparte.</p>
+</section>
+
+<div class="flex justify-end">
+<button onclick="saveSchoolSettings()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span> Guardar cambios de la escuela
 </button>
+</div>
+
+<!-- Mi cuenta -->
+<section class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-sm flex items-center gap-2"><span class="material-symbols-outlined">account_circle</span> Mi cuenta</h3>
+<div class="space-y-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nombre completo</label>
+<input id="myName" type="text" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Correo</label>
+<input id="myEmail" type="email" disabled class="w-full px-4 py-2.5 border-2 border-outline-variant/30 rounded-xl bg-surface-container text-on-surface-variant cursor-not-allowed"/>
+</div>
+<div class="flex justify-end">
+<button onclick="saveMyProfile()" class="bg-primary text-on-primary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">save</span> Guardar mi nombre
+</button>
+</div>
+<hr class="border-surface-variant"/>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Nueva contraseña</label>
+<input id="newPassword" type="password" placeholder="Mínimo 6 caracteres" class="input-tactile w-full px-4 py-2.5 border-2 border-outline-variant/50 rounded-xl focus:outline-none bg-surface"/>
+</div>
+<div class="flex justify-end">
+<button onclick="changeMyPassword()" class="bg-secondary text-on-secondary rounded-xl py-sm px-lg font-label-md text-label-md ambient-shadow hover:bg-secondary/90 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">lock_reset</span> Cambiar contraseña
+</button>
+</div>
+</div>
+</section>
+
 </div>
 </div>
 </main>
 </div>
 
 <script>
-const MODULES = [
-  { key: 'alumnos', label: 'Alumnos', icon: 'groups' },
-  { key: 'registro', label: 'Registro Diario', icon: 'edit_note' },
-  { key: 'fichas', label: 'Fichas Médicas', icon: 'medical_services' },
-  { key: 'altaDeNinos', label: 'Dar de Alta', icon: 'person_add' },
-  { key: 'finanzas', label: 'Finanzas', icon: 'payments' },
-  { key: 'personal', label: 'Personal', icon: 'badge' },
-  { key: 'reportes', label: 'Reportes', icon: 'assessment' },
-];
-
-const STAFF_PERMISSIONS = {};
-// Nota: `sb` (cliente de Supabase) se crea en el script al final del archivo.
-// Las funciones de abajo lo usan dentro de su cuerpo, que solo se ejecuta
-// despues de que todos los <script> de la pagina ya corrieron.
-
-const TEMPLATES = {
-  admin: { alumnos: true, registro: true, fichas: true, altaDeNinos: true, finanzas: true, personal: true, reportes: true },
-  maestra: { alumnos: true, registro: true, fichas: true, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-  ninguno: { alumnos: false, registro: false, fichas: false, altaDeNinos: false, finanzas: false, personal: false, reportes: false },
-};
-
-function countActive(perms){
-  return Object.values(perms).filter(Boolean).length;
-}
-
-function renderPermissions(){
-  const grid = document.getElementById('permissionsGrid');
-  if(Object.keys(STAFF_PERMISSIONS).length === 0){
-    grid.innerHTML = `
-      <div class="text-center py-lg">
-        <p class="text-on-surface-variant font-body-md text-sm mb-sm">Aún no hay personal (maestras/staff) registrado, por eso no hay nada que mostrar aquí.<br/>Las cuentas de administrador no aparecen en esta lista porque ya tienen acceso completo.</p>
-        <button onclick="location.href='gesti_n_de_personal.html'" class="inline-flex items-center gap-2 bg-primary text-on-primary rounded-xl py-sm px-md font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors">
-          <span class="material-symbols-outlined">person_add</span> Dar de alta al primer miembro del personal
-        </button>
-      </div>`;
-    return;
-  }
-  grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
-    <div class="bg-surface rounded-xl p-md border border-outline-variant/30 shadow-[0_4px_12px_rgba(26,43,60,0.05)]">
-      <div class="flex flex-wrap items-center justify-between gap-sm mb-sm">
-        <div class="flex items-center gap-sm">
-          <div class="w-11 h-11 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md shrink-0">${staff.initials}</div>
-          <div>
-            <p class="font-label-md text-label-md text-on-surface">${staff.name}</p>
-            <p class="font-body-md text-[13px] text-on-surface-variant">${staff.role}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full" id="permCount-${key}">${countActive(staff.perms)}/${MODULES.length} módulos</span>
-          <div class="relative">
-            <select onchange="applyTemplate('${key}', this.value); this.selectedIndex=0;" class="text-xs font-label-sm border border-outline-variant rounded-lg px-2 py-1.5 bg-surface-container-low text-on-surface-variant appearance-none pr-6 cursor-pointer">
-              <option value="">Plantilla rápida…</option>
-              <option value="admin">Administrador (todo)</option>
-              <option value="maestra">Maestra (básico)</option>
-              <option value="ninguno">Ninguno</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        ${MODULES.map(m => `
-          <label class="flex items-center gap-2 bg-surface-container-low rounded-lg px-3 py-2 cursor-pointer hover:bg-surface-container transition-colors">
-            <input type="checkbox" ${staff.perms[m.key] ? 'checked' : ''} onchange="togglePermission('${key}', '${m.key}', this.checked)" class="w-4 h-4 accent-[#1b6b4a] shrink-0"/>
-            <span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">${m.icon}</span>
-            <span class="font-label-sm text-label-sm text-on-surface truncate">${m.label}</span>
-          </label>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-async function togglePermission(staffKey, moduleKey, value){
-  STAFF_PERMISSIONS[staffKey].perms[moduleKey] = value;
-  document.getElementById('permCount-' + staffKey).textContent = countActive(STAFF_PERMISSIONS[staffKey].perms) + '/' + MODULES.length + ' módulos';
-  const moduleLabel = MODULES.find(m => m.key === moduleKey).label;
-
-  const { error } = await sb.from('staff').update({ permissions: STAFF_PERMISSIONS[staffKey].perms }).eq('id', staffKey);
-  if(error){
-    showToast('No se pudo guardar: ' + error.message, 'error');
-    return;
-  }
-  showToast(`${value ? 'Acceso otorgado' : 'Acceso quitado'}: ${moduleLabel} para ${STAFF_PERMISSIONS[staffKey].name}`, value ? 'check_circle' : 'block');
-}
-
-async function applyTemplate(staffKey, templateKey){
-  if(!templateKey) return;
-  STAFF_PERMISSIONS[staffKey].perms = { ...TEMPLATES[templateKey] };
-  renderPermissions();
-  const templateNames = { admin: 'Administrador', maestra: 'Maestra', ninguno: 'Ninguno' };
-
-  const { error } = await sb.from('staff').update({ permissions: STAFF_PERMISSIONS[staffKey].perms }).eq('id', staffKey);
-  if(error){
-    showToast('No se pudo guardar la plantilla: ' + error.message, 'error');
-    return;
-  }
-  showToast(`Plantilla "${templateNames[templateKey]}" aplicada a ${STAFF_PERMISSIONS[staffKey].name}`, 'auto_fix_high');
-}
-
-async function saveAllPermissions(){
-  const entries = Object.entries(STAFF_PERMISSIONS);
-  if(entries.length === 0){
-    showToast('No hay personal registrado para guardar', 'info');
-    return;
-  }
-  const results = await Promise.all(entries.map(([id, staff]) =>
-    sb.from('staff').update({ permissions: staff.perms }).eq('id', id)
-  ));
-  const failed = results.filter(r => r.error);
-  if(failed.length > 0){
-    showToast(`No se pudieron guardar ${failed.length} de ${entries.length} registro(s)`, 'error');
-    return;
-  }
-  showToast('Permisos guardados para todo el equipo', 'save');
-}
-
-function staffInitialsForPerms(name){
-  return (name || '').trim().split(/\s+/).map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
-}
-
-function normalizeStaffPerms(raw){
-  const perms = {};
-  MODULES.forEach(m => { perms[m.key] = !!(raw && raw[m.key]); });
-  return perms;
-}
-
-async function loadPermissions(){
-  if(!sb) return;
-  const { data, error } = await sb.from('staff')
-    .select('id, permissions, profiles(full_name, role)')
-    .eq('status', 'activo')
-    .order('created_at', { ascending: false });
-
-  if(error){
-    showToast('No se pudieron cargar los permisos: ' + error.message, 'error');
-    renderPermissions();
-    return;
-  }
-
-  (data || []).forEach(row => {
-    const fullName = (row.profiles && row.profiles.full_name) || 'Sin nombre';
-    const roleLabel = (row.profiles && row.profiles.role === 'admin') ? 'Administrador' : 'Maestra / Staff';
-    STAFF_PERMISSIONS[row.id] = {
-      name: fullName,
-      role: roleLabel,
-      initials: staffInitialsForPerms(fullName),
-      perms: normalizeStaffPerms(row.permissions),
-    };
-  });
-  renderPermissions();
-}
+const MODULES_PLACEHOLDER = null; // (sin uso; mantenido por consistencia de estilo con otras páginas)
 </script>
 
 <!-- Shared Toast Component -->
@@ -459,30 +378,157 @@ const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+let currentUserId = null;
+
 async function handleLogout(event){
   event.preventDefault();
   await sb.auth.signOut();
   window.location.href = 'inicio_de_sesi_n.html';
 }
 
-async function requireStaffSession(){
+async function requireAdminSession(){
   const { data: { session } } = await sb.auth.getSession();
   if(!session){
     window.location.href = 'inicio_de_sesi_n.html';
     return false;
   }
-  const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
-  if(!profile || (profile.role !== 'staff' && profile.role !== 'admin')){
-    window.location.href = 'inicio_de_sesi_n.html';
+  const { data: profile } = await sb.from('profiles').select('role, full_name, email').eq('id', session.user.id).single();
+  if(!profile || profile.role !== 'admin'){
+    document.getElementById('noAdminBanner').classList.remove('hidden');
     return false;
   }
+  currentUserId = session.user.id;
+  document.getElementById('myName').value = profile.full_name || '';
+  document.getElementById('myEmail').value = profile.email || session.user.email || '';
   return true;
 }
 
-async function initPermisosPage(){
-  if(!(await requireStaffSession())) return;
-  loadPermissions();
+function hexToInputSafe(hex, fallback){
+  if(hex && /^#([0-9a-f]{6})$/i.test(hex)) return hex;
+  return fallback;
 }
-initPermisosPage();
+
+async function loadSchoolSettings(){
+  const { data, error } = await sb.from('school_settings').select('*').eq('id', true).maybeSingle();
+  if(error || !data){
+    showToast('No se pudo cargar la configuración de la escuela', 'error');
+    return;
+  }
+  document.getElementById('schoolName').value = data.school_name || '';
+  document.getElementById('schoolPhone').value = data.phone || '';
+  document.getElementById('schoolAddress').value = data.address || '';
+  document.getElementById('schoolHours').value = data.hours_text || '';
+  const primary = hexToInputSafe(data.primary_color, '#1b6b4a');
+  const secondary = hexToInputSafe(data.secondary_color, '#1f667a');
+  document.getElementById('primaryColor').value = primary;
+  document.getElementById('primaryColorHex').value = primary;
+  document.getElementById('secondaryColor').value = secondary;
+  document.getElementById('secondaryColorHex').value = secondary;
+  if(data.logo_url){
+    document.getElementById('logoPreview').src = data.logo_url;
+  }
+}
+
+document.getElementById('primaryColor').addEventListener('input', (e) => {
+  document.getElementById('primaryColorHex').value = e.target.value;
+});
+document.getElementById('secondaryColor').addEventListener('input', (e) => {
+  document.getElementById('secondaryColorHex').value = e.target.value;
+});
+document.getElementById('primaryColorHex').addEventListener('change', (e) => {
+  if(/^#([0-9a-f]{6})$/i.test(e.target.value)) document.getElementById('primaryColor').value = e.target.value;
+});
+document.getElementById('secondaryColorHex').addEventListener('change', (e) => {
+  if(/^#([0-9a-f]{6})$/i.test(e.target.value)) document.getElementById('secondaryColor').value = e.target.value;
+});
+
+document.getElementById('logoFileInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const statusEl = document.getElementById('logoUploadStatus');
+  statusEl.textContent = 'Subiendo...';
+
+  const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+  const path = `logo-${Date.now()}.${ext}`;
+
+  const { error: uploadError } = await sb.storage.from('school-assets').upload(path, file, { upsert: true });
+  if(uploadError){
+    statusEl.textContent = '';
+    showToast('No se pudo subir el logo: ' + uploadError.message, 'error');
+    return;
+  }
+  const { data: publicUrlData } = sb.storage.from('school-assets').getPublicUrl(path);
+  const logoUrl = publicUrlData.publicUrl;
+
+  const { error: updateError } = await sb.from('school_settings').update({
+    logo_url: logoUrl,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUserId,
+  }).eq('id', true);
+
+  statusEl.textContent = '';
+  if(updateError){
+    showToast('El logo se subió pero no se pudo guardar: ' + updateError.message, 'error');
+    return;
+  }
+  document.getElementById('logoPreview').src = logoUrl;
+  showToast('Logo actualizado', 'check_circle');
+});
+
+async function saveSchoolSettings(){
+  const payload = {
+    school_name: document.getElementById('schoolName').value.trim(),
+    phone: document.getElementById('schoolPhone').value.trim(),
+    address: document.getElementById('schoolAddress').value.trim(),
+    hours_text: document.getElementById('schoolHours').value.trim(),
+    primary_color: document.getElementById('primaryColorHex').value.trim(),
+    secondary_color: document.getElementById('secondaryColorHex').value.trim(),
+    updated_at: new Date().toISOString(),
+    updated_by: currentUserId,
+  };
+  const { error } = await sb.from('school_settings').update(payload).eq('id', true);
+  if(error){
+    showToast('No se pudo guardar: ' + error.message, 'error');
+    return;
+  }
+  showToast('Configuración de la escuela guardada', 'check_circle');
+}
+
+async function saveMyProfile(){
+  const name = document.getElementById('myName').value.trim();
+  if(!name){
+    showToast('El nombre no puede estar vacío', 'error');
+    return;
+  }
+  const { error } = await sb.from('profiles').update({ full_name: name }).eq('id', currentUserId);
+  if(error){
+    showToast('No se pudo guardar tu nombre: ' + error.message, 'error');
+    return;
+  }
+  showToast('Nombre actualizado', 'check_circle');
+}
+
+async function changeMyPassword(){
+  const pass = document.getElementById('newPassword').value;
+  if(!pass || pass.length < 6){
+    showToast('La contraseña debe tener al menos 6 caracteres', 'error');
+    return;
+  }
+  const { error } = await sb.auth.updateUser({ password: pass });
+  if(error){
+    showToast('No se pudo cambiar la contraseña: ' + error.message, 'error');
+    return;
+  }
+  document.getElementById('newPassword').value = '';
+  showToast('Contraseña actualizada', 'check_circle');
+}
+
+async function initAjustesPage(){
+  const ok = await requireAdminSession();
+  if(!ok) return;
+  document.getElementById('ajustesContent').classList.remove('hidden');
+  loadSchoolSettings();
+}
+initAjustesPage();
 </script>
 </body></html>
