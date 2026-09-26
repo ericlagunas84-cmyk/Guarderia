@@ -286,7 +286,13 @@ function countActive(perms){
 function renderPermissions(){
   const grid = document.getElementById('permissionsGrid');
   if(Object.keys(STAFF_PERMISSIONS).length === 0){
-    grid.innerHTML = '<p class="text-on-surface-variant font-body-md text-sm p-md">Aún no hay personal registrado.</p>';
+    grid.innerHTML = `
+      <div class="text-center py-lg">
+        <p class="text-on-surface-variant font-body-md text-sm mb-sm">Aún no hay personal (maestras/staff) registrado, por eso no hay nada que mostrar aquí.<br/>Las cuentas de administrador no aparecen en esta lista porque ya tienen acceso completo.</p>
+        <button onclick="location.href='gesti_n_de_personal.html'" class="inline-flex items-center gap-2 bg-primary text-on-primary rounded-xl py-sm px-md font-label-md text-label-md ambient-shadow hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined">person_add</span> Dar de alta al primer miembro del personal
+        </button>
+      </div>`;
     return;
   }
   grid.innerHTML = Object.entries(STAFF_PERMISSIONS).map(([key, staff]) => `
