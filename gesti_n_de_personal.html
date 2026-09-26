@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
+        window.TAILWIND_CONFIG = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -101,7 +101,8 @@
                     }
                 }
             }
-        }
+        };
+        tailwind.config = window.TAILWIND_CONFIG;
     </script>
 <style>
         .material-symbols-outlined {
@@ -150,7 +151,7 @@
 <span class="material-symbols-outlined text-primary" data-weight="fill">child_care</span>
 </div>
 <div>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</h1>
 <p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
 </div>
 </div>
@@ -220,7 +221,7 @@
 </button>
 <!-- Brand / Mobile Title (Visible only on mobile) -->
 <div class="md:hidden flex items-center gap-sm">
-<h1 class="font-headline-md text-[20px] font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<h1 class="font-headline-md text-[20px] font-bold text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</h1>
 </div>
 <!-- Search (Left aligned on desktop) -->
 <div class="hidden md:flex items-center bg-surface-container-low rounded-full px-sm py-xs border border-surface-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all w-96">
@@ -892,4 +893,5 @@ async function handleLogout(event){
 
 loadStaffList();
 </script>
+<script src="js/school-branding.js"></script>
 </body></html>

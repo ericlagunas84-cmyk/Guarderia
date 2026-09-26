@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
+        window.TAILWIND_CONFIG = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -101,7 +101,8 @@
                     }
                 }
             }
-        }
+        };
+        tailwind.config = window.TAILWIND_CONFIG;
     </script>
 <style>
         .material-symbols-outlined {
@@ -156,10 +157,10 @@
 
 <div class="flex items-center gap-sm px-sm mb-lg">
 <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
-<img alt="Gael Logo" class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
+<img alt="Gael Logo" data-brand-logo class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
 </div>
 <div>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</h1>
 <p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
 </div>
 </div>
@@ -232,7 +233,7 @@
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
 <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-2 border-transparent rounded-full focus:bg-surface focus:border-primary focus:outline-none transition-all text-sm font-body-md text-on-surface placeholder:text-on-surface-variant" placeholder="Buscar alumnos, expedientes médicos..." type="text"/>
 </div>
-<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Gael</h1>
+<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary" data-brand-name>Gael</h1>
 </div>
 <div class="flex items-center gap-sm">
 <button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors active:scale-95 duration-150 relative">
@@ -1214,4 +1215,5 @@ async function handleLogout(event){
 
 loadRealMedStudents();
 </script>
+<script src="js/school-branding.js"></script>
 </body></html>

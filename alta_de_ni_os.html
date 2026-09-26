@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
+        window.TAILWIND_CONFIG = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -101,7 +101,8 @@
                     }
                 }
             }
-        }
+        };
+        tailwind.config = window.TAILWIND_CONFIG;
     </script>
 <style>
         .material-symbols-outlined {
@@ -156,10 +157,10 @@
 
 <div class="flex items-center gap-sm px-sm mb-lg">
 <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
-<img alt="Gael Logo" class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
+<img alt="Gael Logo" data-brand-logo class="w-full h-full object-cover" src="assets/logo-gael-icon.png"/>
 </div>
 <div>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gael</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</h1>
 <p class="font-label-sm text-label-sm text-on-surface-variant">Panel de Administración</p>
 </div>
 </div>
@@ -221,7 +222,7 @@
 <button onclick="toggleSidebar()" class="md:hidden text-on-surface p-2 rounded-full hover:bg-surface-container-low transition-colors">
 <span class="material-symbols-outlined">menu</span>
 </button>
-<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Gael</h1>
+<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary" data-brand-name>Gael</h1>
 <div class="flex items-center gap-sm ml-auto">
 <button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors active:scale-95 duration-150 relative">
 <span class="material-symbols-outlined">notifications</span>
@@ -575,4 +576,5 @@ async function handleLogout(event){
   window.location.href = 'inicio_de_sesi_n.html';
 }
 </script>
+<script src="js/school-branding.js"></script>
 </body></html>

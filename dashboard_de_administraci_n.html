@@ -17,7 +17,7 @@
         }
     </style>
 <script id="tailwind-config">
-        tailwind.config = {
+        window.TAILWIND_CONFIG = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -109,7 +109,8 @@
                     }
                 }
             }
-        }
+        };
+        tailwind.config = window.TAILWIND_CONFIG;
     </script>
 <link href="manifest.json" rel="manifest"/>
 <meta content="#1B6B4A" name="theme-color"/>
@@ -130,7 +131,7 @@
 <div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-sm shadow-sm">
 <span class="material-symbols-outlined fill text-on-primary-container text-[32px]" data-icon="child_care">child_care</span>
 </div>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim text-center">Gael</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim text-center" data-brand-name>Gael</h1>
 <p class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant text-center mt-xs">Panel de Administración</p>
 </div>
 <nav class="flex-1 space-y-sm overflow-y-auto">
@@ -192,7 +193,7 @@
 <button onclick="toggleSidebar()" class="p-xs text-on-surface hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
 <span class="material-symbols-outlined" data-icon="menu">menu</span>
 </button>
-<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">Gael</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</span>
 </div>
 <div class="hidden md:flex flex-1 max-w-md ml-lg">
 <div class="relative w-full">
@@ -471,4 +472,5 @@ async function loadDashboardStats(){
 }
 loadDashboardStats();
 </script>
+<script src="js/school-branding.js"></script>
 </body></html>

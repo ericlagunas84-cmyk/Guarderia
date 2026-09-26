@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
+        window.TAILWIND_CONFIG = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -103,7 +103,8 @@
                     }
                 }
             }
-        }
+        };
+        tailwind.config = window.TAILWIND_CONFIG;
     </script>
 <style>
         .scrollbar-hide::-webkit-scrollbar {
@@ -130,7 +131,7 @@
 <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest shrink-0 border border-outline-variant">
 <img class="w-full h-full object-cover" data-alt="A professional, warm, and approachable close-up portrait of a female teacher in her 30s smiling gently. She has shoulder-length wavy hair and is wearing a soft beige sweater. The background is a minimalist, brightly lit interior classroom, creating a dependable and nurturing aesthetic for a childcare app user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoq1FasMsFgGPxguVxJ__zI1cfCeesfV7vTpxaAFSWFPQpkDMhWA4mitIJVgYfg5qhFtP1GVCFRYNuMM5MLJiwRXdSq1JwJb_6gLk0aEikDwYDzUWK3O-JaGHLAl2eywdrXN02KRo_4flum5S2kdnq5QRcUPBpX0eQOcy4GRSmw-NeN3skq4dej01124kzLllt2WrmDl44AMjZV7wOLYKsld1OdEXROymECNYRiCSr4ZsAmOjkQRIl"/>
 </div>
-<h1 class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim">Gael</h1>
+<h1 class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim" data-brand-name>Gael</h1>
 </div>
 <button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-95 transition-transform duration-200 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
 <span class="material-symbols-outlined">notifications</span>
@@ -1565,6 +1566,7 @@ function closeEmergencyMode(){
   document.getElementById('emergencyModal').classList.add('hidden');
 }
 </script>
+<script src="js/school-branding.js"></script>
 <!-- JSON Component: BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_de_administraci_n.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="listado_de_ni_os.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">groups</span><span class="font-label-sm text-[10px] text-center w-full truncate">Alumnos</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="registro_diario_beb_s.html"><span class="material-symbols-outlined mb-1">edit_note</span><span class="font-label-sm text-[10px] text-center w-full truncate">Registro</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="fichas_m_dicas_y_salud.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Fichas</span></a></nav>
 <!-- Safe area padding for older devices without env(safe-area-inset-bottom) support naturally mapped in this generic tailwind -->
