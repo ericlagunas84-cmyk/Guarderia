@@ -113,10 +113,8 @@
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(26,43,60,0.05)] rounded-t-xl border-t border-outline-variant/10"><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="dashboard_principal.html"><span class="material-symbols-outlined mb-1">dashboard</span><span class="font-label-sm text-[10px] text-center w-full truncate">Inicio</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="salud_y_seguridad.html"><span class="material-symbols-outlined mb-1">medical_services</span><span class="font-label-sm text-[10px] text-center w-full truncate">Salud</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="seguimiento_estancia.html"><span class="material-symbols-outlined mb-1">distance</span><span class="font-label-sm text-[10px] text-center w-full truncate">Estancia</span></a><a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-90 transition-all duration-200 ease-out flex-1 max-w-[84px]" href="mensajer_a.html"><span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">mail</span><span class="font-label-sm text-[10px] text-center w-full truncate">Mensajes</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors rounded-full flex-1 max-w-[84px]" href="finanzas_y_calendario.html"><span class="material-symbols-outlined mb-1">payments</span><span class="font-label-sm text-[10px] text-center w-full truncate">Pagos</span></a></nav>
 
 <script>
-const MESSAGES = [
-  // El historial de mensajes reales se agregará aquí cuando la mensajería esté conectada.
-];
-const REPLY = '¡Recibido! Te aviso cualquier novedad. 😊';
+let MESSAGES = [];
+let currentStudentId = null;
 
 function renderThread(){
   const thread = document.getElementById('chatThread');
@@ -147,21 +145,29 @@ function renderThread(){
   thread.scrollTop = thread.scrollHeight;
 }
 
-function sendMessage(){
+async function sendMessage(){
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if(!text) return;
+  if(!currentStudentId){ showToast('Espera a que cargue la conversación', 'error'); return; }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ showToast('Inicia sesión para enviar mensajes', 'error'); return; }
+
+  const { error } = await sb.from('messages').insert({
+    student_id: currentStudentId,
+    sender_id: session.user.id,
+    sender_role: 'padre',
+    body: text,
+  });
+  if(error){
+    showToast('No se pudo enviar el mensaje. Intenta de nuevo.', 'error');
+    return;
+  }
+
   const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
   MESSAGES.push({ from: 'me', text, time });
   renderThread();
   input.value = '';
-
-  setTimeout(() => {
-    const replyTime = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-    MESSAGES.push({ from: 'them', text: REPLY, time: replyTime });
-    renderThread();
-    showToast('Nuevo mensaje de tu maestra', 'mail');
-  }, 1200);
 }
 
 renderThread();
@@ -173,11 +179,24 @@ async function loadChatContext(){
   if(!session){ label.textContent = 'Inicia sesión para ver tus mensajes'; return; }
   const { data: links } = await sb
     .from('parent_student_links')
-    .select('students!inner(full_name, room)')
+    .select('student_id, students!inner(full_name, room)')
     .eq('students.status', 'activo');
   if(!links || links.length === 0){ label.textContent = 'Sin alumno vinculado'; return; }
   const s = links[0].students;
+  currentStudentId = links[0].student_id;
   label.textContent = (s.room ? s.room + ' · ' : '') + s.full_name.split(' ')[0];
+
+  const { data: msgs } = await sb
+    .from('messages')
+    .select('body, sender_role, created_at')
+    .eq('student_id', currentStudentId)
+    .order('created_at', { ascending: true });
+  MESSAGES = (msgs || []).map(m => ({
+    from: m.sender_role === 'padre' ? 'me' : 'them',
+    text: m.body,
+    time: new Date(m.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+  }));
+  renderThread();
 }
 </script>
 

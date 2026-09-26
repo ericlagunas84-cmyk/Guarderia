@@ -148,7 +148,7 @@
 <img alt="Child and Parent Profile" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC9EuP_ePFv42zQknvsUES949Xfo9o6dsb8IDGEWuSsNADGwM182lLFpwoSGksWrXD0-3zjD4KyYp4mJpM5hdaxXZ0Xbb1gx5HlbhjkJmk4nYAkrwhxhHTmX8qr3y3wOsZiGyWacpGDP7YJkYPaTtmnm1H_sypDh98xExJ1qBqpaRPNwQQy41GSI9jf5NssXklHf0s0_w3f6ndJT7SqDr3vb1JN-_08ywWjtkaLJXMVnJfRTtdkiUN"/>
 <div>
 <h2 class="font-headline-md text-headline-md text-primary">Mi cuenta</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Sin alumno vinculado</p>
+<p class="font-body-md text-body-md text-on-surface-variant" id="sidebarChildName">Sin alumno vinculado</p>
 </div>
 </div>
 <div class="flex flex-col gap-2">
@@ -158,144 +158,30 @@
 
 <!-- Main Content Canvas -->
 <main class="flex-1 w-full md:pl-80 px-margin-mobile md:px-margin-desktop py-md md:py-lg flex flex-col gap-lg">
+<!-- Aviso: cuenta de padre sin hijo vinculado todavía -->
+<div id="noChildLinkedBanner" class="hidden bg-tertiary-container/30 border border-tertiary/30 rounded-xl p-md mb-md text-center max-w-md mx-auto">
+<span class="material-symbols-outlined text-tertiary text-3xl">family_restroom</span>
+<p class="font-label-md text-label-md text-on-surface mt-1" id="noChildLinkedTitle">Tu cuenta todavía no está vinculada a ningún alumno</p>
+<p class="font-body-md text-[13px] text-on-surface-variant mt-1" id="noChildLinkedDetail">Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su información aquí.</p>
+</div>
+<div id="estanciaPageContent">
 <!-- Header Section -->
 <section class="flex flex-col gap-xs">
 <div class="flex items-center gap-sm">
 <h2 class="font-headline-md text-headline-md text-on-surface">Módulo Estancia</h2>
 <span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-3 py-1 rounded-full uppercase">Activo</span>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant">Seguimiento de actividades y estancia para niños mayores.</p>
+<p class="font-body-md text-body-md text-on-surface-variant" id="estanciaChildLabel">Seguimiento de actividades y estancia para niños mayores.</p>
 </section>
+<!-- Aviso honesto: talleres y costo de estancia aún no están conectados -->
+<div class="bg-tertiary-container/20 border border-tertiary/20 rounded-xl p-md flex items-start gap-sm">
+<span class="material-symbols-outlined text-tertiary shrink-0">info</span>
+<p class="font-body-md text-[13px] text-on-surface">Las actividades del día y el costo acumulado de Estancia todavía no están conectados a un registro real — estarán disponibles próximamente. Por ahora puedes avisar la recogida y registrar el ánimo de hoy, y ambos sí llegan de verdad al staff.</p>
+</div>
 <!-- Bento Grid Layout -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-md">
-<!-- Tareas y Talleres (Col 1 - 8) -->
-<section class="col-span-1 md:col-span-8 bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-md transition-shadow hover:shadow-[0_8px_20px_0_rgba(26,43,60,0.08)]">
-<div class="flex justify-between items-center">
-<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-base">
-<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">palette</span>
-                        Tareas y Talleres
-                    </h3>
-<button onclick="toggleStayHistory()" id="stayHistoryBtn" class="text-primary font-label-md text-label-md hover:underline flex items-center gap-xs">
-<span>Ver Historial</span>
-<span id="stayHistoryIcon" class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-</div>
-<div class="flex flex-col gap-sm">
-<!-- Arte -->
-<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-secondary">
-<div class="bg-secondary-container text-on-secondary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">brush</span>
-</div>
-<div class="flex-1">
-<h4 class="font-label-md text-label-md text-on-surface">Taller de Arte</h4>
-<p class="font-body-md text-sm text-on-surface-variant">Pintura con acuarelas</p>
-</div>
-<div class="flex items-center gap-sm shrink-0">
-<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
-<div class="bg-primary h-full w-full rounded-full"></div>
-</div>
-<span class="font-label-sm text-label-sm text-primary">Completado</span>
-</div>
-</div>
-<!-- Inglés -->
-<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-primary">
-<div class="bg-primary-container text-on-primary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">language</span>
-</div>
-<div class="flex-1">
-<h4 class="font-label-md text-label-md text-on-surface">Inglés Avanzado</h4>
-<p class="font-body-md text-sm text-on-surface-variant">Vocabulario de animales</p>
-</div>
-<div class="flex items-center gap-sm shrink-0">
-<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
-<div class="bg-secondary h-full w-1/2 rounded-full"></div>
-</div>
-<span class="font-label-sm text-label-sm text-secondary">En curso</span>
-</div>
-</div>
-<!-- Música -->
-<div class="bg-surface-container-low rounded-lg p-sm flex items-center gap-md border-l-4 border-tertiary opacity-70">
-<div class="bg-tertiary-container text-on-tertiary-container w-12 h-12 rounded-full flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined">music_note</span>
-</div>
-<div class="flex-1">
-<h4 class="font-label-md text-label-md text-on-surface">Música</h4>
-<p class="font-body-md text-sm text-on-surface-variant">Práctica de flauta</p>
-</div>
-<div class="flex items-center gap-sm shrink-0">
-<div class="bg-surface-container-highest h-2 w-24 rounded-full overflow-hidden">
-<div class="bg-outline h-full w-0 rounded-full"></div>
-</div>
-<span class="font-label-sm text-label-sm text-outline">Pendiente</span>
-</div>
-</div>
-</div>
-
-<!-- Historial de Estancia (oculto por defecto) -->
-<div id="stayHistoryPanel" class="hidden mt-md pt-md border-t border-surface-container flex flex-col gap-sm">
-<h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Días anteriores</h4>
-<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
-<div>
-<p class="font-label-md text-label-md text-on-surface">Ayer, 17 oct</p>
-<p class="font-body-md text-sm text-on-surface-variant">Entrada 12:45 · Salida 17:30 · Arte, Música</p>
-</div>
-<div class="text-right shrink-0">
-<p class="font-label-md text-label-md text-on-surface">4h 45m</p>
-<p class="font-body-md text-sm text-primary font-semibold">$28.50</p>
-</div>
-</div>
-<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
-<div>
-<p class="font-label-md text-label-md text-on-surface">Mar, 15 oct</p>
-<p class="font-body-md text-sm text-on-surface-variant">Entrada 13:15 · Salida 16:50 · Inglés, Arte</p>
-</div>
-<div class="text-right shrink-0">
-<p class="font-label-md text-label-md text-on-surface">3h 35m</p>
-<p class="font-body-md text-sm text-primary font-semibold">$21.50</p>
-</div>
-</div>
-<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low">
-<div>
-<p class="font-label-md text-label-md text-on-surface">Lun, 14 oct</p>
-<p class="font-body-md text-sm text-on-surface-variant">Entrada 12:30 · Salida 18:00 · Música, Inglés, Arte</p>
-</div>
-<div class="text-right shrink-0">
-<p class="font-label-md text-label-md text-on-surface">5h 30m</p>
-<p class="font-body-md text-sm text-primary font-semibold">$33.00</p>
-</div>
-</div>
-<div class="flex justify-between items-center mt-xs px-sm">
-<span class="font-label-sm text-label-sm text-on-surface-variant">Total de la semana</span>
-<span class="font-label-md text-label-md text-primary font-bold">$83.00</span>
-</div>
-</div>
-</section>
-<!-- Control de Horas & Costo (Col 9 - 12) -->
-<section class="col-span-1 md:col-span-4 flex flex-col gap-gutter md:gap-md">
-<div class="bg-primary text-on-primary rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md flex flex-col gap-base relative overflow-hidden h-full justify-between">
-<div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
-<div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white opacity-10 rounded-full"></div>
-<div class="z-10">
-<div class="flex items-center gap-xs text-primary-fixed mb-1">
-<span class="material-symbols-outlined text-sm">schedule</span>
-<span class="font-label-sm text-label-sm uppercase tracking-wider">Estancia Actual</span>
-</div>
-<div class="font-display-lg text-display-lg font-bold">4h 15m</div>
-<p class="font-body-md text-sm text-primary-fixed-dim">Entrada: 13:00</p>
-</div>
-<div class="z-10 mt-auto pt-md border-t border-primary-fixed/20">
-<div class="flex justify-between items-end">
-<div>
-<span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider block mb-1">Costo Acumulado</span>
-<div class="font-headline-lg text-headline-lg font-bold">$25.50</div>
-</div>
-<span class="material-symbols-outlined text-3xl opacity-80">payments</span>
-</div>
-</div>
-</div>
-
 <!-- Notificar Recogida -->
-<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-sm">
+<section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-sm">
 <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
 <span class="material-symbols-outlined text-[18px] text-secondary">directions_car</span>
 Notificar Recogida
@@ -311,7 +197,6 @@ Notificar Recogida
 <span id="pickupLabel">Voy en camino</span>
 </button>
 <p id="pickupStatus" class="text-center font-body-md text-sm text-on-surface-variant hidden"></p>
-</div>
 </section>
 <!-- Registro de Ánimo (Full Width) -->
 <section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] p-md border border-surface-container flex flex-col gap-md">
@@ -343,24 +228,24 @@ Notificar Recogida
 </div>
 </section>
 <script>
-function selectMood(btn, mood){
+async function selectMood(btn, mood){
+  if(!currentStudentKey){ showToast('Espera a que cargue la página', 'error'); return; }
   document.querySelectorAll('.mood-btn').forEach(b => {
     b.classList.remove('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
     b.classList.add('bg-surface-container-low','text-on-surface-variant');
   });
   btn.classList.remove('bg-surface-container-low','text-on-surface-variant');
   btn.classList.add('bg-primary-container','text-on-primary-container','ring-2','ring-primary');
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: currentStudentKey,
+    student_name: currentStudentName,
+    log_date: new Date().toISOString().slice(0, 10),
+    type: 'animo',
+    icon: 'mood',
+    text: `Ánimo de hoy en Estancia: ${mood}`,
+  });
+  if(error){ showToast('No se pudo guardar. Intenta de nuevo.', 'error'); return; }
   showToast('Ánimo de hoy registrado: ' + mood, 'mood');
-}
-
-function toggleStayHistory(){
-  const panel = document.getElementById('stayHistoryPanel');
-  const icon = document.getElementById('stayHistoryIcon');
-  const btnLabel = document.querySelector('#stayHistoryBtn span');
-  const willShow = panel.classList.contains('hidden');
-  panel.classList.toggle('hidden');
-  icon.textContent = willShow ? 'expand_less' : 'expand_more';
-  btnLabel.textContent = willShow ? 'Ocultar Historial' : 'Ver Historial';
 }
 
 let selectedEta = 5;
@@ -375,36 +260,40 @@ function selectEta(btn, mins){
 }
 
 let pickupSent = false;
-function notifyPickup(){
+async function notifyPickup(){
+  if(pickupSent) return; // ya se envió; el staff ya lo vio en la bitácora
+  if(!currentStudentKey){ showToast('Espera a que cargue la página', 'error'); return; }
   const btn = document.getElementById('pickupBtn');
   const icon = document.getElementById('pickupIcon');
   const label = document.getElementById('pickupLabel');
   const status = document.getElementById('pickupStatus');
-  if(!pickupSent){
-    pickupSent = true;
-    icon.textContent = 'check_circle';
-    icon.style.fontVariationSettings = "'FILL' 1";
-    label.textContent = 'Aviso enviado';
-    btn.classList.remove('bg-secondary');
-    btn.classList.add('bg-primary');
-    const time = new Date();
-    time.setMinutes(time.getMinutes() + selectedEta);
-    const eta = time.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
-    status.textContent = `La maestra fue notificada · llegada aprox. ${eta}`;
-    status.classList.remove('hidden');
-    showToast(`Aviso de recogida enviado — llegas en ${selectedEta} min`, 'directions_car');
-  } else {
-    pickupSent = false;
-    icon.textContent = 'directions_car';
-    icon.style.fontVariationSettings = "'FILL' 0";
-    label.textContent = 'Voy en camino';
-    btn.classList.remove('bg-primary');
-    btn.classList.add('bg-secondary');
-    status.classList.add('hidden');
-    showToast('Aviso de recogida cancelado', 'cancel');
-  }
+
+  const time = new Date();
+  time.setMinutes(time.getMinutes() + selectedEta);
+  const eta = time.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: currentStudentKey,
+    student_name: currentStudentName,
+    log_date: new Date().toISOString().slice(0, 10),
+    type: 'aviso_recogida',
+    icon: 'directions_car',
+    text: `La familia avisó que va en camino a recoger a ${currentStudentName.split(' ')[0]} · llegada aprox. ${eta}`,
+  });
+  if(error){ showToast('No se pudo enviar el aviso. Intenta de nuevo.', 'error'); return; }
+
+  pickupSent = true;
+  icon.textContent = 'check_circle';
+  icon.style.fontVariationSettings = "'FILL' 1";
+  label.textContent = 'Aviso enviado';
+  btn.classList.remove('bg-secondary');
+  btn.classList.add('bg-primary');
+  status.textContent = `El staff verá tu aviso · llegada aprox. ${eta}`;
+  status.classList.remove('hidden');
+  showToast(`Aviso de recogida enviado — llegas en ${selectedEta} min`, 'directions_car');
 }
 </script>
+</div>
 </div>
 </main>
 <!-- BottomNavBar -->
@@ -460,6 +349,47 @@ function closeSidebar(){
 const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+let currentStudentKey = null;
+let currentStudentName = '';
+
+function showNoChildBanner(title, detail){
+  document.getElementById('estanciaPageContent').classList.add('hidden');
+  document.getElementById('noChildLinkedTitle').textContent = title;
+  document.getElementById('noChildLinkedDetail').textContent = detail;
+  document.getElementById('noChildLinkedBanner').classList.remove('hidden');
+}
+
+async function loadRealLinkedChild(){
+  if(!sb){
+    showNoChildBanner('No se pudo conectar con el servidor', 'Intenta recargar la página en unos momentos.');
+    return;
+  }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    showNoChildBanner('Inicia sesión para usar el módulo de Estancia', 'Necesitas iniciar sesión con tu cuenta de Gael.');
+    return;
+  }
+
+  const { data: links, error } = await sb
+    .from('parent_student_links')
+    .select('student_id, students!inner(id, full_name)')
+    .eq('students.status', 'activo');
+
+  if(error || !links || links.length === 0){
+    showNoChildBanner('Tu cuenta todavía no está vinculada a ningún alumno', 'Pídele a la administración de Gael que vincule tu cuenta con tu hijo o hija para ver su información aquí.');
+    return;
+  }
+
+  const s = links[0].students;
+  if(!s) return;
+  currentStudentKey = s.id;
+  currentStudentName = s.full_name;
+  document.getElementById('sidebarChildName').textContent = s.full_name;
+  document.getElementById('estanciaChildLabel').textContent = 'Seguimiento de estancia para ' + s.full_name.split(' ')[0] + '.';
+}
+
+loadRealLinkedChild();
 
 async function handleParentLogout(event){
   event.preventDefault();

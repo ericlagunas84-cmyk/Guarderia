@@ -538,6 +538,26 @@ async function handleLogout(event){
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function requireStaffSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
+  if(!profile || (profile.role !== 'staff' && profile.role !== 'admin')){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  return true;
+}
+requireStaffSession();
+</script>
+<script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});

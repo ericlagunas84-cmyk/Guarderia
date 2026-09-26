@@ -453,8 +453,27 @@ async function sendBulkSupplyReminders(){
   loadInsumosReport();
 }
 
-document.getElementById('reportDate').value = todayISO();
-loadAttendanceReport();
+async function requireStaffSession(){
+  if(!sb){ window.location.href = 'inicio_de_sesi_n.html'; return false; }
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
+  if(!profile || (profile.role !== 'staff' && profile.role !== 'admin')){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  return true;
+}
+
+async function initReportesPage(){
+  if(!(await requireStaffSession())) return;
+  document.getElementById('reportDate').value = todayISO();
+  loadAttendanceReport();
+}
+initReportesPage();
 </script>
 
 <!-- Shared Toast Component -->

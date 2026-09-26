@@ -459,6 +459,24 @@ async function handleLogout(event){
   window.location.href = 'inicio_de_sesi_n.html';
 }
 
-loadPermissions();
+async function requireStaffSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
+  if(!profile || (profile.role !== 'staff' && profile.role !== 'admin')){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  return true;
+}
+
+async function initPermisosPage(){
+  if(!(await requireStaffSession())) return;
+  loadPermissions();
+}
+initPermisosPage();
 </script>
 </body></html>

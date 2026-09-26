@@ -198,12 +198,7 @@
 <h3 id="balanceAmount" class="font-display-lg text-display-lg font-bold">Cargando…</h3>
 <p id="balanceDue" class="font-body-md text-body-md text-primary-fixed-dim mt-2"></p>
 </div>
-<div class="mt-lg" id="payBtnWrap">
-<button id="payBtn" onclick="payTuition()" class="w-full sm:w-auto bg-surface-container-lowest text-primary font-headline-md text-headline-md py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all squishy-btn flex items-center justify-center gap-sm">
-<span id="payIcon" class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
-<span id="payLabel">Pagar Colegiatura</span>
-                            </button>
-</div>
+<p class="font-body-md text-[13px] text-primary-fixed-dim mt-lg">Los pagos se registran directamente en la guardería.</p>
 </div>
 </div>
 <!-- Payment History -->
@@ -309,8 +304,6 @@ const SUPABASE_URL = 'https://esntdthzqbdujzkjtehx.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SOk8U9Pxfqno2QRY3gMUKg_l41ZndNV';
 const sb = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-let paid = false;
-
 /* ===== Conexión real: historial de pagos del hijo vinculado ===== */
 function paymentHistoryRow(inv){
   const fecha = new Date(inv.paid_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -375,7 +368,6 @@ async function loadRealPaymentHistory(){
     ? `${invoices.length} pago(s) registrado(s)`
     : 'Sin pagos registrados';
   document.getElementById('balanceDue').textContent = 'Los pagos se registran directamente en la estancia.';
-  document.getElementById('payBtnWrap').classList.add('hidden');
   document.getElementById('toggleHistoryBtn')?.classList.add('hidden');
   document.getElementById('paymentMethodsCard')?.classList.add('hidden');
 
@@ -389,53 +381,6 @@ async function loadRealPaymentHistory(){
 }
 
 loadRealPaymentHistory();
-function selectedCardLabel(){
-  const checked = document.querySelector('input[name="paycard"]:checked');
-  if(!checked) return 'tu método de pago';
-  const row = checked.closest('label');
-  return row.querySelector('p.font-label-md').textContent;
-}
-function payTuition(){
-  if(paid) return;
-  paid = true;
-  const btn = document.getElementById('payBtn');
-  const icon = document.getElementById('payIcon');
-  const label = document.getElementById('payLabel');
-  const card = selectedCardLabel();
-  icon.textContent = 'hourglass_top';
-  label.textContent = 'Procesando...';
-  btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('balanceAmount').innerHTML = '$0<span class="text-headline-md font-normal opacity-80">.00 MXN</span>';
-    document.getElementById('balanceDue').textContent = 'Sin adeudos pendientes';
-    icon.textContent = 'check_circle';
-    icon.style.fontVariationSettings = "'FILL' 1";
-    label.textContent = 'Pagado';
-    btn.classList.add('opacity-70','cursor-default');
-
-    const time = new Date().toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'});
-    const item = document.createElement('div');
-    item.innerHTML = `
-      <div class="h-px bg-surface-variant w-full mb-sm"></div>
-      <div class="flex items-center justify-between p-sm rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors" onclick="showToast('Recibo: Colegiatura Octubre · $3,500.00 · ${time}', 'receipt_long')">
-        <div class="flex items-center gap-sm">
-          <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
-            <span class="material-symbols-outlined">check_circle</span>
-          </div>
-          <div>
-            <p class="font-label-md text-label-md text-on-surface">Colegiatura Octubre</p>
-            <p class="font-body-sm text-body-md text-on-surface-variant text-sm">${time} · ${card}</p>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="font-label-md text-label-md text-on-surface">-$3,500.00</p>
-          <p class="font-body-sm text-body-md text-primary text-sm font-semibold">Pagado</p>
-        </div>
-      </div>`;
-    document.getElementById('historyList').prepend(item);
-    showToast(`Pago de $3,500.00 MXN con ${card} procesado con éxito`, 'check_circle');
-  }, 900);
-}
 
 function toggleHistory(){
   const more = document.getElementById('moreHistory');

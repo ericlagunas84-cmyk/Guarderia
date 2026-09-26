@@ -377,8 +377,23 @@ async function handleLogout(event){
   window.location.href = 'inicio_de_sesi_n.html';
 }
 
+async function requireStaffSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', session.user.id).single();
+  if(!profile || (profile.role !== 'staff' && profile.role !== 'admin')){
+    window.location.href = 'inicio_de_sesi_n.html';
+    return false;
+  }
+  return true;
+}
+
 async function loadDashboardStats(){
   if(!sb) return;
+  if(!(await requireStaffSession())) return;
   const [studentsRes, profilesRes, invoicesRes] = await Promise.all([
     sb.from('students').select('id, room, allergies').eq('status', 'activo'),
     sb.from('profiles').select('id, role').in('role', ['staff', 'admin']),

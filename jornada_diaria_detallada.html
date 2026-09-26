@@ -177,7 +177,7 @@
 </div>
 </section>
 <!-- Timeline Container -->
-<div class="flex flex-col gap-lg relative" id="demoTimelineContainer">
+<div class="hidden flex-col gap-lg relative" id="demoTimelineContainer">
 <!-- 1. Alimentación -->
 <div class="timeline-item relative">
 <div class="timeline-line absolute left-0 top-0 bottom-0 w-12 z-0"></div>
@@ -373,6 +373,9 @@ async function loadRealJornada(){
   const s = links[0].students;
   if(!s) return;
 
+  currentStudentKey = s.id;
+  currentStudentName = s.full_name;
+
   document.getElementById('jornadaTitle').textContent = 'La Jornada de ' + s.full_name.split(' ')[0];
   document.getElementById('jornadaDate').textContent = 'Hoy, ' + new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
   document.getElementById('jornadaAvatar').src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
@@ -398,20 +401,53 @@ async function loadRealJornada(){
   realContainer.innerHTML = logs.map(realTimelineItemHTML).join('');
 }
 
+let currentStudentKey = null;
+let currentStudentName = '';
 loadRealJornada();
 
 let liked = false;
-function toggleLike(){
-  liked = !liked;
-  document.getElementById('likeIcon').textContent = liked ? 'favorite' : 'favorite_border';
-  document.getElementById('likeIcon').style.fontVariationSettings = liked ? "'FILL' 1" : "'FILL' 0";
-  document.getElementById('likeCount').textContent = liked ? '¡Cariño enviado!' : 'Enviar cariño';
-  if(liked) showToast('La maestra recibió tu mensaje de cariño ❤️', 'favorite');
+async function toggleLike(){
+  if(liked) return; // ya se envió hoy; no se puede "des-enviar" cariño
+  if(!currentStudentKey){ showToast('Espera a que cargue la bitácora', 'error'); return; }
+  liked = true;
+  document.getElementById('likeIcon').textContent = 'favorite';
+  document.getElementById('likeIcon').style.fontVariationSettings = "'FILL' 1";
+  document.getElementById('likeCount').textContent = '¡Cariño enviado!';
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: currentStudentKey,
+    student_name: currentStudentName,
+    log_date: new Date().toISOString().slice(0, 10),
+    type: 'carino',
+    icon: 'favorite',
+    text: `${currentStudentName.split(' ')[0]} recibió un mensaje de cariño de su familia hoy. ❤️`,
+  });
+  if(error){
+    liked = false;
+    document.getElementById('likeIcon').textContent = 'favorite_border';
+    document.getElementById('likeIcon').style.fontVariationSettings = "'FILL' 0";
+    document.getElementById('likeCount').textContent = 'Enviar cariño';
+    showToast('No se pudo enviar. Intenta de nuevo.', 'error');
+    return;
+  }
+  showToast('La maestra verá tu mensaje de cariño ❤️', 'favorite');
 }
-function addComment(){
+async function addComment(){
   const input = document.getElementById('commentInput');
   const text = input.value.trim();
   if(!text){ showToast('Escribe algo antes de enviar', 'error'); return; }
+  if(!currentStudentKey){ showToast('Espera a que cargue la bitácora', 'error'); return; }
+  const { error } = await sb.from('daily_logs').insert({
+    student_key: currentStudentKey,
+    student_name: currentStudentName,
+    log_date: new Date().toISOString().slice(0, 10),
+    type: 'comentario',
+    icon: 'chat',
+    text: `Comentario de la familia: ${text}`,
+  });
+  if(error){
+    showToast('No se pudo enviar el comentario. Intenta de nuevo.', 'error');
+    return;
+  }
   const time = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
   const div = document.createElement('div');
   div.className = 'bg-secondary-container/30 rounded-lg p-sm text-body-md font-body-md text-on-surface flex justify-between gap-sm';
