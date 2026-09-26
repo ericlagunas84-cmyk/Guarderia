@@ -333,6 +333,49 @@ function childChipHTML(key, name, avatar){
 
 const ATTENDANCE_STATUS_LABEL = { presente: 'Presente', ausente: 'Ausente', justificado: 'Justificado' };
 
+const LOG_TYPE_META = {
+  comentario:    { label: 'Comentario',    color: 'bg-secondary-container text-on-secondary-container' },
+  panal:         { label: 'Higiene',       color: 'bg-tertiary-container text-on-tertiary-container' },
+  comida:        { label: 'Alimentación',  color: 'bg-secondary-container text-on-secondary-container' },
+  siesta_inicio: { label: 'Sueño',         color: 'bg-primary-container text-on-primary-container' },
+  siesta_fin:    { label: 'Sueño',         color: 'bg-primary-container text-on-primary-container' },
+  foto:          { label: 'Momento',       color: 'bg-secondary-container text-on-secondary-container' },
+  medicamento:   { label: 'Medicamento',   color: 'bg-error-container text-on-error-container' },
+  incidente:     { label: 'Incidente',     color: 'bg-error-container text-on-error-container' },
+  carino:        { label: 'Cariño',        color: 'bg-secondary-container text-on-secondary-container' },
+  aviso_recogida:{ label: 'Recogida',      color: 'bg-tertiary-container text-on-tertiary-container' },
+  animo:         { label: 'Ánimo',         color: 'bg-primary-container text-on-primary-container' },
+};
+
+function feedItemHTML(log){
+  const meta = LOG_TYPE_META[log.type] || { label: 'Actualización', color: 'bg-surface-container text-on-surface-variant' };
+  const time = new Date(log.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  const text = (log.text || '').split('||')[0];
+  return `
+    <div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_0_rgba(26,43,60,0.05)] border border-surface-container flex items-start gap-sm mb-sm">
+      <div class="w-10 h-10 rounded-full ${meta.color} flex items-center justify-center shrink-0 text-lg">${log.icon || '📝'}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between gap-sm">
+          <span class="font-label-sm text-label-sm text-on-surface-variant">${meta.label}</span>
+          <span class="font-label-sm text-[11px] text-outline">${time}</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface mt-0.5">${text}</p>
+      </div>
+    </div>`;
+}
+
+function renderRecentActivityFeed(key){
+  const feedEl = document.getElementById('recentActivityFeed');
+  if(!feedEl) return;
+  const c = CHILDREN[key];
+  const logs = (c && c.logs) || [];
+  if(logs.length === 0){
+    feedEl.innerHTML = '<p class="text-center text-on-surface-variant font-body-md py-lg">Aún no hay actividad registrada hoy. Consulta la Bitácora del Día para más detalle.</p>';
+    return;
+  }
+  feedEl.innerHTML = logs.slice(0, 4).map(feedItemHTML).join('');
+}
+
 function showNoChildBanner(title, detail, showLogin){
   document.getElementById('dashboardChildContent').classList.add('hidden');
   document.getElementById('noChildLinkedTitle').textContent = title;
@@ -364,13 +407,23 @@ async function loadRealLinkedChildren(){
 
   const todayISO = new Date().toISOString().slice(0, 10);
   const studentIds = links.map(l => l.student_id);
-  const { data: attendanceRows } = await sb
-    .from('attendance')
-    .select('student_key, status')
-    .eq('date', todayISO)
-    .in('student_key', studentIds);
+  const [attendanceRes, logsRes] = await Promise.all([
+    sb.from('attendance').select('student_key, status').eq('date', todayISO).in('student_key', studentIds),
+    sb.from('daily_logs').select('student_key, type, icon, text, created_at').eq('log_date', todayISO).in('student_key', studentIds).order('created_at', { ascending: false }),
+  ]);
   const attendanceByStudent = {};
-  (attendanceRows || []).forEach(a => { attendanceByStudent[a.student_key] = a.status; });
+  (attendanceRes.data || []).forEach(a => { attendanceByStudent[a.student_key] = a.status; });
+  const logsByStudent = {};
+  (logsRes.data || []).forEach(l => {
+    (logsByStudent[l.student_key] = logsByStudent[l.student_key] || []).push(l);
+  });
+
+  function timeLabel(iso){
+    return new Date(iso).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  }
+  function latestOfType(logs, types){
+    return logs.find(l => types.includes(l.type));
+  }
 
   // Reconstruir CHILDREN con datos reales, reemplazando la demo por completo
   Object.keys(CHILDREN).forEach(k => delete CHILDREN[k]);
@@ -378,16 +431,28 @@ async function loadRealLinkedChildren(){
     const s = l.students;
     if(!s) return;
     const attStatus = attendanceByStudent[s.id];
+    const logs = logsByStudent[s.id] || [];
+
+    const mealLog = latestOfType(logs, ['comida']);
+    const diaperLog = latestOfType(logs, ['panal']);
+    const napEnd = latestOfType(logs, ['siesta_fin']);
+    const napStart = latestOfType(logs, ['siesta_inicio']);
+    const napLog = napEnd || napStart;
+
     CHILDREN[s.id] = {
       name: s.full_name.split(' ')[0],
       avatar: avatarDataUri(s.full_name),
       statusIcon: 'school', statusLabel: s.room,
       room: s.room,
+      logs,
       attendance: attStatus ? ATTENDANCE_STATUS_LABEL[attStatus] : 'Sin registrar',
       attendanceDetail: attStatus ? `Hoy quedó marcado como: ${ATTENDANCE_STATUS_LABEL[attStatus]}.` : 'Aún no hay registro de asistencia de hoy.',
-      nap: 'Sin registrar aún', napDetail: 'Todavía no hay actividades de siesta registradas hoy.',
-      meal: 'Sin registrar aún', mealDetail: 'Todavía no hay actividades de comida registradas hoy.',
-      diaper: 'Sin registrar aún', diaperDetail: 'Todavía no hay actividades de higiene registradas hoy.',
+      nap: napLog ? (napEnd ? 'Durmió a las ' + timeLabel(napStart ? napStart.created_at : napEnd.created_at) : 'Durmiendo ahora') : 'Sin registrar aún',
+      napDetail: napLog ? (napLog.text || '').split('||')[0] + ' · ' + timeLabel(napLog.created_at) : 'Todavía no hay actividades de siesta registradas hoy.',
+      meal: mealLog ? 'Última: ' + timeLabel(mealLog.created_at) : 'Sin registrar aún',
+      mealDetail: mealLog ? (mealLog.text || '').split('||')[0] + ' · ' + timeLabel(mealLog.created_at) : 'Todavía no hay actividades de comida registradas hoy.',
+      diaper: diaperLog ? 'Última: ' + timeLabel(diaperLog.created_at) : 'Sin registrar aún',
+      diaperDetail: diaperLog ? (diaperLog.text || '').split('||')[0] + ' · ' + timeLabel(diaperLog.created_at) : 'Todavía no hay actividades de higiene registradas hoy.',
     };
   });
 
@@ -422,6 +487,7 @@ function applyChild(key){
   if(sidebarChildEl) sidebarChildEl.textContent = 'Hijo/a: ' + c.name;
   const liveCameraEl = document.getElementById('liveCameraLabel');
   if(liveCameraEl) liveCameraEl.textContent = c.room || 'Salón';
+  renderRecentActivityFeed(key);
 
   document.querySelectorAll('.child-chip').forEach(chip => {
     const ring = chip.querySelector('.child-avatar-ring');
